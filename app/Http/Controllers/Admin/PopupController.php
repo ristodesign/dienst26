@@ -18,8 +18,6 @@ class PopupController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index(Request $request): View
     {
@@ -37,8 +35,6 @@ class PopupController extends Controller
 
     /**
      * Show the popup type page to select one of them.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function popupType(): View
     {
@@ -47,8 +43,6 @@ class PopupController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function create($type): View
     {
@@ -62,9 +56,6 @@ class PopupController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(StoreRequest $request): JsonResponse
     {
@@ -83,9 +74,6 @@ class PopupController extends Controller
 
     /**
      * Update the status of specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function updateStatus(Request $request, int $id): RedirectResponse
     {
@@ -106,9 +94,6 @@ class PopupController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function edit(int $id): View
     {
@@ -119,10 +104,6 @@ class PopupController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function update(UpdateRequest $request, int $id): JsonResponse
     {
@@ -145,9 +126,6 @@ class PopupController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function destroy(int $id): RedirectResponse
     {
@@ -162,8 +140,6 @@ class PopupController extends Controller
 
     /**
      * Remove the selected or all resources from storage.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function bulkDestroy(Request $request): JsonResponse
     {

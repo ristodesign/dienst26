@@ -68,8 +68,6 @@ class PackageController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
      */
     public function store(PackageStoreRequest $request)
     {
@@ -88,7 +86,6 @@ class PackageController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show(int $id)
@@ -98,8 +95,6 @@ class PackageController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
      */
     public function edit(int $id): View
     {
@@ -119,7 +114,6 @@ class PackageController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      */
     public function update(PackageUpdateRequest $request)

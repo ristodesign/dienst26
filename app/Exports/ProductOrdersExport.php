@@ -16,9 +16,6 @@ class ProductOrdersExport implements FromCollection, WithHeadings, WithMapping
         $this->orders = $orders;
     }
 
-    /**
-     * @return \Illuminate\Support\Collection
-     */
     public function collection(): Collection
     {
         return $this->orders;

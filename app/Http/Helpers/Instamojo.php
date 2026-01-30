@@ -15,7 +15,6 @@ class Instamojo
     protected $auth_token = null;
 
     /**
-     * @param  string  $api_key
      * @param  string  $auth_token  is available on the d
      * @param  string  $endpoint  can be set if you are working on an alternative server.
      * @return array AuthToken object.
@@ -50,7 +49,6 @@ class Instamojo
     }
 
     /**
-     * @param  string  $path
      * @return string adds the path to endpoint with.
      */
     private function build_api_call_url(string $path): string
@@ -153,7 +151,6 @@ class Instamojo
     }
 
     /**
-     * @param  string  $file_path
      * @return string JSON returned when the file upload is complete.
      */
     public function uploadFile(string $file_path): string

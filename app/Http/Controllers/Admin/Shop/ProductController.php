@@ -103,9 +103,6 @@ class ProductController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(ProductStoreRequest $request): JsonResponse
     {
@@ -154,9 +151,6 @@ class ProductController extends Controller
 
     /**
      * Update the 'featured' status of a specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function updateFeaturedStatus(Request $request, int $id): RedirectResponse
     {
@@ -181,9 +175,6 @@ class ProductController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function edit(int $id, $type): View
     {
@@ -213,8 +204,6 @@ class ProductController extends Controller
 
     /**
      * Remove 'stored' slider image form storage.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function detachImage(Request $request): JsonResponse
     {
@@ -248,10 +237,6 @@ class ProductController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function update(ProductUpdateRequest $request, int $id): JsonResponse
     {
@@ -327,9 +312,6 @@ class ProductController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function destroy(int $id): RedirectResponse
     {
@@ -398,8 +380,6 @@ class ProductController extends Controller
 
     /**
      * Remove the selected or all resources from storage.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function bulkDestroy(Request $request): JsonResponse
     {
