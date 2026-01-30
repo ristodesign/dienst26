@@ -94,7 +94,7 @@ class ServicePaymentController extends Controller
     $currencyInfo = $this->getCurrencyInfo();
 
     //data for service booking
-    $arrData = array(
+    $arrData = [
       'zoom_status' => $serviceData['zoom_status'],
       'calender_status' => $serviceData['calendar_status'],
       'customer_name' => $request['name'],
@@ -122,7 +122,7 @@ class ServicePaymentController extends Controller
       'paymentStatus' => 'completed',
       'refund' => 'pending',
       'identity_number' => $request['gateway'] == 'iyzico' ? $request['identity_number'] : ''
-    );
+    ];
     $arrData['identity_number'] = $request->identity_number;
     $arrData['paymentStatus'] = 'pending';
 
@@ -134,42 +134,42 @@ class ServicePaymentController extends Controller
         $controller = new PayPalController();
         break;
       case 'instamojo':
-        $available_currency = array('INR');
+        $available_currency = ['INR'];
         if (!in_array($currencyInfo->base_currency_text, $available_currency)) {
           return Response::json(['error' => __('Invalid currency for instamojo payment')], 422);
         }
         $controller = new InstamojoController();
         break;
       case 'paystack':
-        $available_currency = array('NGN');
+        $available_currency = ['NGN'];
         if (!in_array($currencyInfo->base_currency_text, $available_currency)) {
           return Response::json(['error' => __('Invalid currency for paystack payment')], 422);
         }
         $controller = new PaystackController();
         break;
       case 'flutterwave':
-        $available_currency = array('BIF', 'CAD', 'CDF', 'CVE', 'EUR', 'GBP', 'GHS', 'GMD', 'GNF', 'KES', 'LRD', 'MWK', 'MZN', 'NGN', 'RWF', 'SLL', 'STD', 'TZS', 'UGX', 'USD', 'XAF', 'XOF', 'ZMK', 'ZMW', 'ZWD');
+        $available_currency = ['BIF', 'CAD', 'CDF', 'CVE', 'EUR', 'GBP', 'GHS', 'GMD', 'GNF', 'KES', 'LRD', 'MWK', 'MZN', 'NGN', 'RWF', 'SLL', 'STD', 'TZS', 'UGX', 'USD', 'XAF', 'XOF', 'ZMK', 'ZMW', 'ZWD'];
         if (!in_array($currencyInfo->base_currency_text, $available_currency)) {
           return Response::json(['error' => __('Invalid currency for mollie payment')], 422);
         }
         $controller = new FlutterwaveController();
         break;
       case 'razorpay':
-        $available_currency = array('INR');
+        $available_currency = ['INR'];
         if (!in_array($currencyInfo->base_currency_text, $available_currency)) {
           return Response::json(['error' => __('Invalid currency for instamojo payment')], 422);
         }
         $controller = new RazorpayController();
         break;
       case 'mercadopago':
-        $available_currency = array('ARS', 'BOB', 'BRL', 'CLF', 'CLP', 'COP', 'CRC', 'CUC', 'CUP', 'DOP', 'EUR', 'GTQ', 'HNL', 'MXN', 'NIO', 'PAB', 'PEN', 'PYG', 'USD', 'UYU', 'VEF', 'VES');
+        $available_currency = ['ARS', 'BOB', 'BRL', 'CLF', 'CLP', 'COP', 'CRC', 'CUC', 'CUP', 'DOP', 'EUR', 'GTQ', 'HNL', 'MXN', 'NIO', 'PAB', 'PEN', 'PYG', 'USD', 'UYU', 'VEF', 'VES'];
         if (!in_array($currencyInfo->base_currency_text, $available_currency)) {
           return Response::json(['error' => __('Invalid currency for mercadopago payment')], 422);
         }
         $controller = new MercadoPagoController();
         break;
       case 'mollie':
-        $available_currency = array('AED', 'AUD', 'BGN', 'BRL', 'CAD', 'CHF', 'CZK', 'DKK', 'EUR', 'GBP', 'HKD', 'HRK', 'HUF', 'ILS', 'ISK', 'JPY', 'MXN', 'MYR', 'NOK', 'NZD', 'PHP', 'PLN', 'RON', 'RUB', 'SEK', 'SGD', 'THB', 'TWD', 'USD', 'ZAR');
+        $available_currency = ['AED', 'AUD', 'BGN', 'BRL', 'CAD', 'CHF', 'CZK', 'DKK', 'EUR', 'GBP', 'HKD', 'HRK', 'HUF', 'ILS', 'ISK', 'JPY', 'MXN', 'MYR', 'NOK', 'NZD', 'PHP', 'PLN', 'RON', 'RUB', 'SEK', 'SGD', 'THB', 'TWD', 'USD', 'ZAR'];
         if (!in_array($currencyInfo->base_currency_text, $available_currency)) {
           return Response::json(['error' => __('Invalid currency for mollie payment')], 422);
         }
@@ -180,14 +180,14 @@ class ServicePaymentController extends Controller
         $controller = new StripeController();
         break;
       case 'paytm':
-        $available_currency = array('INR');
+        $available_currency = ['INR'];
         if (!in_array($currencyInfo->base_currency_text, $available_currency)) {
           return Response::json(['error' => __('Invalid currency for instamojo payment')], 422);
         }
         $controller = new PaytmController();
         break;
       case 'authorize.net':
-        $available_currency = array('USD', 'CAD', 'CHF', 'DKK', 'EUR', 'GBP', 'NOK', 'PLN', 'SEK', 'AUD', 'NZD');
+        $available_currency = ['USD', 'CAD', 'CHF', 'DKK', 'EUR', 'GBP', 'NOK', 'PLN', 'SEK', 'AUD', 'NZD'];
         if (!in_array($currencyInfo->base_currency_text, $available_currency)) {
           return Response::json(['error' => __('Invalid currency for myfatoorah payment')], 422);
         }
@@ -196,42 +196,42 @@ class ServicePaymentController extends Controller
         $controller = new AuthorizenetController();
         break;
       case 'myfatoorah':
-        $available_currency = array('KWD', 'SAR', 'BHD', 'AED', 'QAR', 'OMR', 'JOD');
+        $available_currency = ['KWD', 'SAR', 'BHD', 'AED', 'QAR', 'OMR', 'JOD'];
         if (!in_array($currencyInfo->base_currency_text, $available_currency)) {
           return Response::json(['error' => __('Invalid currency for myfatoorah payment')], 422);
         }
         $controller = new MyFatoorahController();
         break;
       case 'phonepe':
-        $available_currency = array('INR');
+        $available_currency = ['INR'];
         if (!in_array($currencyInfo->base_currency_text, $available_currency)) {
           return Response::json(['error' => __('Invalid currency for phonepe payment')], 422);
         }
         $controller = new PhonePeController();
         break;
       case 'yoco':
-        $available_currency = array('ZAR');
+        $available_currency = ['ZAR'];
         if (!in_array($currencyInfo->base_currency_text, $available_currency)) {
           return Response::json(['error' => __('Invalid currency for yoco payment')], 422);
         }
         $controller = new YocoController();
         break;
       case 'xendit':
-        $available_currency = array('IDR', 'PHP', 'USD', 'SGD', 'MYR');
+        $available_currency = ['IDR', 'PHP', 'USD', 'SGD', 'MYR'];
         if (!in_array($currencyInfo->base_currency_text, $available_currency)) {
           return Response::json(['error' => __('Invalid currency for xendit payment')], 422);
         }
         $controller = new XenditController();
         break;
       case 'midtrans':
-        $available_currency = array('IDR');
+        $available_currency = ['IDR'];
         if (!in_array($currencyInfo->base_currency_text, $available_currency)) {
           return Response::json(['error' => __('Invalid currency for midtrans payment')], 422);
         }
         $controller = new MidtransController();
         break;
       case 'toyyibpay':
-        $available_currency = array('RM');
+        $available_currency = ['RM'];
         if (!in_array($currencyInfo->base_currency_text, $available_currency)) {
           return Response::json(['error' => __('Invalid currency for toyyibpay payment')], 422);
         }
@@ -245,14 +245,14 @@ class ServicePaymentController extends Controller
         $controller = new PaytabsController();
         break;
       case 'perfect_money':
-        $available_currency = array('USD');
+        $available_currency = ['USD'];
         if (!in_array($currencyInfo->base_currency_text, $available_currency)) {
           return Response::json(['error' => __('Invalid currency for perfect money payment')], 422);
         }
         $controller = new PerfectMoneyController();
         break;
       case 'iyzico':
-        $available_currency = array('TRY');
+        $available_currency = ['TRY'];
         if (!in_array($currencyInfo->base_currency_text, $available_currency)) {
           return Response::json(['error' => __('Invalid currency for iyzico payment')], 422);
         }
@@ -437,7 +437,7 @@ class ServicePaymentController extends Controller
 
   public function cancel()
   {
-    $notification = array('message' => 'Something went wrong', 'alert-type' => 'error');
+    $notification = ['message' => 'Something went wrong', 'alert-type' => 'error'];
     return redirect()->route('frontend.services')->with($notification);
   }
 }

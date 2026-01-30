@@ -98,11 +98,11 @@ class RazorpayController extends Controller
         if (empty($request['razorpay_payment_id']) === false) {
 
             try {
-                $attributes = array(
+                $attributes = [
                     'razorpay_order_id' => $payment_id,
                     'razorpay_payment_id' => $request['razorpay_payment_id'],
                     'razorpay_signature' => $request['razorpay_signature']
-                );
+                ];
 
                 $this->api->utility->verifyPaymentSignature($attributes);
             } catch (SignatureVerificationError $e) {

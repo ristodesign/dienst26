@@ -322,14 +322,14 @@ class CronJobController extends Controller
       $type = 'service_payment_approved';
       payemntStatusMail($type, $id);
 
-      $arrData = array(
+      $arrData = [
         'customer_paid' => $appointment->customer_paid,
         'paymentMethod' => $appointment->payment_method,
         'currencySymbol' => $appointment->currency_symbol,
         'currencySymbolPosition' => $appointment->currency_symbol_position,
         'paymentStatus' => $appointment->payment_status,
         'vendor_id' => $appointment->vendor_id,
-      );
+      ];
       $transaction = new TransactionController();
       $transaction->storeTransaction($arrData);
     } else {

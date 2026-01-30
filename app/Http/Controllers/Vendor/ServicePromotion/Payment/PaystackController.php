@@ -29,7 +29,7 @@ class PaystackController extends Controller
 
     $curl = curl_init();
 
-    curl_setopt_array($curl, array(
+    curl_setopt_array($curl, [
       CURLOPT_URL            => 'https://api.paystack.co/transaction/initialize',
       CURLOPT_RETURNTRANSFER => true,
       CURLOPT_CUSTOMREQUEST  => 'POST',
@@ -43,7 +43,7 @@ class PaystackController extends Controller
         'content-type: application/json',
         'cache-control: no-cache'
       ]
-    ));
+    ]);
 
     $response = curl_exec($curl);
 

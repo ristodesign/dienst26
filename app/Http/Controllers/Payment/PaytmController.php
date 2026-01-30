@@ -47,7 +47,7 @@ class PaytmController extends Controller
         // Load all functions of encdec_paytm.php and config-paytm.php
         $this->getAllEncdecFunc();
         $checkSum = "";
-        $paramList = array();
+        $paramList = [];
         // Create an array having all required parameters for creating checksum.
         $paramList["MID"] = $paydata['merchant_mid'];
         $paramList["ORDER_ID"] = $_item_number;
@@ -61,10 +61,10 @@ class PaytmController extends Controller
         $paytm_merchant_key = $paydata['merchant_key'];
         //Here checksum string will return by getChecksumFromArray() function.
         $checkSum = getChecksumFromArray($paramList, $paytm_merchant_key);
-        return array(
+        return [
             'checkSum' => $checkSum,
             'paramList' => $paramList
-        );
+        ];
     }
 
     function getAllEncdecFunc()
@@ -249,7 +249,7 @@ class PaytmController extends Controller
         function callAPI($apiURL, $requestParamList)
         {
             $jsonResponse = "";
-            $responseParamList = array();
+            $responseParamList = [];
             $JsonData = json_encode($requestParamList);
             $postData = 'JsonData=' . urlencode($JsonData);
             $ch = curl_init($apiURL);
@@ -261,10 +261,10 @@ class PaytmController extends Controller
             curl_setopt(
                 $ch,
                 CURLOPT_HTTPHEADER,
-                array(
+                [
                     'Content-Type: application/json',
                     'Content-Length: ' . strlen($postData)
-                )
+                ]
             );
             $jsonResponse = curl_exec($ch);
             $responseParamList = json_decode($jsonResponse, true);
@@ -274,7 +274,7 @@ class PaytmController extends Controller
         function callNewAPI($apiURL, $requestParamList)
         {
             $jsonResponse = "";
-            $responseParamList = array();
+            $responseParamList = [];
             $JsonData = json_encode($requestParamList);
             $postData = 'JsonData=' . urlencode($JsonData);
             $ch = curl_init($apiURL);
@@ -286,10 +286,10 @@ class PaytmController extends Controller
             curl_setopt(
                 $ch,
                 CURLOPT_HTTPHEADER,
-                array(
+                [
                     'Content-Type: application/json',
                     'Content-Length: ' . strlen($postData)
-                )
+                ]
             );
             $jsonResponse = curl_exec($ch);
             $responseParamList = json_decode($jsonResponse, true);
@@ -333,7 +333,7 @@ class PaytmController extends Controller
         function callRefundAPI($refundApiURL, $requestParamList)
         {
             $jsonResponse = "";
-            $responseParamList = array();
+            $responseParamList = [];
             $JsonData = json_encode($requestParamList);
             $postData = 'JsonData=' . urlencode($JsonData);
             $ch = curl_init($refundApiURL);
@@ -343,7 +343,7 @@ class PaytmController extends Controller
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            $headers = array();
+            $headers = [];
             $headers[] = 'Content-Type: application/json';
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
             $jsonResponse = curl_exec($ch);

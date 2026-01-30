@@ -103,7 +103,7 @@ class BookingController extends Controller
         $paidAmount = $amount * 100;
         break;
       case 'flutterwave':
-        $allowedCurrencies = array('BIF', 'CAD', 'CDF', 'CVE', 'EUR', 'GBP', 'GHS', 'GMD', 'GNF', 'KES', 'LRD', 'MWK', 'MZN', 'NGN', 'RWF', 'SLL', 'STD', 'TZS', 'UGX', 'USD', 'XAF', 'XOF', 'ZMK', 'ZMW', 'ZWD');
+        $allowedCurrencies = ['BIF', 'CAD', 'CDF', 'CVE', 'EUR', 'GBP', 'GHS', 'GMD', 'GNF', 'KES', 'LRD', 'MWK', 'MZN', 'NGN', 'RWF', 'SLL', 'STD', 'TZS', 'UGX', 'USD', 'XAF', 'XOF', 'ZMK', 'ZMW', 'ZWD'];
         if (!in_array($currencyInfo->base_currency_text, $allowedCurrencies)) {
           return response()->json(['status' => 'error', 'message' => 'Invalid currency for flutterwave payment.'], 422);
         }
@@ -116,14 +116,14 @@ class BookingController extends Controller
         $paidAmount = $amount * 100;
         break;
       case 'mercadopago':
-        $allowedCurrencies = array('ARS', 'BOB', 'BRL', 'CLF', 'CLP', 'COP', 'CRC', 'CUC', 'CUP', 'DOP', 'EUR', 'GTQ', 'HNL', 'MXN', 'NIO', 'PAB', 'PEN', 'PYG', 'USD', 'UYU', 'VEF', 'VES');
+        $allowedCurrencies = ['ARS', 'BOB', 'BRL', 'CLF', 'CLP', 'COP', 'CRC', 'CUC', 'CUP', 'DOP', 'EUR', 'GTQ', 'HNL', 'MXN', 'NIO', 'PAB', 'PEN', 'PYG', 'USD', 'UYU', 'VEF', 'VES'];
         if (!in_array($currencyInfo->base_currency_text, $allowedCurrencies)) {
           return response()->json(['status' => 'error', 'message' => 'Invalid currency for mercadopago payment.'], 422);
         }
         $paidAmount = intval($amount);
         break;
       case 'mollie':
-        $allowedCurrencies = array('AED', 'AUD', 'BGN', 'BRL', 'CAD', 'CHF', 'CZK', 'DKK', 'EUR', 'GBP', 'HKD', 'HRK', 'HUF', 'ILS', 'ISK', 'JPY', 'MXN', 'MYR', 'NOK', 'NZD', 'PHP', 'PLN', 'RON', 'RUB', 'SEK', 'SGD', 'THB', 'TWD', 'USD', 'ZAR');
+        $allowedCurrencies = ['AED', 'AUD', 'BGN', 'BRL', 'CAD', 'CHF', 'CZK', 'DKK', 'EUR', 'GBP', 'HKD', 'HRK', 'HUF', 'ILS', 'ISK', 'JPY', 'MXN', 'MYR', 'NOK', 'NZD', 'PHP', 'PLN', 'RON', 'RUB', 'SEK', 'SGD', 'THB', 'TWD', 'USD', 'ZAR'];
         if (!in_array($currencyInfo->base_currency_text, $allowedCurrencies)) {
           return response()->json(['status' => 'error', 'message' => 'Invalid currency for mollie payment.'], 422);
         }
@@ -138,56 +138,56 @@ class BookingController extends Controller
         $paidAmount = $currencyInfo->base_currency_text === 'USD' ? $amount : $convertedTotal;
         break;
       case 'authorize.net':
-        $allowedCurrencies = array('USD', 'CAD', 'CHF', 'DKK', 'EUR', 'GBP', 'NOK', 'PLN', 'SEK', 'AUD', 'NZD');
+        $allowedCurrencies = ['USD', 'CAD', 'CHF', 'DKK', 'EUR', 'GBP', 'NOK', 'PLN', 'SEK', 'AUD', 'NZD'];
         if (!in_array($currencyInfo->base_currency_text, $allowedCurrencies)) {
           return response()->json(['status' => 'error', 'message' => 'Invalid currency for authorize.net payment.'], 422);
         }
         $paidAmount = sprintf('%0.2f', $amount);
         break;
       case 'phonepe':
-        $allowedCurrencies = array('INR');
+        $allowedCurrencies = ['INR'];
         if (!in_array($currencyInfo->base_currency_text, $allowedCurrencies)) {
           return response()->json(['status' => 'error', 'message' => 'Invalid currency for phonepe payment.'], 422);
         }
         $paidAmount = $amount * 100;
         break;
       case 'myfatoorah':
-        $allowedCurrencies = array('KWD', 'SAR', 'BHD', 'AED', 'QAR', 'OMR', 'JOD');
+        $allowedCurrencies = ['KWD', 'SAR', 'BHD', 'AED', 'QAR', 'OMR', 'JOD'];
         if (!in_array($currencyInfo->base_currency_text, $allowedCurrencies)) {
           return response()->json(['status' => 'error', 'message' => 'Invalid currency for myfatoorah payment.'], 422);
         }
         $paidAmount = intval($amount);
         break;
       case 'midtrans':
-        $allowedCurrencies =  array('IDR');
+        $allowedCurrencies =  ['IDR'];
         if (!in_array($currencyInfo->base_currency_text, $allowedCurrencies)) {
           return response()->json(['status' => 'error', 'message' => 'Invalid currency for midtrans payment.'], 422);
         }
         $paidAmount = (int)round($amount);
         break;
       case 'toyyibpay':
-        $allowedCurrencies =  array('RM');
+        $allowedCurrencies =  ['RM'];
         if (!in_array($currencyInfo->base_currency_text, $allowedCurrencies)) {
           return response()->json(['status' => 'error', 'message' => 'Invalid currency for toyyibpay payment.'], 422);
         }
         $paidAmount = $amount * 100;
         break;
       case 'xendit':
-        $allowedCurrencies =  array('IDR', 'PHP', 'USD', 'SGD', 'MYR');
+        $allowedCurrencies =  ['IDR', 'PHP', 'USD', 'SGD', 'MYR'];
         if (!in_array($currencyInfo->base_currency_text, $allowedCurrencies)) {
           return response()->json(['status' => 'error', 'message' => 'Invalid currency for xendit payment.'], 422);
         }
         $paidAmount = $amount;
         break;
       case 'monnify':
-        $allowedCurrencies =  array('NGN');
+        $allowedCurrencies =  ['NGN'];
         if (!in_array($currencyInfo->base_currency_text, $allowedCurrencies)) {
           return response()->json(['status' => 'error', 'message' => 'Invalid currency for monnify payment.'], 422);
         }
         $paidAmount = $amount;
         break;
       case 'now_payments':
-        $allowedCurrencies =  array('USD', 'EUR', 'GBP', 'USDT', 'BTC', 'ETH');
+        $allowedCurrencies =  ['USD', 'EUR', 'GBP', 'USDT', 'BTC', 'ETH'];
         if (!in_array($currencyInfo->base_currency_text, $allowedCurrencies)) {
           return response()->json(['status' => 'error', 'message' => 'Invalid currency for now_payments payment.'], 422);
         }

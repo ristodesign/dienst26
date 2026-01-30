@@ -44,7 +44,7 @@ class PaystackController extends Controller
       return redirect()->back()->with('error', 'Invalid currency for paystack payment.')->withInput();
     }
 
-    $arrData = array(
+    $arrData = [
       'billing_name' => $request['billing_name'],
       'billing_email' => $request['billing_email'],
       'billing_phone' => $request['billing_phone'],
@@ -81,7 +81,7 @@ class PaystackController extends Controller
       'gatewayType' => 'online',
       'paymentStatus' => 'completed',
       'orderStatus' => 'pending'
-    );
+    ];
 
     $notifyURL = route('shop.purchase_product.paystack.notify');
 
@@ -89,7 +89,7 @@ class PaystackController extends Controller
 
     $curl = curl_init();
 
-    curl_setopt_array($curl, array(
+    curl_setopt_array($curl, [
       CURLOPT_URL            => 'https://api.paystack.co/transaction/initialize',
       CURLOPT_RETURNTRANSFER => true,
       CURLOPT_CUSTOMREQUEST  => 'POST',
@@ -103,7 +103,7 @@ class PaystackController extends Controller
         'content-type: application/json',
         'cache-control: no-cache'
       ]
-    ));
+    ]);
 
     $response = curl_exec($curl);
 

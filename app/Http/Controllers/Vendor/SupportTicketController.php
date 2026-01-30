@@ -61,7 +61,7 @@ class SupportTicketController extends Controller
         ];
 
         $file = $request->file('attachment');
-        $allowedExts = array('zip');
+        $allowedExts = ['zip'];
         $rules['attachment'] = [
             function ($attribute, $value, $fail) use ($file, $allowedExts) {
                 $ext = $file->getClientOriginalExtension();
@@ -118,7 +118,7 @@ class SupportTicketController extends Controller
     public function zip_file_upload(Request $request)
     {
         $file = $request->file('file');
-        $allowedExts = array('zip');
+        $allowedExts = ['zip'];
         $rules = [
             'file' => [
                 function ($attribute, $value, $fail) use ($file, $allowedExts) {
@@ -137,7 +137,7 @@ class SupportTicketController extends Controller
 
         $validator = Validator::make($request->all(), $rules, $messages);
         if ($validator->fails()) {
-            return response()->json(array('errors' => $validator->getMessageBag()->toArray()));
+            return response()->json(['errors' => $validator->getMessageBag()->toArray()]);
         }
 
         if ($request->hasFile('file')) {
@@ -161,7 +161,7 @@ class SupportTicketController extends Controller
 
 
         $file = $request->file('file');
-        $allowedExts = array('zip');
+        $allowedExts = ['zip'];
         $rules = [
             'reply' => 'required',
             'file' => [

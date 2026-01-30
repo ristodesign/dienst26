@@ -24,7 +24,7 @@ class ToyyibpayController extends Controller
     $email =  Auth::guard('vendor')->user()->email;
     $phone =  Auth::guard('vendor')->user()->phone;
 
-    $some_data = array(
+    $some_data = [
       'userSecretKey' => $paydata['secret_key'],
       'categoryCode' => $paydata['category_code'],
       'billName' => 'Package Purchase',
@@ -37,7 +37,7 @@ class ToyyibpayController extends Controller
       'billTo' => $name,
       'billEmail' => $email,
       'billPhone' => $phone,
-    );
+    ];
 
     if ($paydata['sandbox_status'] == 1) {
       $host = 'https://dev.toyyibpay.com/'; // for development environment

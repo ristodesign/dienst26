@@ -43,7 +43,7 @@ class IyzicoController extends Controller
     $iyzipay_request->setBasketId($basket_id);
     $iyzipay_request->setPaymentGroup(\Iyzipay\Model\PaymentGroup::PRODUCT);
     $iyzipay_request->setCallbackUrl($_success_url);
-    $iyzipay_request->setEnabledInstallments(array(2, 3, 6, 9));
+    $iyzipay_request->setEnabledInstallments([2, 3, 6, 9]);
 
 
     $buyer = new \Iyzipay\Model\Buyer();
@@ -79,7 +79,7 @@ class IyzicoController extends Controller
     $iyzipay_request->setBillingAddress($billingAddress);
 
     $q_id = uniqid(999, 99999);
-    $basketItems = array();
+    $basketItems = [];
     $firstBasketItem = new \Iyzipay\Model\BasketItem();
     $firstBasketItem->setId($q_id);
     $firstBasketItem->setName("Purchase Id " . $q_id);

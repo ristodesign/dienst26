@@ -70,7 +70,7 @@ class PayPalController extends Controller
 
     $paypalTotal = $currencyInfo->base_currency_text === 'USD' ? $calculatedData['grandTotal'] : $convertedTotal;
 
-    $arrData = array(
+    $arrData = [
       'billing_name' => $request['billing_name'],
       'billing_email' => $request['billing_email'],
       'billing_phone' => $request['billing_phone'],
@@ -101,7 +101,7 @@ class PayPalController extends Controller
       'gatewayType' => 'online',
       'paymentStatus' => 'completed',
       'orderStatus' => 'pending'
-    );
+    ];
 
     $title = 'Purchase Product';
     $notifyURL = route('shop.purchase_product.paypal.notify');
@@ -118,7 +118,7 @@ class PayPalController extends Controller
       ->setPrice($paypalTotal);
     /** unit price **/
     $item_list = new ItemList();
-    $item_list->setItems(array($item_1));
+    $item_list->setItems([$item_1]);
 
     $amount = new Amount();
     $amount->setCurrency('USD')
@@ -138,7 +138,7 @@ class PayPalController extends Controller
     $payment->setIntent('Sale')
       ->setPayer($payer)
       ->setRedirectUrls($redirect_urls)
-      ->setTransactions(array($transaction));
+      ->setTransactions([$transaction]);
 
     try {
       $payment->create($this->api_context);

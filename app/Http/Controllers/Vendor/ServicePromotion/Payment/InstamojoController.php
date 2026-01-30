@@ -43,7 +43,7 @@ class InstamojoController extends Controller
     $vendorPhone = $vendor->phone;
 
     try {
-      $response = $this->api->paymentRequestCreate(array(
+      $response = $this->api->paymentRequestCreate([
         'purpose' => $title,
         'amount' => round($amount, 2),
         'buyer_name' => $vendorName,
@@ -52,7 +52,7 @@ class InstamojoController extends Controller
         'phone' => $vendorPhone,
         'send_sms' => false,
         'redirect_url' => $notifyURL
-      ));
+      ]);
 
       // put some data in session before redirect to instamojo url
       session()->put('paymentFor', $paymentFor);

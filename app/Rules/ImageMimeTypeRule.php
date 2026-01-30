@@ -35,9 +35,9 @@ class ImageMimeTypeRule implements Rule
       URL::current() == Route::is('admin.basic_settings.update_login_image')||
       URL::current() == Route::is('admin.basic_settings.general_settings.update')
     ) {
-      $allowedExtensions = array('jpg', 'jpeg', 'png', 'svg', 'gif');
+      $allowedExtensions = ['jpg', 'jpeg', 'png', 'svg', 'gif'];
     } else {
-      $allowedExtensions = array('jpg', 'jpeg', 'png');
+      $allowedExtensions = ['jpg', 'jpeg', 'png'];
     }
 
     $fileExtension = $image->getClientOriginalExtension();

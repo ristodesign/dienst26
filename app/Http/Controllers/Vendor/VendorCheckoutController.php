@@ -192,7 +192,7 @@ class VendorCheckoutController extends Controller
         $paytab = new PaytabsController();
         return $paytab->paymentProcess($request, $amount, $success_url, $cancel_url);
       } elseif ($request->payment_method == 'Perfect money') {
-        $available_currency = array('USD');
+        $available_currency = ['USD'];
         if (!in_array($bs->base_currency_text, $available_currency)) {
           session()->flash('warning', $bs->base_currency_text . " " . __('is not allowed for Mollie'));
           return back()->withInput($request->all());
@@ -203,7 +203,7 @@ class VendorCheckoutController extends Controller
         $perfectmoney = new PerfectMoneyController();
         return $perfectmoney->paymentProcess($request, $amount, $success_url, $cancel_url);
       } elseif ($request->payment_method == "Midtrans") {
-        $available_currency = array('IDR');
+        $available_currency = ['IDR'];
         if (!in_array($bs->base_currency_text, $available_currency)) {
           session()->flash('warning', $bs->base_currency_text . " " . __('is not allowed for Midtrans'));
           return back()->withInput($request->all());
@@ -215,7 +215,7 @@ class VendorCheckoutController extends Controller
         $payment = new MidtransController();
         return $payment->paymentProcess($request, $amount, $success_url, $cancel_url);
       } elseif ($request->payment_method == 'Phonepe') {
-        $available_currency = array('INR');
+        $available_currency = ['INR'];
         if (!in_array($bs->base_currency_text, $available_currency)) {
           session()->flash('warning', $bs->base_currency_text . ' ' . __('is not allowed for PhonePe') . ".");
           return back()->withInput($request->all());
@@ -226,7 +226,7 @@ class VendorCheckoutController extends Controller
         $payment = new PhonePeController();
         return $payment->paymentProcess($request, $amount, $success_url, $cancel_url);
       } elseif ($request->payment_method == 'Myfatoorah') {
-        $available_currency = array('KWD', 'SAR', 'BHD', 'AED', 'QAR', 'OMR', 'JOD');
+        $available_currency = ['KWD', 'SAR', 'BHD', 'AED', 'QAR', 'OMR', 'JOD'];
         if (!in_array($bs->base_currency_text, $available_currency)) {
           session()->flash('warning', $bs->base_currency_text . ' ' . __('is not allowed for Myfatoorah') . ".");
           return back()->withInput($request->all());
@@ -250,7 +250,7 @@ class VendorCheckoutController extends Controller
         $mercadopagoPayment = new MercadopagoController();
         return $mercadopagoPayment->paymentProcess($request, $amount, $success_url, $cancel_url, $email, $title, $description, $bs);
       } elseif ($request->payment_method == 'Flutterwave') {
-        $available_currency = array(
+        $available_currency = [
           'BIF',
           'CAD',
           'CDF',
@@ -275,7 +275,7 @@ class VendorCheckoutController extends Controller
           'ZMK',
           'ZMW',
           'ZWD'
-        );
+        ];
         if (!in_array($bs->base_currency_text, $available_currency)) {
           session()->flash('warning', $bs->base_currency_text . " is not allowed for Flutterwave.");
           return back()->withInput($request->all());
@@ -289,7 +289,7 @@ class VendorCheckoutController extends Controller
         return $flutterWave->paymentProcess($request, $amount, $email, $item_number, $success_url, $cancel_url, $bs);
       } elseif ($request->payment_method == 'Authorize.net') {
 
-        $available_currency = array('USD', 'CAD', 'CHF', 'DKK', 'EUR', 'GBP', 'NOK', 'PLN', 'SEK', 'AUD', 'NZD');
+        $available_currency = ['USD', 'CAD', 'CHF', 'DKK', 'EUR', 'GBP', 'NOK', 'PLN', 'SEK', 'AUD', 'NZD'];
         if (!in_array($bs->base_currency_text, $available_currency)) {
           session()->flash('warning', $bs->base_currency_text . " is not allowed for Mollie");
           return back()->withInput($request->all());
@@ -301,7 +301,7 @@ class VendorCheckoutController extends Controller
         return $authorizePayment->paymentProcess($request, $amount, $success_url, $cancel_url, $title, $bs);
       } elseif ($request->payment_method == "Iyzico") {
 
-        $available_currency = array('TRY');
+        $available_currency = ['TRY'];
         if (!in_array($bs->base_currency_text, $available_currency)) {
           session()->flash('warning', $bs->base_currency_text . " " . __('is not allowed for Iyzico'));
           return back()->withInput($request->all());
@@ -313,7 +313,7 @@ class VendorCheckoutController extends Controller
         return $payment->paymentProcess($request, $amount, $success_url, $cancel_url, $title, $bs);
       } elseif ($request->payment_method == "Xendit") {
 
-        $available_currency = array('IDR', 'PHP', 'USD', 'SGD', 'MYR');
+        $available_currency = ['IDR', 'PHP', 'USD', 'SGD', 'MYR'];
         if (!in_array($bs->base_currency_text, $available_currency)) {
           session()->flash('warning', $bs->base_currency_text . " " . __('is not allowed for Xendit'));
           return back()->withInput($request->all());
@@ -325,7 +325,7 @@ class VendorCheckoutController extends Controller
         return $payment->paymentProcess($request, $amount, $success_url, $cancel_url, $bs);
       } elseif ($request->payment_method == 'Mollie') {
 
-        $available_currency = array('AED', 'AUD', 'BGN', 'BRL', 'CAD', 'CHF', 'CZK', 'DKK', 'EUR', 'GBP', 'HKD', 'HRK', 'HUF', 'ILS', 'ISK', 'JPY', 'MXN', 'MYR', 'NOK', 'NZD', 'PHP', 'PLN', 'RON', 'RUB', 'SEK', 'SGD', 'THB', 'TWD', 'USD', 'ZAR');
+        $available_currency = ['AED', 'AUD', 'BGN', 'BRL', 'CAD', 'CHF', 'CZK', 'DKK', 'EUR', 'GBP', 'HKD', 'HRK', 'HUF', 'ILS', 'ISK', 'JPY', 'MXN', 'MYR', 'NOK', 'NZD', 'PHP', 'PLN', 'RON', 'RUB', 'SEK', 'SGD', 'THB', 'TWD', 'USD', 'ZAR'];
         if (!in_array($bs->base_currency_text, $available_currency)) {
           session()->flash('warning', $bs->base_currency_text . " is not allowed for Mollie");
           return back()->withInput($request->all());

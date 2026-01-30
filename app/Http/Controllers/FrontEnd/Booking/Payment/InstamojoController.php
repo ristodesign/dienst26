@@ -39,7 +39,7 @@ class InstamojoController extends Controller
     $customerEmail = $arrData['customer_email'];
     $customerPhone = $arrData['customer_phone'];
     try {
-      $response = $this->api->paymentRequestCreate(array(
+      $response = $this->api->paymentRequestCreate([
         'purpose' => $title,
         'amount' => round($amount, 2),
         'buyer_name' => $customerName,
@@ -48,7 +48,7 @@ class InstamojoController extends Controller
         'phone' => $customerPhone,
         'send_sms' => false,
         'redirect_url' => $notifyURL
-      ));
+      ]);
 
       // put some data in session before redirect to instamojo url
       session()->put('paymentFor', $paymentFor);
