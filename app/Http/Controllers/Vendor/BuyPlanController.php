@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Vendor;
 
+use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\VendorPermissionHelper;
 use App\Models\BasicSettings\Basic;
@@ -17,7 +18,7 @@ use Illuminate\Support\Facades\Session;
 
 class BuyPlanController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $membership = Membership::first();
         $abs = Basic::first();

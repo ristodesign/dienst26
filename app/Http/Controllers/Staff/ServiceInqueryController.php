@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Staff;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Language;
 use App\Models\Services\InqueryMessage;
@@ -11,7 +14,7 @@ use Illuminate\Http\Request;
 
 class ServiceInqueryController extends Controller
 {
-    public function message()
+    public function message(): View
     {
         $language = Language::where('code', request()->language)->firstOrFail();
         $language_id = $language->id;
@@ -30,7 +33,7 @@ class ServiceInqueryController extends Controller
         return view('staffs.message', $information);
     }
 
-    public function messageDestroy($id)
+    public function messageDestroy($id): RedirectResponse
     {
         $message = InqueryMessage::find($id);
         $message->delete();
@@ -38,7 +41,7 @@ class ServiceInqueryController extends Controller
         return redirect()->back()->with('success', __('Message delete successfully!'));
     }
 
-    public function bulkDelete(Request $request)
+    public function bulkDelete(Request $request): JsonResponse
     {
         $ids = $request->ids;
 

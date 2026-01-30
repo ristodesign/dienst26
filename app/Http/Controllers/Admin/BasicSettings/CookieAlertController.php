@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin\BasicSettings;
 
+use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\BasicSettings\CookieAlert;
 use App\Models\Language;
@@ -12,7 +14,7 @@ use Purifier;
 
 class CookieAlertController extends Controller
 {
-    public function cookieAlert(Request $request)
+    public function cookieAlert(Request $request): View
     {
         // first, get the language info from db
         $language = Language::query()->where('code', '=', $request->language)->firstOrFail();
@@ -27,7 +29,7 @@ class CookieAlertController extends Controller
         return view('admin.basic-settings.cookie-alert', $information);
     }
 
-    public function updateCookieAlert(Request $request)
+    public function updateCookieAlert(Request $request): JsonResponse
     {
         $rules = [
             'cookie_alert_status' => 'required',

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin\Footer;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Rules\ImageMimeTypeRule;
@@ -11,14 +13,14 @@ use Illuminate\Support\Facades\Validator;
 
 class ImageController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $data = DB::table('basic_settings')->select('footer_logo', 'footer_background_image')->first();
 
         return view('admin.footer.logo', ['data' => $data]);
     }
 
-    public function updateLogo(Request $request)
+    public function updateLogo(Request $request): RedirectResponse
     {
         $data = DB::table('basic_settings')->select('footer_logo')->first();
 

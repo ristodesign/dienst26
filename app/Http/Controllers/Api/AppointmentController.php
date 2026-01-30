@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\MiscellaneousController;
 use App\Models\Admin;
@@ -14,7 +15,7 @@ use Illuminate\Http\Request;
 
 class AppointmentController extends Controller
 {
-    public function appointment(Request $request)
+    public function appointment(Request $request): JsonResponse
     {
         $misc = new MiscellaneousController;
 

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin\Journal;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Http\Requests\Blog\StoreRequest;
@@ -20,7 +23,7 @@ class BlogController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $language = Language::where('code', $request->language)->firstOrFail();
 
@@ -41,7 +44,7 @@ class BlogController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         // get all the languages from db
         $languages = Language::all();
@@ -62,7 +65,7 @@ class BlogController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request): JsonResponse
     {
         // store image in storage
         $imgName = UploadFile::store(public_path('assets/img/blogs/'), $request->file('image'));
@@ -110,7 +113,7 @@ class BlogController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         $blog = Blog::findOrFail($id);
         $information['blog'] = $blog;
@@ -138,7 +141,7 @@ class BlogController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRequest $request, $id)
+    public function update(UpdateRequest $request, int $id): JsonResponse
     {
         $blog = Blog::find($id);
 
@@ -194,7 +197,7 @@ class BlogController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id): RedirectResponse
     {
         $blog = Blog::find($id);
 
@@ -217,7 +220,7 @@ class BlogController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function bulkDestroy(Request $request)
+    public function bulkDestroy(Request $request): JsonResponse
     {
         $ids = $request->ids;
 

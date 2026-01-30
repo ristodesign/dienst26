@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Vendor;
 
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Validator;
 
 class RecivedEmailController extends Controller
 {
-    public function mailToAdmin()
+    public function mailToAdmin(): JsonResponse
     {
         $data = DB::table('vendors')->where('id', Auth::guard('sanctum_vendor')->user()->id)->select('recived_email')->first();
 
@@ -21,7 +22,7 @@ class RecivedEmailController extends Controller
         ]);
     }
 
-    public function updateMailToAdmin(Request $request)
+    public function updateMailToAdmin(Request $request): JsonResponse
     {
         $rule = [
             'to_mail' => 'required',

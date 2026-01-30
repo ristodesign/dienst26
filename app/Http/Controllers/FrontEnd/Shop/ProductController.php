@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\FrontEnd\Shop;
 
+use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\MiscellaneousController;
 use App\Models\BasicSettings\Basic;
@@ -184,7 +187,7 @@ class ProductController extends Controller
         return view('frontend.shop.product-details', $queryResult);
     }
 
-    public function addToCart(Request $request, $id, $quantity)
+    public function addToCart(Request $request, $id, $quantity): JsonResponse
     {
         if ($request->session()->has('productCart')) {
             $productCart = session()->get('productCart');
@@ -251,7 +254,7 @@ class ProductController extends Controller
         ]);
     }
 
-    public function cart(Request $request)
+    public function cart(Request $request): View
     {
         $misc = new MiscellaneousController;
 
@@ -337,7 +340,7 @@ class ProductController extends Controller
         ], 200);
     }
 
-    public function removeProduct(Request $request, $id)
+    public function removeProduct(Request $request, $id): JsonResponse
     {
         // get the products from session
         if ($request->session()->has('productCart')) {
@@ -492,7 +495,7 @@ class ProductController extends Controller
         }
     }
 
-    public function applyCoupon(Request $request)
+    public function applyCoupon(Request $request): JsonResponse
     {
         try {
             $coupon = Coupon::where('code', $request->coupon)->firstOrFail();
@@ -562,7 +565,7 @@ class ProductController extends Controller
         }
     }
 
-    public function checkAttachment($id)
+    public function checkAttachment($id): JsonResponse
     {
         try {
             $offlineGateway = OfflineGateway::findOrFail($id);
@@ -581,7 +584,7 @@ class ProductController extends Controller
         Session::put('shipping_id', $id);
     }
 
-    public function storeReview(Request $request, $id)
+    public function storeReview(Request $request, $id): RedirectResponse
     {
         $rule = ['rating' => 'required'];
 

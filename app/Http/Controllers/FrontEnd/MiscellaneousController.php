@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\FrontEnd;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
+use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use App\Models\Advertisement;
 use App\Models\BasicSettings\Basic;
@@ -36,7 +39,7 @@ class MiscellaneousController extends Controller
         return $language;
     }
 
-    public function storeSubscriber(Request $request)
+    public function storeSubscriber(Request $request): RedirectResponse
     {
         $rules = [
             'email_id' => [
@@ -70,7 +73,7 @@ class MiscellaneousController extends Controller
         return redirect()->back();
     }
 
-    public function changeLanguage(Request $request)
+    public function changeLanguage(Request $request): RedirectResponse
     {
         // put the selected language in session
         $langCode = $request['lang_code'];
@@ -142,7 +145,7 @@ class MiscellaneousController extends Controller
         return $breadcrumb;
     }
 
-    public function countAdView($id)
+    public function countAdView($id): JsonResponse
     {
         try {
             $ad = Advertisement::findOrFail($id);
@@ -157,7 +160,7 @@ class MiscellaneousController extends Controller
         }
     }
 
-    public function serviceUnavailable()
+    public function serviceUnavailable(): View
     {
         $info = Basic::select('maintenance_img', 'maintenance_msg')->first();
 

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin\Footer;
 
+use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Footer\QuickLink;
 use App\Models\Language;
@@ -11,7 +14,7 @@ use Illuminate\Support\Facades\Validator;
 
 class QuickLinkController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         // first, get the language info from db
         $language = Language::query()->where('code', '=', $request->language)->firstOrFail();
@@ -26,7 +29,7 @@ class QuickLinkController extends Controller
         return view('admin.footer.quick-link.index', $information);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $rules = [
             'language_id' => 'required',
@@ -50,7 +53,7 @@ class QuickLinkController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function update(Request $request)
+    public function update(Request $request): JsonResponse
     {
         $rules = [
             'title' => 'required|max:255',
@@ -75,7 +78,7 @@ class QuickLinkController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $quickLink = QuickLink::query()->findOrFail($id);
 

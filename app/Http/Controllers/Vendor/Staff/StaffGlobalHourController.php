@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Vendor\Staff;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Staff\StaffGlobalDay;
 use App\Models\Staff\StaffGlobalHour;
@@ -12,7 +15,7 @@ use Response;
 
 class StaffGlobalHourController extends Controller
 {
-    public function serviceHour(Request $request)
+    public function serviceHour(Request $request): View
     {
         $information['currentDay'] = StaffGlobalDay::where('id', $request->day_id)->select('day')->first();
 
@@ -23,7 +26,7 @@ class StaffGlobalHourController extends Controller
         return view('vendors.staff.global-hour.index', $information);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $current_package = \App\Http\Helpers\VendorPermissionHelper::packagePermission(Auth::guard('vendor')->user()->id);
 
@@ -60,7 +63,7 @@ class StaffGlobalHourController extends Controller
         }
     }
 
-    public function update(Request $request)
+    public function update(Request $request): JsonResponse
     {
         $rules = [
             'start_time' => 'required',
@@ -92,7 +95,7 @@ class StaffGlobalHourController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $service_hour = StaffGlobalHour::query()->find($id);
         $service_hour->delete();
@@ -100,7 +103,7 @@ class StaffGlobalHourController extends Controller
         return redirect()->back()->with('success', __('Time slot deleted successfully!'));
     }
 
-    public function bulkDestroy(Request $request)
+    public function bulkDestroy(Request $request): JsonResponse
     {
         $ids = $request->ids;
 

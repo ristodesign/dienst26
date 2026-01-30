@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Vendor;
 
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\MiscellaneousController;
 use App\Models\Admin\Transaction;
@@ -35,7 +36,7 @@ use Illuminate\Validation\Rule;
 class VendorController extends Controller
 {
     // signup
-    public function signup(Request $request)
+    public function signup(Request $request): JsonResponse
     {
         $misc = new MiscellaneousController;
 
@@ -244,7 +245,7 @@ class VendorController extends Controller
     }
 
     // login
-    public function login(Request $request)
+    public function login(Request $request): JsonResponse
     {
         $misc = new MiscellaneousController;
 
@@ -265,7 +266,7 @@ class VendorController extends Controller
         ]);
     }
 
-    public function authentication(Request $request)
+    public function authentication(Request $request): JsonResponse
     {
         $rules = [
             'username' => 'required',
@@ -327,7 +328,7 @@ class VendorController extends Controller
         ], 200);
     }
 
-    public function dashboard()
+    public function dashboard(): JsonResponse
     {
         $vendor_id = Auth::guard('sanctum_vendor')->user()->id;
         $totalBalance = Vendor::where('id', $vendor_id)->pluck('amount')->first();
@@ -464,7 +465,7 @@ class VendorController extends Controller
         ]);
     }
 
-    public function updated_password(Request $request)
+    public function updated_password(Request $request): JsonResponse
     {
         $rules = [
             'current_password' => 'required',
@@ -517,7 +518,7 @@ class VendorController extends Controller
         ]);
     }
 
-    public function update_profile(Request $request, Vendor $vendor)
+    public function update_profile(Request $request, Vendor $vendor): JsonResponse
     {
         $id = Auth::guard('sanctum_vendor')->user()->id;
         $rules = [
@@ -642,7 +643,7 @@ class VendorController extends Controller
         ]);
     }
 
-    public function logout(Request $request)
+    public function logout(Request $request): JsonResponse
     {
         $request->user()->currentAccessToken()->delete();
 

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Language;
 use App\Models\MenuBuilder;
@@ -10,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class MenuBuilderController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         // first, get the language info from db
         $language = Language::query()->where('code', '=', $request->language)->firstOrFail();
@@ -38,7 +40,7 @@ class MenuBuilderController extends Controller
         return view('admin.menu-builder', $information);
     }
 
-    public function update(Request $request)
+    public function update(Request $request): JsonResponse
     {
         MenuBuilder::query()->updateOrCreate(
             ['language_id' => $request['languageId']],

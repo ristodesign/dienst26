@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Vendor;
 
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Conversation;
 use App\Models\SupportTicket;
@@ -96,7 +97,7 @@ class SupportTicketController extends Controller
     }
 
     // message
-    public function message($id)
+    public function message($id): JsonResponse
     {
         $s_status = SupportTicketStatus::first();
 

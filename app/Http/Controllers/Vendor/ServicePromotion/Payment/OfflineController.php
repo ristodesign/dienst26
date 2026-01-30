@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Vendor\ServicePromotion\Payment;
 
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\ServicePromotion\ServicePromotionController;
 use App\Http\Helpers\UploadFile;
@@ -14,7 +15,7 @@ use Response;
 
 class OfflineController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
         $gatewayId = $request->gateway;
         $offlineGateway = OfflineGateway::query()->findOrFail($gatewayId);

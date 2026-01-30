@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin\Shop;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Http\Requests\Shop\ProductStoreRequest;
@@ -20,7 +23,7 @@ use Mews\Purifier\Facades\Purifier;
 
 class ProductController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $language = Language::where('code', $request->language)->firstOrFail();
 
@@ -41,7 +44,7 @@ class ProductController extends Controller
         return view('admin.shop.product.index', $information);
     }
 
-    public function productType()
+    public function productType(): View
     {
         $information['digitalProductCount'] = Product::where('product_type', 'digital')->count();
 
@@ -69,7 +72,7 @@ class ProductController extends Controller
         );
     }
 
-    public function uploadImage(Request $request)
+    public function uploadImage(Request $request): JsonResponse
     {
         $rules = [
             'slider_image' => new ImageMimeTypeRule,
@@ -87,7 +90,7 @@ class ProductController extends Controller
         return Response::json(['uniqueName' => $imageName], 200);
     }
 
-    public function removeImage(Request $request)
+    public function removeImage(Request $request): JsonResponse
     {
         if (empty($request['imageName'])) {
             return Response::json(['error' => __('The request has no file name.')], 400);
@@ -104,7 +107,7 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ProductStoreRequest $request)
+    public function store(ProductStoreRequest $request): JsonResponse
     {
         // store featured image in storage
         $featuredImgName = UploadFile::store(public_path('assets/img/products/featured-images/'), $request->file('featured_image'));
@@ -155,7 +158,7 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function updateFeaturedStatus(Request $request, $id)
+    public function updateFeaturedStatus(Request $request, int $id): RedirectResponse
     {
         $product = Product::find($id);
 
@@ -182,7 +185,7 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id, $type)
+    public function edit(int $id, $type): View
     {
         $information['productType'] = $type;
 
@@ -213,7 +216,7 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function detachImage(Request $request)
+    public function detachImage(Request $request): JsonResponse
     {
         $id = $request['id'];
         $key = $request['key'];
@@ -250,7 +253,7 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ProductUpdateRequest $request, $id)
+    public function update(ProductUpdateRequest $request, int $id): JsonResponse
     {
         $product = Product::find($id);
 
@@ -328,7 +331,7 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id): RedirectResponse
     {
         $product = Product::find($id);
 
@@ -398,7 +401,7 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function bulkDestroy(Request $request)
+    public function bulkDestroy(Request $request): JsonResponse
     {
         $ids = $request->ids;
 

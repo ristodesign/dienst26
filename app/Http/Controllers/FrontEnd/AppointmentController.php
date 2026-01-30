@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\FrontEnd;
 
+use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\Services\ServiceBooking;
@@ -12,7 +13,7 @@ use Illuminate\Http\Request;
 
 class AppointmentController extends Controller
 {
-    public function appointment(Request $request)
+    public function appointment(Request $request): View
     {
         $misc = new MiscellaneousController;
 

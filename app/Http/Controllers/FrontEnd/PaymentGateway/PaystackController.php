@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\FrontEnd\PaymentGateway;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Shop\PurchaseProcessController;
 use App\Models\PaymentGateway\OnlineGateway;
@@ -21,7 +22,7 @@ class PaystackController extends Controller
         $this->api_key = $paystackData['key'];
     }
 
-    public function index(Request $request, $paymentFor)
+    public function index(Request $request, $paymentFor): RedirectResponse
     {
         // get the products from session
         if ($request->session()->has('productCart')) {
@@ -122,7 +123,7 @@ class PaystackController extends Controller
         }
     }
 
-    public function notify(Request $request)
+    public function notify(Request $request): RedirectResponse
     {
         // get the information from session
         $paymentPurpose = $request->session()->get('paymentFor');

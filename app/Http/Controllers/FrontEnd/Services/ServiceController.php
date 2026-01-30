@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\FrontEnd\Services;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\MiscellaneousController;
 use App\Http\Controllers\StaffDistanceController;
@@ -901,7 +904,7 @@ class ServiceController extends Controller
     /**
      * show service hour
      */
-    public function staffHour(Request $request)
+    public function staffHour(Request $request): View
     {
         $staff = Staff::find($request->staff_id);
         $information['staff'] = $staff;
@@ -1018,7 +1021,7 @@ class ServiceController extends Controller
     }
 
     // curstomer login
-    public function login(Request $request)
+    public function login(Request $request): JsonResponse
     {
         $rules = [
             'username' => 'required',
@@ -1132,7 +1135,7 @@ class ServiceController extends Controller
     }
 
     // customer message
-    public function message(Request $request)
+    public function message(Request $request): RedirectResponse
     {
         try {
             $rules = [
@@ -1228,7 +1231,7 @@ class ServiceController extends Controller
     }
 
     // review store
-    public function storeReview(Request $request, $id)
+    public function storeReview(Request $request, $id): RedirectResponse
     {
         $rule = ['rating' => 'required'];
 
@@ -1289,7 +1292,7 @@ class ServiceController extends Controller
     }
 
     // payment success message
-    public function paymentSuccess($id)
+    public function paymentSuccess($id): View
     {
         $misc = new MiscellaneousController;
         $language = $misc->getLanguage();

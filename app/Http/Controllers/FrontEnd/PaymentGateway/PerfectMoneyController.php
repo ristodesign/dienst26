@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\FrontEnd\PaymentGateway;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Shop\PurchaseProcessController;
 use App\Models\BasicSettings\Basic;
@@ -12,7 +14,7 @@ use Illuminate\Support\Facades\Session;
 
 class PerfectMoneyController extends Controller
 {
-    public function index($arrData, $productList)
+    public function index($arrData, $productList): View
     {
         Session::put('arrData', $arrData);
         $success_url = route('frontend.service_booking.perfectmoney_notify');
@@ -47,7 +49,7 @@ class PerfectMoneyController extends Controller
         return view('frontend.payment.perfect-money')->with('data', $data);
     }
 
-    public function notify(Request $request)
+    public function notify(Request $request): RedirectResponse
     {
         $arrData = Session::get('arrData');
         $productList = Session::get('productList');

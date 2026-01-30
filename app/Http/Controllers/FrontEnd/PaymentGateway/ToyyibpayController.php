@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\FrontEnd\PaymentGateway;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Shop\PurchaseProcessController;
 use App\Models\PaymentGateway\OnlineGateway;
@@ -10,7 +11,7 @@ use Illuminate\Http\Request;
 
 class ToyyibpayController extends Controller
 {
-    public function index($arrData, $productList)
+    public function index($arrData, $productList): RedirectResponse
     {
         $info = OnlineGateway::where('keyword', 'toyyibpay')->first();
         $paydata = json_decode($info->information, true);
@@ -62,7 +63,7 @@ class ToyyibpayController extends Controller
         }
     }
 
-    public function notify(Request $request)
+    public function notify(Request $request): RedirectResponse
     {
         $arrData = session()->get('arrData');
         $productList = session()->get('productList');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\FrontEnd\PaymentGateway;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Shop\PurchaseProcessController;
 use App\Models\Shop\Product;
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Validator;
 
 class StripeController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): RedirectResponse
     {
         // card validation start
         $rules = [

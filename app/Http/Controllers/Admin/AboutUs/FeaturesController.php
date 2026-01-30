@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin\AboutUs;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Features;
 use Illuminate\Http\Request;
@@ -10,7 +12,7 @@ use Validator;
 
 class FeaturesController extends Controller
 {
-    public function storeFeatures(Request $request)
+    public function storeFeatures(Request $request): JsonResponse
     {
         $rules = [
             'language_id' => 'required',
@@ -35,7 +37,7 @@ class FeaturesController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function updateFeatures(Request $request)
+    public function updateFeatures(Request $request): JsonResponse
     {
         $rules = [
             'title' => 'required|max:255',
@@ -59,7 +61,7 @@ class FeaturesController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $Features = Features::query()->find($id);
         $Features->delete();
@@ -67,7 +69,7 @@ class FeaturesController extends Controller
         return redirect()->back()->with('success', __('Features deleted successfully!'));
     }
 
-    public function bulkDestroy(Request $request)
+    public function bulkDestroy(Request $request): JsonResponse
     {
         $ids = $request['ids'];
 

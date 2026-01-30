@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Models\Admin\MobileSection;
@@ -15,13 +18,13 @@ use Illuminate\Support\Facades\Validator;
 class MobileInterfaceController extends Controller
 {
     // mobile interface main page
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         return view('admin.mobile-interface.index');
     }
 
     // home page content view and update function
-    public function content(Request $request)
+    public function content(Request $request): View
     {
         $Language = Language::where('code', $request->language)->firstOrFail();
 
@@ -30,7 +33,7 @@ class MobileInterfaceController extends Controller
         return view('admin.mobile-interface.content', $data);
     }
 
-    public function update(Request $request)
+    public function update(Request $request): JsonResponse
     {
         $rules = [
             'hero_section_title' => 'max:255',
@@ -89,7 +92,7 @@ class MobileInterfaceController extends Controller
     }
 
     // general setting view and update function
-    public function setting(Request $request)
+    public function setting(Request $request): View
     {
         $data['data'] = DB::table('basic_settings')->select('mobile_favicon', 'mobile_app_logo')
             ->first();
@@ -98,7 +101,7 @@ class MobileInterfaceController extends Controller
         return view('admin.mobile-interface.general-settings', $data);
     }
 
-    public function settingUpdate(Request $request)
+    public function settingUpdate(Request $request): RedirectResponse
     {
         $bs = DB::table('basic_settings')->select('mobile_favicon', 'mobile_app_logo')->first();
 
@@ -150,7 +153,7 @@ class MobileInterfaceController extends Controller
     }
 
     // payment gateways view and update function
-    public function paymentGateways()
+    public function paymentGateways(): View
     {
         $data['data'] = include public_path('config.php');
 
@@ -185,7 +188,7 @@ class MobileInterfaceController extends Controller
     }
 
     // plugins view function
-    public function plugins()
+    public function plugins(): View
     {
         $data = DB::table('basic_settings')->select('firebase_admin_json')
             ->first();

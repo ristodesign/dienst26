@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\FrontEnd\PaymentGateway;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Shop\PurchaseProcessController;
 use App\Models\PaymentGateway\OnlineGateway;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Http;
 
 class XenditController extends Controller
 {
-    public function index($arrData, $productList)
+    public function index($arrData, $productList): RedirectResponse
     {
         $paymentMethod = OnlineGateway::where('keyword', 'xendit')->first();
         $paydata = json_decode($paymentMethod->information, true);
@@ -46,7 +47,7 @@ class XenditController extends Controller
         }
     }
 
-    public function notify(Request $request)
+    public function notify(Request $request): RedirectResponse
     {
         $arrData = session()->get('arrData');
         $xendit_id = session()->get('xendit_id');

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin\BasicSettings;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -9,21 +11,21 @@ use Illuminate\Support\Str;
 
 class WhatsappManagerController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $templates = DB::table('whatsapp_templates')->get();
 
         return view('admin.basic-settings.whatsapp.index', compact('templates'));
     }
 
-    public function edit($id)
+    public function edit($id): View
     {
         $template = DB::table('whatsapp_templates')->where('id', $id)->first();
 
         return view('admin.basic-settings.whatsapp.edit', compact('template'));
     }
 
-    public function update($id, Request $request)
+    public function update($id, Request $request): RedirectResponse
     {
         $request->validate([
             'name' => 'required',

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Language;
 use App\Models\Services\InqueryMessage;
@@ -47,7 +49,7 @@ class ServiceInqController extends Controller
         return view('admin.email.message', $information);
     }
 
-    public function messageDestroy($id)
+    public function messageDestroy($id): RedirectResponse
     {
         $message = InqueryMessage::find($id);
         $message->delete();
@@ -55,7 +57,7 @@ class ServiceInqController extends Controller
         return redirect()->back()->with('success', 'Message delete successfully!');
     }
 
-    public function bulkDelete(Request $request)
+    public function bulkDelete(Request $request): JsonResponse
     {
         $ids = $request->ids;
 

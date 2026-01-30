@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin\HomePage;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Models\BasicSettings\Basic;
@@ -15,7 +18,7 @@ use Purifier;
 
 class WorkProcessController extends Controller
 {
-    public function sectionInfo(Request $request)
+    public function sectionInfo(Request $request): View
     {
         $language = Language::query()->where('code', '=', $request->language)->firstOrFail();
         $information['language'] = $language;
@@ -27,7 +30,7 @@ class WorkProcessController extends Controller
         return view('admin.home-page.work-process-section.index', $information);
     }
 
-    public function storeWorkProcess(Request $request)
+    public function storeWorkProcess(Request $request): JsonResponse
     {
         $themeVersion = Basic::query()->value('theme_version');
 
@@ -66,7 +69,7 @@ class WorkProcessController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function updateWorkProcess(Request $request)
+    public function updateWorkProcess(Request $request): JsonResponse
     {
         $themeVersion = Basic::query()->pluck('theme_version')->first();
         if ($themeVersion != 2) {
@@ -113,7 +116,7 @@ class WorkProcessController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function destroyWorkProcess($id)
+    public function destroyWorkProcess($id): RedirectResponse
     {
         $workProcess = WorkProcess::query()->find($id);
         @unlink(public_path('assets/img/workprocess/').$workProcess->image);
@@ -122,7 +125,7 @@ class WorkProcessController extends Controller
         return redirect()->back()->with('success', __('Work process deleted successfully!'));
     }
 
-    public function bulkDestroyWorkProcess(Request $request)
+    public function bulkDestroyWorkProcess(Request $request): JsonResponse
     {
         $ids = $request['ids'];
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend\Booking\Payment;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Booking\ServicePaymentController;
 use App\Http\Controllers\WhatsAppController;
@@ -25,7 +26,7 @@ class AuthorizenetController extends Controller
         }
     }
 
-    public function index($arrData, $paymentFor, $cancel_url, $amount)
+    public function index($arrData, $paymentFor, $cancel_url, $amount): RedirectResponse
     {
         $customerpaid = intval($amount);
         // put some data in session before redirect to paytm url

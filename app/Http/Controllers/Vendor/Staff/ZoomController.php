@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Vendor\Staff;
 
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Services\ServiceContent;
 use App\Models\VendorPlugins\VendorPlugin;
@@ -15,7 +16,7 @@ use Session;
 
 class ZoomController extends Controller
 {
-    public function createMeeting($bookInfo)
+    public function createMeeting($bookInfo): JsonResponse
     {
         try {
             if ($bookInfo['vendor_id'] != 0) {

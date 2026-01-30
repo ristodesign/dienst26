@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\FrontEnd\PaymentGateway;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Shop\PurchaseProcessController;
 use App\Models\Shop\Product;
@@ -10,7 +11,7 @@ use Mollie\Laravel\Facades\Mollie;
 
 class MollieController extends Controller
 {
-    public function index($arrData, $paymentFor)
+    public function index($arrData, $paymentFor): RedirectResponse
     {
         $title = 'Purchase Product';
         $notifyURL = route('shop.purchase_product.mollie.notify');
@@ -35,7 +36,7 @@ class MollieController extends Controller
         return redirect($payment->getCheckoutUrl(), 303);
     }
 
-    public function notify(Request $request)
+    public function notify(Request $request): RedirectResponse
     {
         $productList = session()->get('productCart');
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Withdraw;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\BasicMailer;
 use App\Models\Admin\Transaction;
@@ -29,7 +30,7 @@ class WithdrawRequestController extends Controller
     }
 
     // payment approve
-    public function approve($id)
+    public function approve($id): RedirectResponse
     {
         $withdraw = Withdraw::where('id', $id)->first();
         // update transcation
@@ -90,7 +91,7 @@ class WithdrawRequestController extends Controller
     }
 
     // payment decline
-    public function decline($id)
+    public function decline($id): RedirectResponse
     {
         $withdraw = Withdraw::where('id', $id)->first();
 
@@ -161,7 +162,7 @@ class WithdrawRequestController extends Controller
     }
 
     // payment request delete
-    public function delete(Request $request)
+    public function delete(Request $request): RedirectResponse
     {
         $withdraw = Withdraw::where('id', $request->id)->first();
 

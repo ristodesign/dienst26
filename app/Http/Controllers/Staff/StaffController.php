@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Staff;
 
+use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\MiscellaneousController;
 use App\Http\Helpers\UploadFile;
@@ -22,7 +25,7 @@ use Validator;
 
 class StaffController extends Controller
 {
-    public function login()
+    public function login(): View
     {
         $misc = new MiscellaneousController;
 
@@ -38,7 +41,7 @@ class StaffController extends Controller
         return view('staffs.auth.login', $queryResult);
     }
 
-    public function loginSubmit(Request $request)
+    public function loginSubmit(Request $request): RedirectResponse
     {
         $rules = [
             'username' => 'required',
@@ -76,7 +79,7 @@ class StaffController extends Controller
         }
     }
 
-    public function index()
+    public function index(): View
     {
         $language = Language::where('is_default', 1)->first();
         $language_id = $language->id;
@@ -109,7 +112,7 @@ class StaffController extends Controller
     }
 
     // edit_profile
-    public function edit_profile()
+    public function edit_profile(): View
     {
         $misc = new MiscellaneousController;
 
@@ -222,13 +225,13 @@ class StaffController extends Controller
         return 'success';
     }
 
-    public function change_password()
+    public function change_password(): View
     {
         return view('staffs.auth.change-password');
     }
 
     // update_password
-    public function updated_password(Request $request)
+    public function updated_password(Request $request): JsonResponse
     {
         $rules = [
             'current_password' => [
@@ -263,14 +266,14 @@ class StaffController extends Controller
         return response()->json(['status' => 'success'], 200);
     }
 
-    public function changeTheme(Request $request)
+    public function changeTheme(Request $request): RedirectResponse
     {
         Session::put('staff_theme_version', $request->staff_theme_version);
 
         return redirect()->back();
     }
 
-    public function logout(Request $request)
+    public function logout(Request $request): RedirectResponse
     {
         Auth::guard('staff')->logout();
         Session::forget('secret_login');
@@ -278,7 +281,7 @@ class StaffController extends Controller
         return redirect()->route('staff.login');
     }
 
-    public function languageChange($lang)
+    public function languageChange($lang): RedirectResponse
     {
         session()->put('staff_lang', 'admin_'.$lang);
         app()->setLocale('admin_'.$lang);

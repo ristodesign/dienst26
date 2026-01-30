@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Http\Requests\Advertisement\StoreRequest;
@@ -13,14 +16,14 @@ use Illuminate\Support\Facades\Validator;
 
 class AdvertisementController extends Controller
 {
-    public function advertiseSettings()
+    public function advertiseSettings(): View
     {
         $data = DB::table('basic_settings')->select('google_adsense_publisher_id')->first();
 
         return view('admin.advertisement.settings', ['data' => $data]);
     }
 
-    public function updateAdvertiseSettings(Request $request)
+    public function updateAdvertiseSettings(Request $request): RedirectResponse
     {
         $rule = [
             'google_adsense_publisher_id' => 'required',
@@ -42,14 +45,14 @@ class AdvertisementController extends Controller
         return redirect()->back();
     }
 
-    public function index()
+    public function index(): View
     {
         $ads = Advertisement::orderBy('id', 'desc')->get();
 
         return view('admin.advertisement.index', compact('ads'));
     }
 
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request): JsonResponse
     {
         if ($request->hasFile('image')) {
             $imageName = UploadFile::store(public_path('assets/img/advertisements/'), $request->file('image'));
@@ -64,7 +67,7 @@ class AdvertisementController extends Controller
         return response()->json(['status' => 'success'], 200);
     }
 
-    public function update(UpdateRequest $request)
+    public function update(UpdateRequest $request): JsonResponse
     {
         $ad = Advertisement::find($request->id);
 
@@ -95,7 +98,7 @@ class AdvertisementController extends Controller
         return $imgFile;
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $ad = Advertisement::find($id);
 
@@ -108,7 +111,7 @@ class AdvertisementController extends Controller
         return redirect()->back()->with('success', __('Advertisement deleted successfully!'));
     }
 
-    public function bulkDestroy(Request $request)
+    public function bulkDestroy(Request $request): JsonResponse
     {
         $ids = $request->ids;
 

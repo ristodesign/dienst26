@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Payment;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\VendorCheckoutController;
 use App\Http\Helpers\MegaMailer;
@@ -112,7 +113,7 @@ class PaypalController extends Controller
         return redirect()->back()->with('error', 'Unknown error occurred');
     }
 
-    public function successPayment(Request $request)
+    public function successPayment(Request $request): RedirectResponse
     {
 
         $requestData = Session::get('request');
@@ -233,7 +234,7 @@ class PaypalController extends Controller
         return redirect($cancel_url);
     }
 
-    public function cancelPayment()
+    public function cancelPayment(): RedirectResponse
     {
         $requestData = Session::get('request');
         $paymentFor = Session::get('paymentFor');

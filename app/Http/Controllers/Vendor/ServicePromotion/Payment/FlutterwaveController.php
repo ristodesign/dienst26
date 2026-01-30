@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Vendor\ServicePromotion\Payment;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\ServicePromotion\ServicePromotionController;
 use App\Models\PaymentGateway\OnlineGateway;
@@ -25,7 +27,7 @@ class FlutterwaveController extends Controller
         $this->secret_key = $flutterwaveData['secret_key'];
     }
 
-    public function index($arrData, $paymentFor, $success_url, $amount)
+    public function index($arrData, $paymentFor, $success_url, $amount): JsonResponse
     {
         $title = $paymentFor;
         $notifyURL = route('vendor.featured.flutterwave.notify');
@@ -97,7 +99,7 @@ class FlutterwaveController extends Controller
         }
     }
 
-    public function notify(Request $request)
+    public function notify(Request $request): RedirectResponse
     {
         // get the information from session
 

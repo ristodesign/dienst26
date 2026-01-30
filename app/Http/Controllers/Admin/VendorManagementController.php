@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\MegaMailer;
 use App\Http\Helpers\VendorPermissionHelper;
@@ -46,7 +49,7 @@ use Illuminate\Validation\Rule;
 
 class VendorManagementController extends Controller
 {
-    public function settings()
+    public function settings(): View
     {
         $setting = DB::table('basic_settings')->where('uniqid', 12345)->select('vendor_email_verification', 'vendor_admin_approval', 'admin_approval_notice')->first();
 
@@ -101,7 +104,7 @@ class VendorManagementController extends Controller
     }
 
     // add
-    public function add(Request $request)
+    public function add(Request $request): View
     {
         // first, get the language info from db
         $language = Language::query()->where('code', '=', $request->language)->first();
@@ -111,7 +114,7 @@ class VendorManagementController extends Controller
         return view('admin.end-user.vendor.create', $information);
     }
 
-    public function create(Request $request)
+    public function create(Request $request): JsonResponse
     {
         $admin = Admin::select('username')->first();
         $admin_username = $admin->username;
@@ -279,7 +282,7 @@ class VendorManagementController extends Controller
         return view('admin.end-user.vendor.details', $information);
     }
 
-    public function updateAccountStatus(Request $request, $id)
+    public function updateAccountStatus(Request $request, $id): RedirectResponse
     {
 
         $user = Vendor::find($id);
@@ -293,7 +296,7 @@ class VendorManagementController extends Controller
         return redirect()->back();
     }
 
-    public function updateFeaturedStatus(Request $request, $id)
+    public function updateFeaturedStatus(Request $request, $id): RedirectResponse
     {
         $vendor = Vendor::find($id);
 
@@ -308,7 +311,7 @@ class VendorManagementController extends Controller
         return redirect()->back();
     }
 
-    public function updateEmailStatus(Request $request, $id)
+    public function updateEmailStatus(Request $request, $id): RedirectResponse
     {
         $vendor = Vendor::find($id);
         if ($request->email_status == 1) {
@@ -321,14 +324,14 @@ class VendorManagementController extends Controller
         return redirect()->back();
     }
 
-    public function changePassword($id)
+    public function changePassword($id): View
     {
         $userInfo = Vendor::findOrFail($id);
 
         return view('admin.end-user.vendor.change-password', compact('userInfo'));
     }
 
-    public function updatePassword(Request $request, $id)
+    public function updatePassword(Request $request, $id): JsonResponse
     {
         $rules = [
             'new_password' => 'required|confirmed',
@@ -358,7 +361,7 @@ class VendorManagementController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function edit($id)
+    public function edit($id): View
     {
         $mapStatus = Basic::pluck('google_map_status')->first();
         if ($mapStatus == 1) {
@@ -373,7 +376,7 @@ class VendorManagementController extends Controller
     }
 
     // update
-    public function update(Request $request, $id, Vendor $vendor)
+    public function update(Request $request, $id, Vendor $vendor): JsonResponse
     {
         $rules = [
 
@@ -498,7 +501,7 @@ class VendorManagementController extends Controller
     /**
      * balance section
      */
-    public function balance($id)
+    public function balance($id): View
     {
         $vendor = Vendor::where('id', $id)->firstOrFail();
         $information['vendor'] = $vendor;
@@ -859,7 +862,7 @@ class VendorManagementController extends Controller
     }
 
     // secrtet login
-    public function secret_login($id)
+    public function secret_login($id): RedirectResponse
     {
         Session::put('secret_login', 1);
         $vendor = Vendor::where('id', $id)->first();
@@ -869,7 +872,7 @@ class VendorManagementController extends Controller
     }
 
     // update_vendor_balance
-    public function update_vendor_balance(Request $request, $id)
+    public function update_vendor_balance(Request $request, $id): JsonResponse
     {
         $rules = [
             'amount_status' => 'required',
@@ -929,7 +932,7 @@ class VendorManagementController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $vendor = Vendor::findOrFail($id);
         /**
@@ -1062,7 +1065,7 @@ class VendorManagementController extends Controller
         return redirect()->back()->with('success', __('Vendor info deleted successfully!'));
     }
 
-    public function bulkDestroy(Request $request)
+    public function bulkDestroy(Request $request): JsonResponse
     {
         $ids = $request->ids;
 

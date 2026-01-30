@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\FrontEnd\Booking\Payment;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Booking\ServicePaymentController;
 use App\Http\Controllers\WhatsAppController;
@@ -108,7 +109,7 @@ class IyzicoController extends Controller
         }
     }
 
-    public function notify()
+    public function notify(): RedirectResponse
     {
         $arrData = session()->get('arrData');
         $conversation_id = session()->get('conversation_id');

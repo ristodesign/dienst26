@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\FrontEnd\Booking\Payment;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Booking\ServicePaymentController;
 use App\Http\Controllers\WhatsAppController;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\Session;
 
 class StripeController extends Controller
 {
-    public function index($arrData, $paymentFor, $cancel_url, $amount)
+    public function index($arrData, $paymentFor, $cancel_url, $amount): RedirectResponse
     {
         // card validation end
         $customerpaid = intval($amount);

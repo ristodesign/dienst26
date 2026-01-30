@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\BasicMailer;
 use App\Http\Helpers\UploadFile;
@@ -114,7 +117,7 @@ class AdminServiceController extends Controller
         return $fileName;
     }
 
-    public function featured(Request $request)
+    public function featured(Request $request): RedirectResponse
     {
         $currencyInfo = $this->getCurrencyInfo();
         $charge = FeaturedServiceCharge::where('id', $request->promotion_id)->firstOrFail();
@@ -188,7 +191,7 @@ class AdminServiceController extends Controller
         return redirect()->back();
     }
 
-    public function vendorSelect()
+    public function vendorSelect(): View
     {
         $information['vendors'] = Vendor::join('memberships', 'vendors.id', '=', 'memberships.vendor_id')
             ->where([
@@ -266,7 +269,7 @@ class AdminServiceController extends Controller
     }
 
     // delete slider image after reload
-    public function deleteSliderImage()
+    public function deleteSliderImage(): JsonResponse
     {
         try {
             $images = ServiceImage::all();
@@ -367,7 +370,7 @@ class AdminServiceController extends Controller
         return 'success';
     }
 
-    public function edit($id)
+    public function edit($id): View
     {
         $mapStatus = Basic::pluck('google_map_status')->first();
         $defaultLang = Language::where('is_default', 1)->first();
@@ -469,7 +472,7 @@ class AdminServiceController extends Controller
         return 'success';
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $service = Services::find($id);
         $hasService = checkService($id);
@@ -537,7 +540,7 @@ class AdminServiceController extends Controller
         }
     }
 
-    public function bulkDestroy(Request $request)
+    public function bulkDestroy(Request $request): JsonResponse
     {
         $ids = $request->ids;
 
@@ -624,24 +627,24 @@ class AdminServiceController extends Controller
     }
 
     // onlineSuccess
-    public function onlineSuccess()
+    public function onlineSuccess(): View
     {
         return view('vendors.services.online-success');
     }
 
-    public function offlineSuccess()
+    public function offlineSuccess(): View
     {
         return view('vendors.services.offline-success');
     }
 
-    public function setting()
+    public function setting(): View
     {
         $info['info'] = DB::table('basic_settings')->select('service_view')->first();
 
         return view('admin.services.setting', $info);
     }
 
-    public function updateSettings(Request $request)
+    public function updateSettings(Request $request): RedirectResponse
     {
         $rules = [
             'service_view' => 'required',
@@ -664,7 +667,7 @@ class AdminServiceController extends Controller
         return redirect()->back();
     }
 
-    public function getSucategory(Request $request, $categoryId)
+    public function getSucategory(Request $request, $categoryId): JsonResponse
     {
         $categories = ServiceSubCategory::where('category_id', $categoryId)->get();
 

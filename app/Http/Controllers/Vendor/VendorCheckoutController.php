@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Vendor;
 
+use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Payment\AuthorizeController;
 use App\Http\Controllers\Payment\FlutterWaveController;
@@ -452,12 +454,12 @@ class VendorCheckoutController extends Controller
     }
 
     // onlineSuccess
-    public function onlineSuccess()
+    public function onlineSuccess(): View
     {
         return view('vendors.success');
     }
 
-    public function paymentInstruction(Request $request)
+    public function paymentInstruction(Request $request): JsonResponse
     {
         $offline = OfflineGateway::where('name', $request->name)
             ->select('short_description', 'instructions', 'has_attachment')

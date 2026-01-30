@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin\HomePage;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddtionalSectionStore;
 use App\Http\Requests\AddtionalSectionUpdate;
@@ -15,7 +18,7 @@ use Purifier;
 
 class AdditionalSectionController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $lang = Language::where('code', $request->language)->first();
         $information['langs'] = Language::all();
@@ -30,7 +33,7 @@ class AdditionalSectionController extends Controller
         return view('admin.home-page.custom-section.index', $information);
     }
 
-    public function create(Request $request)
+    public function create(Request $request): View
     {
         $information['themeVersion'] = Basic::query()->pluck('theme_version')->first();
         $information['languages'] = Language::all();
@@ -38,7 +41,7 @@ class AdditionalSectionController extends Controller
         return view('admin.home-page.custom-section.create', $information);
     }
 
-    public function store(AddtionalSectionStore $request)
+    public function store(AddtionalSectionStore $request): JsonResponse
     {
         $languages = Language::all();
         $section = new CustomSection;
@@ -75,7 +78,7 @@ class AdditionalSectionController extends Controller
         return response()->json(['status' => 'success'], 200);
     }
 
-    public function edit($id, Request $request)
+    public function edit($id, Request $request): View
     {
         $information['languages'] = Language::all();
         $information['themeVersion'] = Basic::query()->pluck('theme_version')->first();
@@ -84,7 +87,7 @@ class AdditionalSectionController extends Controller
         return view('admin.home-page.custom-section.edit', $information);
     }
 
-    public function update($id, AddtionalSectionUpdate $request)
+    public function update($id, AddtionalSectionUpdate $request): JsonResponse
     {
         $section = CustomSection::findOrFail($id);
         $section->order = $request->order;
@@ -121,7 +124,7 @@ class AdditionalSectionController extends Controller
         return response()->json(['status' => 'success'], 200);
     }
 
-    public function delete($id)
+    public function delete($id): RedirectResponse
     {
         $section = CustomSection::findOrFail($id);
         $contents = CustomSectionContent::where('custom_section_id', $id)->get();
@@ -133,7 +136,7 @@ class AdditionalSectionController extends Controller
         return redirect()->back()->with('success', __('Section delete successfully!'));
     }
 
-    public function bulkdelete(Request $request)
+    public function bulkdelete(Request $request): JsonResponse
     {
         $ids = $request->ids;
 

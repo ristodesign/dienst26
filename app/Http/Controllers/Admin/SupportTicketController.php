@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Conversation;
 use App\Models\SupportTicket;
@@ -53,7 +55,7 @@ class SupportTicketController extends Controller
     }
 
     // message
-    public function message($id)
+    public function message($id): View
     {
         $role_id = Auth::guard('admin')->user()->role_id;
         if (empty($role_id)) {
@@ -168,7 +170,7 @@ class SupportTicketController extends Controller
     }
 
     // setting
-    public function setting()
+    public function setting(): View
     {
         $content = SupportTicketStatus::where('id', 1)->first();
 
@@ -228,7 +230,7 @@ class SupportTicketController extends Controller
         return back();
     }
 
-    public function bulk_delete(Request $request)
+    public function bulk_delete(Request $request): JsonResponse
     {
         $ids = $request->ids;
         foreach ($ids as $id) {

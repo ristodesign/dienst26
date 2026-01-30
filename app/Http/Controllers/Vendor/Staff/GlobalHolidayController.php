@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Vendor\Staff;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Staff\StaffGlobalHoliday;
 use Auth;
@@ -11,14 +14,14 @@ use Validator;
 
 class GlobalHolidayController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $globalHoliday = StaffGlobalHoliday::where('vendor_id', Auth::guard('vendor')->user()->id)->get();
 
         return view('vendors.staff.global-holiday.index', compact('globalHoliday'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $current_package = \App\Http\Helpers\VendorPermissionHelper::packagePermission(Auth::guard('vendor')->user()->id);
 
@@ -60,7 +63,7 @@ class GlobalHolidayController extends Controller
         }
     }
 
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request, $id): RedirectResponse
     {
 
         $UserStaffHoliday = StaffGlobalHoliday::find($id);
@@ -70,7 +73,7 @@ class GlobalHolidayController extends Controller
         return redirect()->back()->with('success', __('Holiday delete successfully!'));
     }
 
-    public function blukDestroy(Request $request)
+    public function blukDestroy(Request $request): JsonResponse
     {
         $ids = $request->ids;
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Package\PackageStoreRequest;
 use App\Http\Requests\Package\PackageUpdateRequest;
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Session;
 
 class PackageController extends Controller
 {
-    public function settings()
+    public function settings(): View
     {
         $data['abe'] = Basic::first();
 
@@ -90,7 +91,7 @@ class PackageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id)
     {
         //
     }
@@ -100,7 +101,7 @@ class PackageController extends Controller
      *
      * @param  int  $id
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         if (session()->has('lang')) {
             $currentLang = Language::where('code', session()->get('lang'))->first();

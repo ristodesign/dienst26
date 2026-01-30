@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\FrontEnd\PaymentGateway;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Shop\PurchaseProcessController;
 use App\Models\BasicSettings\Basic;
@@ -136,7 +137,7 @@ class RazorpayController extends Controller
         return view('frontend.payment.razorpay', compact('jsonData', 'notifyURL'));
     }
 
-    public function notify(Request $request)
+    public function notify(Request $request): RedirectResponse
     {
         // get the information from session
         $paymentPurpose = $request->session()->get('paymentFor');

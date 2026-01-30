@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Vendor\ServicePromotion;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\ServicePromotion\Payment\AuthorizenetController;
 use App\Http\Controllers\Vendor\ServicePromotion\Payment\FlutterwaveController;
@@ -333,7 +334,7 @@ class ServicePromotionController extends Controller
 
     }
 
-    public function cancel(Request $request)
+    public function cancel(Request $request): RedirectResponse
     {
         $language = Language::where('is_default', 1)->first();
         session()->flash('warning', 'Something went wrong !');

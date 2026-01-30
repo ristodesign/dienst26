@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Vendor\ServicePromotion\Payment;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\ServicePromotion\ServicePromotionController;
 use Auth;
@@ -10,7 +12,7 @@ use Mollie\Laravel\Facades\Mollie;
 
 class MollieController extends Controller
 {
-    public function index($arrData, $paymentFor, $success_url, $amount)
+    public function index($arrData, $paymentFor, $success_url, $amount): JsonResponse
     {
         $title = $paymentFor;
         $notifyURL = route('vendor.featured.mollie.notify');
@@ -38,7 +40,7 @@ class MollieController extends Controller
         return response()->json(['redirectURL' => $checkoutUrl]);
     }
 
-    public function notify(Request $request)
+    public function notify(Request $request): RedirectResponse
     {
         // get the information from session
         $arrData = session()->get('arrData');

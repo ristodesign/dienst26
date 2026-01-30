@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Vendor;
 
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Transaction;
 use App\Models\Vendor;
@@ -16,7 +17,7 @@ use Validator;
 
 class WithdrawController extends Controller
 {
-    public function index()
+    public function index(): JsonResponse
     {
         $collection = Withdraw::with('method')
             ->where('vendor_id', Auth::guard('sanctum_vendor')->user()->id)
@@ -27,7 +28,7 @@ class WithdrawController extends Controller
     }
 
     // create
-    public function create()
+    public function create(): JsonResponse
     {
         $information = [];
         $methods = WithdrawPaymentMethod::where('status', '=', 1)->get();
@@ -37,7 +38,7 @@ class WithdrawController extends Controller
     }
 
     // get_inputs
-    public function get_inputs($id)
+    public function get_inputs($id): JsonResponse
     {
         $data = WithdrawMethodInput::with('options')->where('withdraw_payment_method_id', $id)->orderBy('order_number', 'asc')->get();
 
@@ -61,7 +62,7 @@ class WithdrawController extends Controller
     }
 
     // send_request
-    public function send_request(Request $request)
+    public function send_request(Request $request): JsonResponse
     {
         $method = WithdrawPaymentMethod::where('id', $request->withdraw_method)->first();
         $vendor = Vendor::where('id', Auth::guard('sanctum_vendor')->user()->id)->first();
@@ -170,7 +171,7 @@ class WithdrawController extends Controller
     }
 
     // bulkDelete
-    public function bulkDelete(Request $request)
+    public function bulkDelete(Request $request): JsonResponse
     {
         $ids = $request->ids;
         if (empty($ids)) {
@@ -185,7 +186,7 @@ class WithdrawController extends Controller
     }
 
     // Delete
-    public function Delete(Request $request)
+    public function Delete(Request $request): JsonResponse
     {
         $withdraw = Withdraw::where('id', $request->id)->first();
         if (! $withdraw) {

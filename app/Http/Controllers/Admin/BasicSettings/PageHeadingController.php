@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin\BasicSettings;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Models\BasicSettings\PageHeading;
 use App\Models\CustomPage\Page;
@@ -10,7 +12,7 @@ use Illuminate\Http\Request;
 
 class PageHeadingController extends Controller
 {
-    public function pageHeadings(Request $request)
+    public function pageHeadings(Request $request): View
     {
         // first, get the language info from db
         $language = Language::query()->where('code', '=', $request->language)->firstOrFail();
@@ -33,7 +35,7 @@ class PageHeadingController extends Controller
         return view('admin.basic-settings.page-headings', $information);
     }
 
-    public function updatePageHeadings(Request $request)
+    public function updatePageHeadings(Request $request): RedirectResponse
     {
         // Get the language info from db
         $language = Language::query()->where('code', '=', $request->language)->firstOrFail();

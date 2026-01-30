@@ -20,7 +20,7 @@ class Instamojo
      * @param  string  $endpoint  can be set if you are working on an alternative server.
      * @return array AuthToken object.
      */
-    public function __construct($api_key, $auth_token = null, $endpoint = null)
+    public function __construct(string $api_key, string $auth_token = null, string $endpoint = null)
     {
         $this->api_key = (string) $api_key;
         $this->auth_token = (string) $auth_token;
@@ -39,7 +39,7 @@ class Instamojo
     /**
      * @return array headers with Authentication tokens added
      */
-    private function build_curl_headers()
+    private function build_curl_headers(): array
     {
         $headers = ["X-Api-key: $this->api_key"];
         if ($this->auth_token) {
@@ -53,7 +53,7 @@ class Instamojo
      * @param  string  $path
      * @return string adds the path to endpoint with.
      */
-    private function build_api_call_url($path)
+    private function build_api_call_url(string $path): string
     {
         if (strpos($path, '/?') === false and strpos($path, '?') === false) {
             return $this->endpoint.$path.'/';
@@ -82,7 +82,7 @@ class Instamojo
      * @param  array  $data  contains the POST data to be sent to the API.
      * @return array decoded json returned by API.
      */
-    private function api_call($method, $path, ?array $data = null)
+    private function api_call(string $method, string $path, ?array $data = null): array
     {
 
         $path = (string) $path;
@@ -145,7 +145,7 @@ class Instamojo
     /**
      * @return string URL to upload file or cover image asynchronously
      */
-    public function getUploadUrl()
+    public function getUploadUrl(): string
     {
         $result = $this->api_call('GET', 'links/get_file_upload_url', []);
 
@@ -156,7 +156,7 @@ class Instamojo
      * @param  string  $file_path
      * @return string JSON returned when the file upload is complete.
      */
-    public function uploadFile($file_path)
+    public function uploadFile(string $file_path): string
     {
         $upload_url = $this->getUploadUrl();
         $file_path = realpath($file_path);
@@ -195,7 +195,7 @@ class Instamojo
      *
      * @return array $link updated with uploaded file information if applicable.
      */
-    public function uploadMagic(array $link)
+    public function uploadMagic(array $link): array
     {
         if (! empty($link['file_upload'])) {
             $file_upload_json = $this->uploadFile($link['file_upload']);
@@ -218,7 +218,7 @@ class Instamojo
      * @param  array  $args  contains username=>USERNAME and password=PASSWORD
      * @return array AuthToken object.
      */
-    public function auth(array $args)
+    public function auth(array $args): array
     {
         $response = $this->api_call('POST', 'auth', $args);
         $this->auth_token = $response['auth_token']['auth_token'];
@@ -229,7 +229,7 @@ class Instamojo
     /**
      * @return array list of Link objects.
      */
-    public function linksList($limit, $path)
+    public function linksList($limit, $path): array
     {
         $response = $this->api_call('GET', 'links', $this->getParamsArray($limit, $path));
 
@@ -239,7 +239,7 @@ class Instamojo
     /**
      * @return array single Link object.
      */
-    public function linkDetail($slug)
+    public function linkDetail($slug): array
     {
         $response = $this->api_call('GET', 'links/'.$slug, []);
 
@@ -249,7 +249,7 @@ class Instamojo
     /**
      * @return array single Link object.
      */
-    public function linkCreate(array $link)
+    public function linkCreate(array $link): array
     {
         if (empty($link['currency'])) {
             $link['currency'] = 'INR';
@@ -263,7 +263,7 @@ class Instamojo
     /**
      * @return array single Link object.
      */
-    public function linkEdit($slug, array $link)
+    public function linkEdit($slug, array $link): array
     {
         $link = $this->uploadMagic($link);
         $response = $this->api_call('PATCH', 'links/'.$slug, $link);
@@ -274,7 +274,7 @@ class Instamojo
     /**
      * @return array single Link object.
      */
-    public function linkDelete($slug)
+    public function linkDelete($slug): array
     {
         $response = $this->api_call('DELETE', 'links/'.$slug, []);
 
@@ -284,7 +284,7 @@ class Instamojo
     /**
      * @return array list of Payment objects.
      */
-    public function paymentsList($limit = null, $page = null)
+    public function paymentsList($limit = null, $page = null): array
     {
         $response = $this->api_call('GET', 'payments', $this->getParamsArray($limit, $page));
 
@@ -295,7 +295,7 @@ class Instamojo
      * @param string payment_id as provided by paymentsList() or Instamojo's webhook or redirect functions.
      * @return array single Payment object.
      */
-    public function paymentDetail($payment_id)
+    public function paymentDetail($payment_id): array
     {
         $response = $this->api_call('GET', 'payments/'.$payment_id, []);
 
@@ -308,7 +308,7 @@ class Instamojo
      * @param array single PaymentRequest object.
      * @return array single PaymentRequest object.
      */
-    public function paymentRequestCreate(array $payment_request)
+    public function paymentRequestCreate(array $payment_request): array
     {
         $response = $this->api_call('POST', 'payment-requests', $payment_request);
 
@@ -319,7 +319,7 @@ class Instamojo
      * @param string id as provided by paymentRequestCreate, paymentRequestsList, webhook or redirect.
      * @return array single PaymentRequest object.
      */
-    public function paymentRequestStatus($id)
+    public function paymentRequestStatus($id): array
     {
         $response = $this->api_call('GET', 'payment-requests/'.$id, []);
 
@@ -331,7 +331,7 @@ class Instamojo
      * @param string payment_id as received with the redirection URL or webhook.
      * @return array single PaymentRequest object.
      */
-    public function paymentRequestPaymentStatus($id, $payment_id)
+    public function paymentRequestPaymentStatus($id, $payment_id): array
     {
         $response = $this->api_call('GET', 'payment-requests/'.$id.'/'.$payment_id, []);
 
@@ -345,7 +345,7 @@ class Instamojo
      *               For more information on the allowed date formats check the
      *               docs: https://www.instamojo.com/developers/request-a-payment-api/#toc-filtering-payment-requests
      */
-    public function paymentRequestsList($limit = null, $page = null, $max_created_at = null, $min_created_at = null, $max_modified_at = null, $min_modified_at = null)
+    public function paymentRequestsList($limit = null, $page = null, $max_created_at = null, $min_created_at = null, $max_modified_at = null, $min_modified_at = null): array
     {
         $endpoint = 'payment-requests';
 
@@ -377,7 +377,7 @@ class Instamojo
      * @param array single Refund object.
      * @return array single Refund object.
      */
-    public function refundCreate(array $refund)
+    public function refundCreate(array $refund): array
     {
         $response = $this->api_call('POST', 'refunds', $refund);
 
@@ -388,7 +388,7 @@ class Instamojo
      * @param string id as provided by refundCreate or refundsList.
      * @return array single Refund object.
      */
-    public function refundDetail($id)
+    public function refundDetail($id): array
     {
         $response = $this->api_call('GET', 'refunds/'.$id, []);
 
@@ -398,7 +398,7 @@ class Instamojo
     /**
      * @return array containing list of Refund objects.
      */
-    public function refundsList($limit, $path)
+    public function refundsList($limit, $path): array
     {
         $response = $this->api_call('GET', 'refunds', $this->getParamsArray($limit, $path));
 

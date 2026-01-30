@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\FrontEnd\PaymentGateway;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Shop\PurchaseProcessController;
 use App\Models\PaymentGateway\OnlineGateway;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Session;
 
 class YocoController extends Controller
 {
-    public function index($arrData, $productList)
+    public function index($arrData, $productList): RedirectResponse
     {
         $paymentMethod = OnlineGateway::where('keyword', 'yoco')->first();
         $paydata = json_decode($paymentMethod->information, true);
@@ -41,7 +42,7 @@ class YocoController extends Controller
         }
     }
 
-    public function notify()
+    public function notify(): RedirectResponse
     {
         $arrData = Session::get('arrData');
         $productList = Session::get('productList');

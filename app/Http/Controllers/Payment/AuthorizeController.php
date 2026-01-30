@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Payment;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\VendorCheckoutController;
 use App\Http\Helpers\MegaMailer;
@@ -168,7 +169,7 @@ class AuthorizeController extends Controller
         }
     }
 
-    public function cancelPayment()
+    public function cancelPayment(): RedirectResponse
     {
         $requestData = Session::get('request');
         $paymentFor = Session::get('paymentFor');

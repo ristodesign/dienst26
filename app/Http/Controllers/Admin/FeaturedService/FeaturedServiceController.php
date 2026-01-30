@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin\FeaturedService;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\BasicMailer;
 use App\Models\BasicSettings\Basic;
@@ -223,7 +226,7 @@ class FeaturedServiceController extends Controller
     /**
      * payment status update
      */
-    public function updatePaymentStatus(Request $request, $id)
+    public function updatePaymentStatus(Request $request, $id): RedirectResponse
     {
         $featuredRequest = ServicePromotion::find($id);
         // service info
@@ -327,7 +330,7 @@ class FeaturedServiceController extends Controller
     /**
      * order status update
      */
-    public function updateOrderStatus(Request $request, $id)
+    public function updateOrderStatus(Request $request, $id): RedirectResponse
     {
         $featuredRequest = ServicePromotion::find($id);
         // get the website title info from db
@@ -455,14 +458,14 @@ class FeaturedServiceController extends Controller
         return $fileName;
     }
 
-    public function charge()
+    public function charge(): View
     {
         $charges = FeaturedServiceCharge::orderBy('created_at', 'desc')->get();
 
         return view('admin.featured-service.charge.index', compact('charges'));
     }
 
-    public function chargeStore(Request $request)
+    public function chargeStore(Request $request): JsonResponse
     {
         $rules = [
             'amount' => 'required|numeric',
@@ -487,7 +490,7 @@ class FeaturedServiceController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function chargeUpdate(Request $request)
+    public function chargeUpdate(Request $request): JsonResponse
     {
         $rules = [
             'amount' => 'required|numeric',
@@ -512,7 +515,7 @@ class FeaturedServiceController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $charge = FeaturedServiceCharge::find($id);
         $charge->delete();
@@ -520,7 +523,7 @@ class FeaturedServiceController extends Controller
         return redirect()->back()->with('success', __('Charge deleted successfully!'));
     }
 
-    public function bulkDestroy(Request $request)
+    public function bulkDestroy(Request $request): JsonResponse
     {
         $ids = $request->ids;
 
@@ -534,7 +537,7 @@ class FeaturedServiceController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function deleteFeaturedService($id)
+    public function deleteFeaturedService($id): RedirectResponse
     {
         $featuredService = ServicePromotion::find($id);
         // delete the attachment
@@ -547,7 +550,7 @@ class FeaturedServiceController extends Controller
         return redirect()->back()->with('success', __('Featured serivce delete successfully!'));
     }
 
-    public function bulkDestroyFeaturedService(Request $request)
+    public function bulkDestroyFeaturedService(Request $request): JsonResponse
     {
         $ids = $request->ids;
 

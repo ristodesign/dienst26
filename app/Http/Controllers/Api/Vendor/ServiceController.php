@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Vendor;
 
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Http\Helpers\VendorPermissionHelper;
@@ -84,7 +85,7 @@ class ServiceController extends Controller
     }
 
     // crate
-    public function create()
+    public function create(): JsonResponse
     {
         $information['languages'] = Language::all();
         $information['currencyInfo'] = $this->getCurrencyInfo();
@@ -95,7 +96,7 @@ class ServiceController extends Controller
         ]);
     }
 
-    public function store(ServiceStoreRequest $request)
+    public function store(ServiceStoreRequest $request): JsonResponse
     {
         DB::transaction(function () use ($request) {
             // store featured image in storage
@@ -190,7 +191,7 @@ class ServiceController extends Controller
     }
 
     // update
-    public function update($id, ServiceUpdateRequest $request)
+    public function update($id, ServiceUpdateRequest $request): JsonResponse
     {
         $service = Services::find($id);
         if (! $service) {
@@ -267,7 +268,7 @@ class ServiceController extends Controller
         ]);
     }
 
-    public function destroy($id)
+    public function destroy($id): JsonResponse
     {
         $hasService = checkService($id);
 
@@ -343,7 +344,7 @@ class ServiceController extends Controller
         }
     }
 
-    public function bulkDestroy(Request $request)
+    public function bulkDestroy(Request $request): JsonResponse
     {
         $ids = $request->ids;
 
@@ -419,7 +420,7 @@ class ServiceController extends Controller
         ]);
     }
 
-    public function servicestatus(Request $request)
+    public function servicestatus(Request $request): JsonResponse
     {
         $current_package = VendorPermissionHelper::packagePermission(Auth::guard('sanctum_vendor')->user()->id);
 
@@ -442,7 +443,7 @@ class ServiceController extends Controller
         }
     }
 
-    public function message()
+    public function message(): JsonResponse
     {
         $language = Language::where('code', request()->language)->first();
         if (! $language) {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Payment;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\VendorCheckoutController;
 use App\Http\Helpers\MegaMailer;
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Session;
 
 class PaytabsController extends Controller
 {
-    public function paymentProcess(Request $request, $_amount, $_success_url, $_cancel_url)
+    public function paymentProcess(Request $request, $_amount, $_success_url, $_cancel_url): RedirectResponse
     {
         Session::put('request', $request->all());
 
@@ -46,7 +47,7 @@ class PaytabsController extends Controller
         }
     }
 
-    public function successPayment(Request $request)
+    public function successPayment(Request $request): RedirectResponse
     {
         $requestData = Session::get('request');
         $resp = $request->all();
@@ -156,7 +157,7 @@ class PaytabsController extends Controller
         }
     }
 
-    public function cancelPayment()
+    public function cancelPayment(): RedirectResponse
     {
         session()->flash('warning', __('cancel_payment'));
 

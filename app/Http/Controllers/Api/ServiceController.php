@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\MiscellaneousController;
 use App\Http\Helpers\BasicMailer;
@@ -889,7 +890,7 @@ class ServiceController extends Controller
     }
 
     // review store
-    public function storeReview(Request $request, $id)
+    public function storeReview(Request $request, $id): JsonResponse
     {
         $rule = ['rating' => 'required'];
 
@@ -1055,7 +1056,7 @@ class ServiceController extends Controller
     }
 
     // show staff holiday
-    public function staffHoliday($id, Request $request)
+    public function staffHoliday($id, Request $request): JsonResponse
     {
         $staff = Staff::find($id);
         $vendor_id = $staff->vendor_id;
@@ -1095,7 +1096,7 @@ class ServiceController extends Controller
     /**
      * show service hour
      */
-    public function staffHour(Request $request)
+    public function staffHour(Request $request): JsonResponse
     {
         $staff = Staff::find($request->staff_id);
         $information['staff'] = $staff;
@@ -1180,7 +1181,7 @@ class ServiceController extends Controller
     }
 
     // billing form
-    public function billing(Request $request)
+    public function billing(Request $request): JsonResponse
     {
         $rules = [
             'name' => 'required',
@@ -1217,7 +1218,7 @@ class ServiceController extends Controller
         ]);
     }
 
-    public function inQuiryMessage(Request $request)
+    public function inQuiryMessage(Request $request): JsonResponse
     {
         try {
             $rules = [

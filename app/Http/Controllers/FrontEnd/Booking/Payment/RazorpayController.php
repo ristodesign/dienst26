@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\FrontEnd\Booking\Payment;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Booking\ServicePaymentController;
 use App\Http\Controllers\WhatsAppController;
@@ -31,7 +33,7 @@ class RazorpayController extends Controller
         $this->api = new Api($this->key, $this->secret);
     }
 
-    public function index($arrData, $paymentFor, $cancel_url, $amount)
+    public function index($arrData, $paymentFor, $cancel_url, $amount): View
     {
         $customerpaid = intval($amount);
         $title = 'Service Booking';
@@ -77,7 +79,7 @@ class RazorpayController extends Controller
         return view('frontend.payment.razorpay', compact('jsonData', 'notifyURL'));
     }
 
-    public function notify(Request $request)
+    public function notify(Request $request): RedirectResponse
     {
         $arrData = session()->get('arrData');
         $razorpayOrderId = session()->get('razorpayOrderId');

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin\HomePage;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Models\HomePage\Banner;
@@ -14,7 +17,7 @@ use Illuminate\Support\Facades\Validator;
 
 class BannerController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $language = Language::query()->where('code', '=', $request->language)->first();
         $information['language'] = $language;
@@ -27,7 +30,7 @@ class BannerController extends Controller
         return view('admin.home-page.banner.index', $information);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $rules = [
             'image' => [
@@ -59,7 +62,7 @@ class BannerController extends Controller
         return response()->json(['status' => 'success'], 200);
     }
 
-    public function update(Request $request)
+    public function update(Request $request): JsonResponse
     {
         $rules = [
             'image' => $request->hasFile('image') ? new ImageMimeTypeRule : '',
@@ -95,7 +98,7 @@ class BannerController extends Controller
         return response()->json(['status' => 'success'], 200);
     }
 
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request, $id): RedirectResponse
     {
         $banner = Banner::findOrFail($id);
 
@@ -106,7 +109,7 @@ class BannerController extends Controller
         return redirect()->back()->with('success', __('Banner deleted successfully!'));
     }
 
-    public function bulkDestroy(Request $request)
+    public function bulkDestroy(Request $request): JsonResponse
     {
         $ids = $request['ids'];
 

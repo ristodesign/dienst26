@@ -29,7 +29,7 @@ class MatchEmailRule implements Rule
      * @param  mixed  $value
      * @return bool
      */
-    public function passes($attribute, $value)
+    public function passes(string $attribute, $value): bool
     {
         if ($this->personType == 'admin') {
             $admin = Admin::where('email', $value)->first();
@@ -63,7 +63,7 @@ class MatchEmailRule implements Rule
      *
      * @return string
      */
-    public function message()
+    public function message(): string
     {
         return 'This email does not exist!';
     }

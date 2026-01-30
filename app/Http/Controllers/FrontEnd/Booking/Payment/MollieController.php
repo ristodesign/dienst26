@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Frontend\Booking\Payment;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Booking\ServicePaymentController;
 use App\Http\Controllers\WhatsAppController;
@@ -11,7 +13,7 @@ use Mollie\Laravel\Facades\Mollie;
 
 class MollieController extends Controller
 {
-    public function index($arrData, $paymentFor, $cancel_url, $amount)
+    public function index($arrData, $paymentFor, $cancel_url, $amount): JsonResponse
     {
         $title = 'Service Booking';
         $notifyURL = route('frontend.service_booking.mollie.notify');
@@ -38,7 +40,7 @@ class MollieController extends Controller
         return response()->json(['redirectURL' => $checkoutUrl]);
     }
 
-    public function notify(Request $request)
+    public function notify(Request $request): RedirectResponse
     {
         // get the information from session
         $arrData = session()->get('arrData');

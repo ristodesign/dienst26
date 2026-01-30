@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin\BasicSettings;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Models\BasicSettings\MailTemplate;
 use Illuminate\Http\Request;
@@ -10,21 +12,21 @@ use Validator;
 
 class MailTemplateController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $templates = MailTemplate::all();
 
         return view('admin.basic-settings.email.templates', compact('templates'));
     }
 
-    public function edit($id)
+    public function edit($id): View
     {
         $templateInfo = MailTemplate::findOrFail($id);
 
         return view('admin.basic-settings.email.edit-template', compact('templateInfo'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
         $rules = [
             'mail_subject' => 'required',

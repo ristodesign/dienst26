@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Vendor\Staff;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Language;
 use App\Models\Staff\Staff;
@@ -15,7 +18,7 @@ use Illuminate\Support\Facades\Validator;
 
 class StaffServiceHourController extends Controller
 {
-    public function day($id)
+    public function day($id): View
     {
         $language = Language::where('is_default', 1)->first();
         $language_id = $language->id;
@@ -34,7 +37,7 @@ class StaffServiceHourController extends Controller
         return view('vendors.staff.staff-day.index', $information);
     }
 
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $information['currentDay'] = StaffDay::where('id', $request->day_id)->select('day')->first();
         $information['staff'] = Staff::where('vendor_id', Auth::guard('vendor')->user()->id)->where('id', $request->staff_id)->firstOrFail();
@@ -45,7 +48,7 @@ class StaffServiceHourController extends Controller
         return view('vendors.staff.staff-hour.index', $information);
     }
 
-    public function weekendChange(Request $request, $id)
+    public function weekendChange(Request $request, $id): RedirectResponse
     {
         $staffday = StaffDay::where('staff_id', $request->staff_id)->find($id);
 
@@ -62,7 +65,7 @@ class StaffServiceHourController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $rules = [
             'start_time' => 'required',
@@ -93,7 +96,7 @@ class StaffServiceHourController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function update(Request $request)
+    public function update(Request $request): JsonResponse
     {
         $rules = [
             'start_time' => 'required',
@@ -125,7 +128,7 @@ class StaffServiceHourController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $service_hour = StaffServiceHour::query()->find($id);
         $service_hour->delete();
@@ -133,7 +136,7 @@ class StaffServiceHourController extends Controller
         return redirect()->back()->with('success', __('Time slot deleted successfully!'));
     }
 
-    public function bulkDestroy(Request $request)
+    public function bulkDestroy(Request $request): JsonResponse
     {
         $ids = $request->ids;
 

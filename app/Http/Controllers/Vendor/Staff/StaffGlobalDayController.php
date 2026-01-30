@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Vendor\Staff;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Staff\StaffGlobalDay;
 use App\Models\Staff\StaffGlobalHour;
@@ -10,14 +12,14 @@ use Illuminate\Http\Request;
 
 class StaffGlobalDayController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $information['days'] = StaffGlobalDay::where('vendor_id', Auth::guard('vendor')->user()->id)->get();
 
         return view('vendors.staff.global-day.index', $information);
     }
 
-    public function weekendChange(Request $request, $id)
+    public function weekendChange(Request $request, $id): RedirectResponse
     {
         $current_package = \App\Http\Helpers\VendorPermissionHelper::packagePermission(Auth::guard('vendor')->user()->id);
 

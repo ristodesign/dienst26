@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\FrontEnd;
 
+use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MailFromUserRequest;
 use App\Models\BasicSettings\Basic;
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\Session;
 
 class ContactController extends Controller
 {
-    public function contact()
+    public function contact(): View
     {
         $misc = new MiscellaneousController;
 

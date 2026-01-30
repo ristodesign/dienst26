@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Vendor\ServicePromotion\Payment;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\ServicePromotion\ServicePromotionController;
 use Auth;
@@ -42,7 +43,7 @@ class PaytabsController extends Controller
         }
     }
 
-    public function notify(Request $request)
+    public function notify(Request $request): RedirectResponse
     {
         $arrData = Session::get('arrData');
         $resp = $request->all();

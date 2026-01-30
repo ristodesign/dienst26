@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin\BasicSettings;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Models\BasicSettings\SEO;
 use App\Models\CustomPage\Page;
@@ -10,7 +12,7 @@ use Illuminate\Http\Request;
 
 class SEOController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         // first, get the language info from db
         $language = Language::query()->where('code', '=', $request->language)->firstOrFail();
@@ -28,7 +30,7 @@ class SEOController extends Controller
         return view('admin.basic-settings.seo', $information);
     }
 
-    public function update(Request $request)
+    public function update(Request $request): RedirectResponse
     {
         // first, get the language info from db
         $language = Language::query()->where('code', '=', $request->language)->first();

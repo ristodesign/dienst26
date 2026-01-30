@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use Illuminate\Http\Request;
@@ -15,7 +16,7 @@ class SummernoteController extends Controller
         return url('/').'/assets/img/summernotes/'.$imageName;
     }
 
-    public function remove(Request $request)
+    public function remove(Request $request): JsonResponse
     {
         @unlink(public_path('assets/img/summernotes/').$request->image);
 

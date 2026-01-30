@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Payment;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\VendorCheckoutController;
 use App\Http\Helpers\MegaMailer;
@@ -28,7 +29,7 @@ class MollieController extends Controller
         Config::set('mollie.key', $paydata['key']);
     }
 
-    public function paymentProcess(Request $request, $_amount, $_success_url, $_cancel_url, $_title, $bex)
+    public function paymentProcess(Request $request, $_amount, $_success_url, $_cancel_url, $_title, $bex): RedirectResponse
     {
         $notify_url = $_success_url;
         $payment = Mollie::api()->payments()->create([
@@ -50,7 +51,7 @@ class MollieController extends Controller
         return redirect($payment->getCheckoutUrl(), 303);
     }
 
-    public function successPayment(Request $request)
+    public function successPayment(Request $request): RedirectResponse
     {
         $requestData = Session::get('request');
         $bs = Basic::first();
@@ -158,7 +159,7 @@ class MollieController extends Controller
         return redirect($cancel_url);
     }
 
-    public function cancelPayment()
+    public function cancelPayment(): RedirectResponse
     {
         $requestData = Session::get('request');
         $paymentFor = Session::get('paymentFor');

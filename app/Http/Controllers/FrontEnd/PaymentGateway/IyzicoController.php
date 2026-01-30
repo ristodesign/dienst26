@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\FrontEnd\PaymentGateway;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Shop\PurchaseProcessController;
 use App\Models\PaymentGateway\OnlineGateway;
@@ -9,7 +10,7 @@ use App\Models\Shop\Product;
 
 class IyzicoController extends Controller
 {
-    public function index($arrData, $productList)
+    public function index($arrData, $productList): RedirectResponse
     {
         $_success_url = route('shop.purchase_product.iyzico.notify');
         // get vendor details for iyzico payment configuration
@@ -108,7 +109,7 @@ class IyzicoController extends Controller
         }
     }
 
-    public function notify()
+    public function notify(): RedirectResponse
     {
         $arrData = session()->get('arrData');
         $conversation_id = session()->get('conversation_id');

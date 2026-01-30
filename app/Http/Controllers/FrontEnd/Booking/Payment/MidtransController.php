@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\FrontEnd\Booking\Payment;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Booking\ServicePaymentController;
 use App\Http\Controllers\WhatsAppController;
@@ -13,7 +15,7 @@ use Midtrans\Snap;
 
 class MidtransController extends Controller
 {
-    public function index($arrData, $paymentFor, $cancel_url, $amount)
+    public function index($arrData, $paymentFor, $cancel_url, $amount): View
     {
         $data = [];
         $name = $arrData['customer_name'];
@@ -63,7 +65,7 @@ class MidtransController extends Controller
         return view('frontend.payment.midtrans-membership', $data);
     }
 
-    public function notify(Request $request)
+    public function notify(Request $request): RedirectResponse
     {
         $arrData = Session::get('arrData');
         $token = Session::get('token');

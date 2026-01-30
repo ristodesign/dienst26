@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin\BasicSettings;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Http\Requests\MailFromAdminRequest;
@@ -19,7 +21,7 @@ use Mews\Purifier\Facades\Purifier;
 
 class BasicController extends Controller
 {
-    public function contact_page()
+    public function contact_page(): View
     {
         $data = DB::table('basic_settings')
             ->select('email_address', 'contact_number', 'address', 'contact_title', 'contact_subtile', 'contact_details', 'latitude', 'longitude')
@@ -31,7 +33,7 @@ class BasicController extends Controller
         return view('admin.basic-settings.contact', $information);
     }
 
-    public function update_contact_page(Request $request)
+    public function update_contact_page(Request $request): RedirectResponse
     {
         $rules = [
             'email_address' => 'required',
@@ -62,7 +64,7 @@ class BasicController extends Controller
         return redirect()->back();
     }
 
-    public function mailFromAdmin()
+    public function mailFromAdmin(): View
     {
         $data = DB::table('basic_settings')
             ->select('smtp_status', 'smtp_host', 'smtp_port', 'encryption', 'smtp_username', 'smtp_password', 'from_mail', 'from_name')
@@ -71,7 +73,7 @@ class BasicController extends Controller
         return view('admin.basic-settings.email.mail-from-admin', ['data' => $data]);
     }
 
-    public function updateMailFromAdmin(MailFromAdminRequest $request)
+    public function updateMailFromAdmin(MailFromAdminRequest $request): RedirectResponse
     {
         DB::table('basic_settings')->updateOrInsert(
             ['uniqid' => 12345],
@@ -92,14 +94,14 @@ class BasicController extends Controller
         return redirect()->back();
     }
 
-    public function mailToAdmin()
+    public function mailToAdmin(): View
     {
         $data = DB::table('basic_settings')->select('to_mail')->first();
 
         return view('admin.basic-settings.email.mail-to-admin', ['data' => $data]);
     }
 
-    public function updateMailToAdmin(Request $request)
+    public function updateMailToAdmin(Request $request): RedirectResponse
     {
         $rule = [
             'to_mail' => 'required',
@@ -125,14 +127,14 @@ class BasicController extends Controller
         return redirect()->back();
     }
 
-    public function breadcrumb()
+    public function breadcrumb(): View
     {
         $data = DB::table('basic_settings')->select('breadcrumb')->first();
 
         return view('admin.basic-settings.breadcrumb', ['data' => $data]);
     }
 
-    public function updateBreadcrumb(Request $request)
+    public function updateBreadcrumb(Request $request): RedirectResponse
     {
         $data = DB::table('basic_settings')->select('breadcrumb')->first();
 
@@ -166,7 +168,7 @@ class BasicController extends Controller
         return redirect()->back();
     }
 
-    public function plugins(Request $request)
+    public function plugins(Request $request): View
     {
         $data = DB::table('basic_settings')
             ->select(
@@ -216,7 +218,7 @@ class BasicController extends Controller
         return view('admin.basic-settings.plugins', compact('data', 'vendors'));
     }
 
-    public function updateDisqus(Request $request)
+    public function updateDisqus(Request $request): RedirectResponse
     {
         $rules = [
             'disqus_status' => 'required',
@@ -242,7 +244,7 @@ class BasicController extends Controller
         return redirect()->back();
     }
 
-    public function googleMap(Request $request)
+    public function googleMap(Request $request): RedirectResponse
     {
         $rules = [
             'google_map_status' => 'required',
@@ -270,7 +272,7 @@ class BasicController extends Controller
         return redirect()->back();
     }
 
-    public function updateZoom(Request $request)
+    public function updateZoom(Request $request): RedirectResponse
     {
         $rules = [
             'zoom_account_id' => 'required',
@@ -296,7 +298,7 @@ class BasicController extends Controller
         return redirect()->back();
     }
 
-    public function update_wp_manager(Request $request)
+    public function update_wp_manager(Request $request): RedirectResponse
     {
         $rules = [
             'whatsapp_number_id' => 'required',
@@ -332,7 +334,7 @@ class BasicController extends Controller
         return redirect()->back();
     }
 
-    public function updateCalender(Request $request)
+    public function updateCalender(Request $request): RedirectResponse
     {
         $request->validate([
             'google_calendar' => 'required|mimes:json',
@@ -358,7 +360,7 @@ class BasicController extends Controller
         return redirect()->back();
     }
 
-    public function updateFirebase(Request $request)
+    public function updateFirebase(Request $request): RedirectResponse
     {
         $request->validate([
             'firebase_admin_json' => 'required|mimes:json',
@@ -394,7 +396,7 @@ class BasicController extends Controller
         return redirect()->back();
     }
 
-    public function updateTawkTo(Request $request)
+    public function updateTawkTo(Request $request): RedirectResponse
     {
         $rules = [
             'tawkto_status' => 'required',
@@ -420,7 +422,7 @@ class BasicController extends Controller
         return redirect()->back();
     }
 
-    public function updateRecaptcha(Request $request)
+    public function updateRecaptcha(Request $request): RedirectResponse
     {
         $rules = [
             'google_recaptcha_status' => 'required',
@@ -456,7 +458,7 @@ class BasicController extends Controller
         return redirect()->back();
     }
 
-    public function updateFacebook(Request $request)
+    public function updateFacebook(Request $request): RedirectResponse
     {
         $rules = [
             'facebook_login_status' => 'required',
@@ -499,7 +501,7 @@ class BasicController extends Controller
         return redirect()->back();
     }
 
-    public function updateGoogle(Request $request)
+    public function updateGoogle(Request $request): RedirectResponse
     {
         $rules = [
             'google_login_status' => 'required',
@@ -536,7 +538,7 @@ class BasicController extends Controller
         return redirect()->back();
     }
 
-    public function updateWhatsApp(Request $request)
+    public function updateWhatsApp(Request $request): RedirectResponse
     {
         $rules = [
             'whatsapp_status' => 'required',
@@ -568,7 +570,7 @@ class BasicController extends Controller
         return redirect()->back();
     }
 
-    public function maintenance()
+    public function maintenance(): View
     {
         $data = DB::table('basic_settings')
             ->select('maintenance_img', 'maintenance_status', 'maintenance_msg', 'bypass_token')
@@ -577,7 +579,7 @@ class BasicController extends Controller
         return view('admin.basic-settings.maintenance', ['data' => $data]);
     }
 
-    public function updateMaintenance(Request $request)
+    public function updateMaintenance(Request $request): RedirectResponse
     {
         $data = DB::table('basic_settings')->select('maintenance_img')->first();
 
@@ -636,14 +638,14 @@ class BasicController extends Controller
         return redirect()->back();
     }
 
-    public function settings()
+    public function settings(): View
     {
         $info['info'] = DB::table('basic_settings')->select('shop_status')->first();
 
         return view('admin.shop.settings', $info);
     }
 
-    public function updateSettings(Request $request)
+    public function updateSettings(Request $request): RedirectResponse
     {
         $rules = [
             'shop_status' => 'required|numeric',
@@ -666,14 +668,14 @@ class BasicController extends Controller
         return redirect()->back();
     }
 
-    public function productTaxAmount()
+    public function productTaxAmount(): View
     {
         $data = DB::table('basic_settings')->select('product_tax_amount')->first();
 
         return view('admin.shop.tax', ['data' => $data]);
     }
 
-    public function updateProductTaxAmount(Request $request)
+    public function updateProductTaxAmount(Request $request): RedirectResponse
     {
         $rules = [
             'product_tax_amount' => 'required|numeric',
@@ -696,14 +698,14 @@ class BasicController extends Controller
         return redirect()->back();
     }
 
-    public function methodSettings()
+    public function methodSettings(): View
     {
         $data = DB::table('basic_settings')->select('self_pickup_status', 'two_way_delivery_status')->first();
 
         return view('admin.instrument.shipping-methods', ['data' => $data]);
     }
 
-    public function updateMethodSettings(Request $request)
+    public function updateMethodSettings(Request $request): RedirectResponse
     {
         $rules = [
             'self_pickup_status' => 'required|numeric',
@@ -729,14 +731,14 @@ class BasicController extends Controller
         return redirect()->back();
     }
 
-    public function checkoutStatus()
+    public function checkoutStatus(): View
     {
         $data = DB::table('basic_settings')->select('guest_checkout_status')->first();
 
         return view('admin.instrument.guest-checkout', ['data' => $data]);
     }
 
-    public function updateCheckoutStatus(Request $request)
+    public function updateCheckoutStatus(Request $request): RedirectResponse
     {
         $rules = ['guest_checkout_status' => 'required|numeric'];
 
@@ -757,7 +759,7 @@ class BasicController extends Controller
     }
 
     // general_settings
-    public function general_settings()
+    public function general_settings(): View
     {
         $data = [];
         $data['data'] = DB::table('basic_settings')->first();
@@ -767,7 +769,7 @@ class BasicController extends Controller
     }
 
     // update general settings
-    public function update_general_setting(Request $request)
+    public function update_general_setting(Request $request): RedirectResponse
     {
         $data = DB::table('basic_settings')->first();
         $rules = [];
@@ -862,14 +864,14 @@ class BasicController extends Controller
     }
 
     // time formate for booking hour
-    public function timeFormate()
+    public function timeFormate(): View
     {
         $data = DB::table('basic_settings')->select('time_format')->first();
 
         return view('admin.staff.time-formate', compact('data'));
     }
 
-    public function timeFormateUpdate(Request $request)
+    public function timeFormateUpdate(Request $request): RedirectResponse
     {
         // update or insert data to basic settigs table
         DB::table('basic_settings')->updateOrInsert(

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Vendor;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Language;
 use App\Models\Services\InqueryMessage;
@@ -14,7 +17,7 @@ use Session;
 
 class RecivedEmailController extends Controller
 {
-    public function mailToAdmin()
+    public function mailToAdmin(): View
     {
         $data = DB::table('vendors')->where('id', Auth::guard('vendor')->user()->id)->select('recived_email')->first();
 
@@ -52,7 +55,7 @@ class RecivedEmailController extends Controller
         return redirect()->back();
     }
 
-    public function message()
+    public function message(): View
     {
         $language = Language::where('code', request()->language)->firstOrFail();
         $language_id = $language->id;
@@ -68,7 +71,7 @@ class RecivedEmailController extends Controller
         return view('vendors.email.message', $information);
     }
 
-    public function messageDestroy($id)
+    public function messageDestroy($id): RedirectResponse
     {
         $message = InqueryMessage::find($id);
         $message->delete();
@@ -76,7 +79,7 @@ class RecivedEmailController extends Controller
         return redirect()->back()->with('success', __('Message delete successfully!'));
     }
 
-    public function bulkDelete(Request $request)
+    public function bulkDelete(Request $request): JsonResponse
     {
         $ids = $request->ids;
 

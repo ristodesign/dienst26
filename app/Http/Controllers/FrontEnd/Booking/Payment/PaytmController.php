@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend\Booking\Payment;
 
+use Illuminate\Http\RedirectResponse;
 use Anand\LaravelPaytmWallet\Facades\PaytmWallet;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Booking\ServicePaymentController;
@@ -38,7 +39,7 @@ class PaytmController extends Controller
         return $payment->receive();
     }
 
-    public function notify(Request $request)
+    public function notify(Request $request): RedirectResponse
     {
         $arrData = session()->get('arrData');
 

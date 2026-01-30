@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\FrontEnd;
 
+use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\Admin\SectionContent;
@@ -257,7 +258,7 @@ class HomeController extends Controller
     }
 
     // about
-    public function about()
+    public function about(): View
     {
         $misc = new MiscellaneousController;
 
@@ -304,7 +305,7 @@ class HomeController extends Controller
     }
 
     // offline
-    public function offline()
+    public function offline(): View
     {
         return view('frontend.offline');
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\FrontEnd\PaymentGateway;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Shop\PurchaseProcessController;
 use App\Http\Helpers\Instamojo;
@@ -27,7 +28,7 @@ class InstamojoController extends Controller
         }
     }
 
-    public function index($arrData, $productList)
+    public function index($arrData, $productList): RedirectResponse
     {
         $title = 'Purchase Product';
         $notifyURL = route('shop.purchase_product.instamojo.notify');
@@ -58,7 +59,7 @@ class InstamojoController extends Controller
         }
     }
 
-    public function notify(Request $request)
+    public function notify(Request $request): RedirectResponse
     {
         // get the information from session
         $productList = session()->get('productCart');

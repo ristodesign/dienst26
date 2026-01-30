@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin\Administrator;
 
+use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Http\Requests\Admin\StoreRequest;
@@ -13,7 +16,7 @@ use Illuminate\Support\Facades\Hash;
 
 class SiteAdminController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $information['roles'] = RolePermission::all();
 
@@ -29,7 +32,7 @@ class SiteAdminController extends Controller
         return view('admin.administrator.site-admin.index', $information);
     }
 
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request): JsonResponse
     {
         $imageName = UploadFile::store(public_path('assets/img/admins/'), $request->file('image'));
 
@@ -43,7 +46,7 @@ class SiteAdminController extends Controller
         return response()->json(['status' => 'success'], 200);
     }
 
-    public function updateStatus(Request $request, $id)
+    public function updateStatus(Request $request, $id): RedirectResponse
     {
         $admin = Admin::query()->find($id);
 
@@ -58,7 +61,7 @@ class SiteAdminController extends Controller
         return redirect()->back();
     }
 
-    public function update(UpdateRequest $request)
+    public function update(UpdateRequest $request): JsonResponse
     {
         $admin = Admin::query()->find($request->id);
 
@@ -75,7 +78,7 @@ class SiteAdminController extends Controller
         return response()->json(['status' => 'success'], 200);
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $admin = Admin::query()->find($id);
 

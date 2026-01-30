@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Admin\Transaction\TransactionController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\WhatsAppController;
@@ -199,7 +200,7 @@ class BookingController extends Controller
         return $paidAmount;
     }
 
-    public function paymentProcess(Request $request)
+    public function paymentProcess(Request $request): JsonResponse
     {
         try {
             $service_id = $request['service_id'];

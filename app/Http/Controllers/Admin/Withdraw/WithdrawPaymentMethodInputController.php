@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin\Withdraw;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use App\Models\Withdraw\WithdrawMethodInput;
 use App\Models\Withdraw\WithdrawMethodOption;
@@ -12,7 +14,7 @@ use Response;
 
 class WithdrawPaymentMethodInputController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $id = $request->id;
         $data['inputs'] = WithdrawMethodInput::where('withdraw_payment_method_id', $id)->orderBy('order_number', 'ASC')->get();
@@ -21,7 +23,7 @@ class WithdrawPaymentMethodInputController extends Controller
     }
 
     // store
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $inname = make_input_name($request->label);
         $inputs = WithdrawMethodInput::where('withdraw_payment_method_id', $request->withdraw_payment_method_id)->get();
@@ -81,7 +83,7 @@ class WithdrawPaymentMethodInputController extends Controller
     }
 
     // edit
-    public function edit($id)
+    public function edit($id): View
     {
         $data = [];
         $input = WithdrawMethodInput::where('id', $id)->firstOrFail();

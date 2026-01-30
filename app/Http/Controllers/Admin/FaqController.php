@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\FAQ;
 use App\Models\Language;
@@ -11,7 +14,7 @@ use Illuminate\Support\Facades\Validator;
 
 class FaqController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         // first, get the language info from db
         $language = Language::query()->where('code', '=', $request->language)->firstOrFail();
@@ -26,7 +29,7 @@ class FaqController extends Controller
         return view('admin.faq.index', $information);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $rules = [
             'language_id' => 'required',
@@ -49,7 +52,7 @@ class FaqController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function update(Request $request)
+    public function update(Request $request): JsonResponse
     {
         $rules = [
             'question' => 'required|max:255',
@@ -74,7 +77,7 @@ class FaqController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $faq = FAQ::query()->find($id);
 
@@ -83,7 +86,7 @@ class FaqController extends Controller
         return redirect()->back()->with('success', __('FAQ deleted successfully!'));
     }
 
-    public function bulkDestroy(Request $request)
+    public function bulkDestroy(Request $request): JsonResponse
     {
         $ids = $request->ids;
 

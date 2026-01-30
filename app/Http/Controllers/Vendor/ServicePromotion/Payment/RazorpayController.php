@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Vendor\ServicePromotion\Payment;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\ServicePromotion\ServicePromotionController;
 use App\Models\BasicSettings\Basic;
@@ -30,7 +32,7 @@ class RazorpayController extends Controller
         $this->api = new Api($this->key, $this->secret);
     }
 
-    public function index($arrData, $paymentFor, $success_url, $amount)
+    public function index($arrData, $paymentFor, $success_url, $amount): View
     {
         $title = 'Service Featured';
         $notifyURL = route('vendor.featured.razorpay.notify');
@@ -76,7 +78,7 @@ class RazorpayController extends Controller
         return view('frontend.payment.razorpay', compact('jsonData', 'notifyURL'));
     }
 
-    public function notify(Request $request)
+    public function notify(Request $request): RedirectResponse
     {
         $arrData = session()->get('arrData');
         $razorpayOrderId = session()->get('razorpayOrderId');

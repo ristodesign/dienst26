@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin\Staff;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\VendorPermissionHelper;
 use App\Models\Staff\StaffGlobalHoliday;
@@ -47,7 +49,7 @@ class GlobalHolidayController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         if ($request->vendor_id == 'admin') {
             $vendor_id = 0;
@@ -95,7 +97,7 @@ class GlobalHolidayController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $UserStaffHoliday = StaffGlobalHoliday::find($id);
         $UserStaffHoliday->delete();
@@ -103,7 +105,7 @@ class GlobalHolidayController extends Controller
         return redirect()->back()->with('success', __('Holiday delete successfully!'));
     }
 
-    public function blukDestroy(Request $request)
+    public function blukDestroy(Request $request): JsonResponse
     {
         $ids = $request->ids;
 

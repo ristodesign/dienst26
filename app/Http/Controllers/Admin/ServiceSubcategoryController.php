@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Language;
 use App\Models\Services\ServiceCategory;
@@ -16,7 +19,7 @@ use Illuminate\Validation\Rule;
 
 class ServiceSubcategoryController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $language = Language::where('code', $request->language)->firstOrFail();
 
@@ -33,7 +36,7 @@ class ServiceSubcategoryController extends Controller
         return view('admin.services.subcategory.index', $information);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $rules = [
             'language_id' => 'required',
@@ -69,7 +72,7 @@ class ServiceSubcategoryController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function update(Request $request)
+    public function update(Request $request): JsonResponse
     {
         $subcategory = ServiceSubCategory::find($request->id);
 
@@ -112,7 +115,7 @@ class ServiceSubcategoryController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $servicesCount = ServiceContent::where('subcategory_id', $id)->count();
 
@@ -127,7 +130,7 @@ class ServiceSubcategoryController extends Controller
         }
     }
 
-    public function bulkDestroy(Request $request)
+    public function bulkDestroy(Request $request): JsonResponse
     {
         $ids = $request->ids;
         $errorOccured = false;
@@ -152,7 +155,7 @@ class ServiceSubcategoryController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function serviceCategory($lang)
+    public function serviceCategory($lang): JsonResponse
     {
         $categories = ServiceCategory::where('language_id', $lang)->get();
 

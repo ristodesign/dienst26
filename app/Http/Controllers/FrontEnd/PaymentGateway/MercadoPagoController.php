@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\FrontEnd\PaymentGateway;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Shop\PurchaseProcessController;
 use App\Models\PaymentGateway\OnlineGateway;
@@ -23,7 +24,7 @@ class MercadoPagoController extends Controller
         $this->sandbox_status = $mercadopagoData['sandbox_status'];
     }
 
-    public function index($arrData, $productList)
+    public function index($arrData, $productList): RedirectResponse
     {
         $title = 'Purchase Product';
         $notifyURL = route('shop.purchase_product.mercadopago.notify');
@@ -87,7 +88,7 @@ class MercadoPagoController extends Controller
         }
     }
 
-    public function notify(Request $request)
+    public function notify(Request $request): RedirectResponse
     {
         $productList = session()->get('productCart');
 

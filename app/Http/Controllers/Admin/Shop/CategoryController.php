@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin\Shop;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Language;
 use App\Models\Shop\ProductCategory;
@@ -12,7 +15,7 @@ use Illuminate\Validation\Rule;
 
 class CategoryController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         // first, get the language info from db
         $language = Language::where('code', $request->language)->firstOrFail();
@@ -27,7 +30,7 @@ class CategoryController extends Controller
         return view('admin.shop.category.index', $information);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $rules = [
             'language_id' => 'required',
@@ -53,7 +56,7 @@ class CategoryController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function update(Request $request)
+    public function update(Request $request): JsonResponse
     {
         $rules = [
             'name' => [
@@ -84,7 +87,7 @@ class CategoryController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $category = ProductCategory::find($id);
         $productContents = $category->productContent()->get();
@@ -98,7 +101,7 @@ class CategoryController extends Controller
         }
     }
 
-    public function bulkDestroy(Request $request)
+    public function bulkDestroy(Request $request): JsonResponse
     {
         $ids = $request->ids;
 

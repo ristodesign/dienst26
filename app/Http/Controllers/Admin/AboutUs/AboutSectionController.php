@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin\AboutUs;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Models\BasicSettings\AboutUs;
@@ -15,7 +17,7 @@ use Purifier;
 
 class AboutSectionController extends Controller
 {
-    public function about_us(Request $request)
+    public function about_us(Request $request): View
     {
         $language = Language::query()->where('code', '=', $request->language)->firstOrFail();
         $information['language'] = $language;
@@ -26,7 +28,7 @@ class AboutSectionController extends Controller
         return view('admin.about-us.about-us', $information);
     }
 
-    public function update_about_us(Request $request)
+    public function update_about_us(Request $request): RedirectResponse
     {
         $rules = [
             'title' => 'max:255',
@@ -74,7 +76,7 @@ class AboutSectionController extends Controller
         return redirect()->back();
     }
 
-    public function customizeSection()
+    public function customizeSection(): View
     {
         $aboutSec = Section::select('about_work_status', 'about_testimonial_section_status', 'features_section_status', 'about_section_status', 'about_custom_section_status')->first();
         $customSectons = CustomSection::where('page_type', 'about')->get();
@@ -82,7 +84,7 @@ class AboutSectionController extends Controller
         return view('admin.about-us.section-customization', compact('aboutSec', 'customSectons'));
     }
 
-    public function customizeUpdate(Request $request)
+    public function customizeUpdate(Request $request): RedirectResponse
     {
         $section = Section::first();
         $section->about_work_status = $request->about_work_status;

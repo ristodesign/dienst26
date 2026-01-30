@@ -20,7 +20,7 @@ class WhatsAppController extends Controller
      * @param  string  $template_type  -> check the template type
      * @param  string  $purpose  -> check this tempalte is for customer or vendor
      */
-    public static function sendMessage($booking_id, $template_type, $purpose)
+    public static function sendMessage(int $booking_id, string $template_type, string $purpose)
     {
         $whatsapp_manager_status = DB::table('basic_settings')
             ->where('uniqid', 12345)

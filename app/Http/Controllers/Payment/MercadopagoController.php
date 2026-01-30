@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Payment;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\VendorCheckoutController;
 use App\Http\Helpers\MegaMailer;
@@ -27,7 +28,7 @@ class MercadopagoController extends Controller
         $this->sandbox = $paydata['sandbox_status'];
     }
 
-    public function paymentProcess(Request $request, $_amount, $_success_url, $_cancel_url, $email, $_title, $_description, $bex)
+    public function paymentProcess(Request $request, $_amount, $_success_url, $_cancel_url, $email, $_title, $_description, $bex): RedirectResponse
     {
         $return_url = $_success_url;
         $cancel_url = $_cancel_url;
@@ -100,7 +101,7 @@ class MercadopagoController extends Controller
         return $paymentData;
     }
 
-    public function paycancle()
+    public function paycancle(): RedirectResponse
     {
         return redirect()->back()->with('error', 'Payment Cancelled.');
     }
@@ -120,7 +121,7 @@ class MercadopagoController extends Controller
         return view('front.success', compact('tempcart', 'order'));
     }
 
-    public function successPayment(Request $request)
+    public function successPayment(Request $request): RedirectResponse
     {
         $requestData = Session::get('request');
 
@@ -225,7 +226,7 @@ class MercadopagoController extends Controller
         return redirect($cancel_url);
     }
 
-    public function cancelPayment()
+    public function cancelPayment(): RedirectResponse
     {
         $requestData = Session::get('request');
         $paymentFor = Session::get('paymentFor');

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\BasicMailer;
 use App\Http\Helpers\MegaMailer;
@@ -36,12 +39,12 @@ use Illuminate\Validation\Rule;
 
 class AdminController extends Controller
 {
-    public function login()
+    public function login(): View
     {
         return view('admin.login');
     }
 
-    public function authentication(Request $request)
+    public function authentication(Request $request): RedirectResponse
     {
         $rules = [
             'username' => 'required',
@@ -76,12 +79,12 @@ class AdminController extends Controller
         }
     }
 
-    public function forgetPassword()
+    public function forgetPassword(): View
     {
         return view('admin.forget-password');
     }
 
-    public function forgetPasswordMail(Request $request)
+    public function forgetPasswordMail(Request $request): RedirectResponse
     {
         // validation start
         $rules = [
@@ -122,7 +125,7 @@ class AdminController extends Controller
         return redirect()->back();
     }
 
-    public function redirectToDashboard()
+    public function redirectToDashboard(): View
     {
         // dd(config('app'));
         $information['authAdmin'] = Auth::guard('admin')->user();
@@ -245,7 +248,7 @@ class AdminController extends Controller
         return view('admin.dashboard', $information);
     }
 
-    public function changeTheme(Request $request)
+    public function changeTheme(Request $request): RedirectResponse
     {
         DB::table('basic_settings')->updateOrInsert(
             ['uniqid' => 12345],
@@ -255,14 +258,14 @@ class AdminController extends Controller
         return redirect()->back();
     }
 
-    public function editProfile()
+    public function editProfile(): View
     {
         $adminInfo = Auth::guard('admin')->user();
 
         return view('admin.edit-profile', compact('adminInfo'));
     }
 
-    public function updateProfile(Request $request)
+    public function updateProfile(Request $request): RedirectResponse
     {
         $admin = Auth::guard('admin')->user();
 
@@ -316,12 +319,12 @@ class AdminController extends Controller
         return redirect()->back();
     }
 
-    public function changePassword()
+    public function changePassword(): View
     {
         return view('admin.change-password');
     }
 
-    public function updatePassword(Request $request)
+    public function updatePassword(Request $request): JsonResponse
     {
         $rules = [
             'current_password' => [
@@ -355,7 +358,7 @@ class AdminController extends Controller
         return response()->json(['status' => 'success'], 200);
     }
 
-    public function logout(Request $request)
+    public function logout(Request $request): RedirectResponse
     {
         Auth::guard('admin')->logout();
 
@@ -366,7 +369,7 @@ class AdminController extends Controller
     }
 
     // membershipRequest
-    public function membershipRequest()
+    public function membershipRequest(): View
     {
         $collections = Membership::where('memberships.status', '!=', 1)->paginate(10);
         $data['collections'] = $collections;
@@ -409,7 +412,7 @@ class AdminController extends Controller
         return back();
     }
 
-    public function monthly_profit(Request $request)
+    public function monthly_profit(Request $request): View
     {
         if ($request->filled('year')) {
             $date = $request->input('year');

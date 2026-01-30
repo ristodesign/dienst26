@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\FrontEnd\Booking\Payment;
 
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Booking\ServicePaymentController;
 use App\Http\Controllers\WhatsAppController;
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\Session;
 
 class OfflineController extends Controller
 {
-    public function index($arrData, $paymentFor, $cancel_url, $amount)
+    public function index($arrData, $paymentFor, $cancel_url, $amount): JsonResponse
     {
         $paymentProcess = new ServicePaymentController;
         $directory = public_path('assets/file/attachments/service/');

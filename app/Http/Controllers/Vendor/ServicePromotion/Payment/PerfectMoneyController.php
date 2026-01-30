@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Vendor\ServicePromotion\Payment;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\ServicePromotion\ServicePromotionController;
 use App\Models\BasicSettings\Basic;
@@ -12,7 +14,7 @@ use Illuminate\Support\Facades\Session;
 
 class PerfectMoneyController extends Controller
 {
-    public function index($arrData, $paymentFor, $success_url, $amount)
+    public function index($arrData, $paymentFor, $success_url, $amount): View
     {
         Session::put('arrData', $arrData);
         $notifyUrl = route('vendor.featured.perfectmoney.notify');
@@ -46,7 +48,7 @@ class PerfectMoneyController extends Controller
         return view('frontend.payment.perfect-money')->with('data', $data);
     }
 
-    public function notify(Request $request)
+    public function notify(Request $request): RedirectResponse
     {
         $arrData = Session::get('arrData');
         $amo = $request['PAYMENT_AMOUNT'];

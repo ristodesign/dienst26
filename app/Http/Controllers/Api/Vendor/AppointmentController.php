@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Vendor;
 
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Booking\ServicePaymentController;
 use App\Http\Helpers\BasicMailer;
@@ -19,7 +20,7 @@ use Response;
 
 class AppointmentController extends Controller
 {
-    public function setting()
+    public function setting(): JsonResponse
     {
         $info['info'] = Vendor::where('id', Auth::guard('sanctum_vendor')->user()->id)
             ->select('booking_type')->first();
@@ -30,7 +31,7 @@ class AppointmentController extends Controller
         ]);
     }
 
-    public function updatesetting(Request $request)
+    public function updatesetting(Request $request): JsonResponse
     {
         $rules = [
             'booking_type' => 'required',
@@ -216,7 +217,7 @@ class AppointmentController extends Controller
         ]);
     }
 
-    public function show($id)
+    public function show($id): JsonResponse
     {
         $language = Language::where('is_default', 1)->first();
         $language_id = $language->id;
@@ -251,7 +252,7 @@ class AppointmentController extends Controller
         ], 200);
     }
 
-    public function destroy($id)
+    public function destroy($id): JsonResponse
     {
         $appointment = ServiceBooking::where('vendor_id', Auth::guard('sanctum_vendor')->user()->id)->findOrFail($id);
         // delete the attachment
@@ -265,7 +266,7 @@ class AppointmentController extends Controller
         ], 200);
     }
 
-    public function bulkDestroy(Request $request)
+    public function bulkDestroy(Request $request): JsonResponse
     {
         $ids = $request->ids;
 
@@ -290,7 +291,7 @@ class AppointmentController extends Controller
     }
 
     // order status change
-    public function updateAppointmentStatus(Request $request, $id)
+    public function updateAppointmentStatus(Request $request, $id): JsonResponse
     {
         $language = Language::where('is_default', 1)->first();
         $language_id = $language->id;
@@ -393,7 +394,7 @@ class AppointmentController extends Controller
         }
     }
 
-    public function staffAssign(Request $request)
+    public function staffAssign(Request $request): JsonResponse
     {
         $ruels = ['staff_id' => 'required'];
         $messages = [

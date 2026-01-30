@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Payment;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\VendorCheckoutController;
 use App\Http\Helpers\MegaMailer;
@@ -16,7 +18,7 @@ use Illuminate\Support\Facades\Session;
 
 class PaytmController extends Controller
 {
-    public function paymentProcess(Request $request, $_amount, $_item_number, $_callback_url)
+    public function paymentProcess(Request $request, $_amount, $_item_number, $_callback_url): View
     {
         $data = OnlineGateway::whereKeyword('paytm')->first();
         $paydata = $data->convertAutoData();
@@ -368,7 +370,7 @@ class PaytmController extends Controller
         }
     }
 
-    public function paymentStatus(Request $request)
+    public function paymentStatus(Request $request): RedirectResponse
     {
         $requestData = Session::get('request');
         $bs = Basic::first();

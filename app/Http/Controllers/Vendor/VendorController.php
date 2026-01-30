@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Vendor;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\MiscellaneousController;
 use App\Models\BasicSettings\Basic;
@@ -37,7 +40,7 @@ use Illuminate\Validation\Rule;
 class VendorController extends Controller
 {
     // signup
-    public function signup()
+    public function signup(): View
     {
         $misc = new MiscellaneousController;
 
@@ -227,7 +230,7 @@ class VendorController extends Controller
     }
 
     // login
-    public function login()
+    public function login(): View
     {
         $misc = new MiscellaneousController;
 
@@ -245,7 +248,7 @@ class VendorController extends Controller
     }
 
     // authenticate
-    public function authentication(Request $request)
+    public function authentication(Request $request): RedirectResponse
     {
         $rules = [
             'username' => 'required',
@@ -315,7 +318,7 @@ class VendorController extends Controller
     }
 
     // confirm_email'
-    public function confirm_email()
+    public function confirm_email(): RedirectResponse
     {
         $email = request()->input('token');
         $user = Vendor::where('email', $email)->first();
@@ -330,7 +333,7 @@ class VendorController extends Controller
         return redirect()->route('vendor.dashboard');
     }
 
-    public function logout(Request $request)
+    public function logout(Request $request): RedirectResponse
     {
         Auth::guard('vendor')->logout();
         Session::forget('secret_login');
@@ -338,7 +341,7 @@ class VendorController extends Controller
         return redirect()->route('vendor.login');
     }
 
-    public function dashboard()
+    public function dashboard(): View
     {
         $vendor_id = Auth::guard('vendor')->user()->id;
         $totalBalance = Vendor::where('id', $vendor_id)->pluck('amount')->first();
@@ -473,13 +476,13 @@ class VendorController extends Controller
     }
 
     // change_password
-    public function change_password()
+    public function change_password(): View
     {
         return view('vendors.auth.change-password');
     }
 
     // update_password
-    public function updated_password(Request $request)
+    public function updated_password(Request $request): JsonResponse
     {
         $rules = [
             'current_password' => [
@@ -515,7 +518,7 @@ class VendorController extends Controller
     }
 
     // edit_profile
-    public function edit_profile()
+    public function edit_profile(): View
     {
         $information = [];
         $misc = new MiscellaneousController;
@@ -537,7 +540,7 @@ class VendorController extends Controller
     }
 
     // update_profile
-    public function update_profile(Request $request, Vendor $vendor)
+    public function update_profile(Request $request, Vendor $vendor): JsonResponse
     {
         $id = Auth::guard('vendor')->user()->id;
         $rules = [
@@ -662,7 +665,7 @@ class VendorController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function changeTheme(Request $request)
+    public function changeTheme(Request $request): RedirectResponse
     {
         Session::put('vendor_theme_version', $request->vendor_theme_version);
 
@@ -670,7 +673,7 @@ class VendorController extends Controller
     }
 
     // forget_passord
-    public function forget_passord()
+    public function forget_passord(): View
     {
         $misc = new MiscellaneousController;
 
@@ -792,7 +795,7 @@ class VendorController extends Controller
     }
 
     // reset_password
-    public function reset_password()
+    public function reset_password(): View
     {
         $misc = new MiscellaneousController;
 
@@ -806,7 +809,7 @@ class VendorController extends Controller
     }
 
     // update_password
-    public function update_password(Request $request)
+    public function update_password(Request $request): RedirectResponse
     {
         $rules = [
             'new_password' => 'required|confirmed',
@@ -850,7 +853,7 @@ class VendorController extends Controller
         return view('vendors.subscription_log', $data);
     }
 
-    public function languageChange($lang)
+    public function languageChange($lang): RedirectResponse
     {
         session()->put('vendor_lang', 'admin_'.$lang);
         app()->setLocale('admin_'.$lang);

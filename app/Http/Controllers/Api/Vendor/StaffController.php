@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Vendor;
 
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Http\Helpers\VendorPermissionHelper;
@@ -57,7 +58,7 @@ class StaffController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(): JsonResponse
     {
         $data['languages'] = Language::all();
         $data['currencyInfo'] = $this->getCurrencyInfo();
@@ -68,7 +69,7 @@ class StaffController extends Controller
         ]);
     }
 
-    public function store(StaffStoreRequest $request)
+    public function store(StaffStoreRequest $request): JsonResponse
     {
         if ($request->hasFile('staff_image')) {
             $staffImage = UploadFile::store(public_path('assets/img/staff/'), $request->file('staff_image'));
@@ -123,7 +124,7 @@ class StaffController extends Controller
         ]);
     }
 
-    public function edit($id)
+    public function edit($id): JsonResponse
     {
         $language = Language::query()->where('is_default', '=', 1)->first();
         $language_id = $language->id;
@@ -164,7 +165,7 @@ class StaffController extends Controller
         }
     }
 
-    public function update($id, StaffUpdateRequest $request)
+    public function update($id, StaffUpdateRequest $request): JsonResponse
     {
         $staff = Staff::where('vendor_id', Auth::guard('sanctum_vendor')->user()->id)
             ->find($id);
@@ -216,7 +217,7 @@ class StaffController extends Controller
         ]);
     }
 
-    public function destroy($id)
+    public function destroy($id): JsonResponse
     {
         StaffHoliday::where('staff_id', $id)->delete();
         StaffService::where('staff_id', $id)->delete();
@@ -260,7 +261,7 @@ class StaffController extends Controller
         ]);
     }
 
-    public function bulkDestroy(Request $request)
+    public function bulkDestroy(Request $request): JsonResponse
     {
         $ids = $request->ids;
 
@@ -331,7 +332,7 @@ class StaffController extends Controller
         }
     }
 
-    public function permission($id)
+    public function permission($id): JsonResponse
     {
         $language = Language::where('is_default', 1)->first();
         $language_id = $language->id;
@@ -347,7 +348,7 @@ class StaffController extends Controller
         ]);
     }
 
-    public function permissionUpdate($id, Request $request)
+    public function permissionUpdate($id, Request $request): JsonResponse
     {
         $staff = Staff::findOrFail($id);
         $staff->update([
@@ -363,7 +364,7 @@ class StaffController extends Controller
         ]);
     }
 
-    public function changePassword($id)
+    public function changePassword($id): JsonResponse
     {
         $staffInfo = Staff::find($id);
         if (! $staffInfo) {
@@ -379,7 +380,7 @@ class StaffController extends Controller
         ]);
     }
 
-    public function updatePassword(Request $request, $id)
+    public function updatePassword(Request $request, $id): JsonResponse
     {
         $rules = [
             'new_password' => 'required|confirmed',

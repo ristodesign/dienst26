@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin\User;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Services\ServiceBooking;
 use App\Models\SupportTicket;
@@ -35,12 +38,12 @@ class UserController extends Controller
         return view('admin.end-user.user.index', compact('users'));
     }
 
-    public function create()
+    public function create(): View
     {
         return view('admin.end-user.user.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $rules = [
             'name' => 'required',
@@ -91,7 +94,7 @@ class UserController extends Controller
         return response()->json(['status' => 'success'], 200);
     }
 
-    public function updateEmailStatus(Request $request, $id)
+    public function updateEmailStatus(Request $request, $id): RedirectResponse
     {
         $user = User::query()->find($id);
 
@@ -110,7 +113,7 @@ class UserController extends Controller
         return redirect()->back();
     }
 
-    public function updateAccountStatus(Request $request, $id)
+    public function updateAccountStatus(Request $request, $id): RedirectResponse
     {
         $user = User::query()->find($id);
 
@@ -129,7 +132,7 @@ class UserController extends Controller
         return redirect()->back();
     }
 
-    public function edit($id)
+    public function edit($id): View
     {
         $user = User::query()->findOrFail($id);
         $information['user'] = $user;
@@ -137,7 +140,7 @@ class UserController extends Controller
         return view('admin.end-user.user.edit', $information);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): JsonResponse
     {
         $rules = [
             'name' => 'required',
@@ -178,14 +181,14 @@ class UserController extends Controller
         return response()->json(['status' => 'success'], 200);
     }
 
-    public function changePassword($id)
+    public function changePassword($id): View
     {
         $userInfo = User::query()->findOrFail($id);
 
         return view('admin.end-user.user.change-password', compact('userInfo'));
     }
 
-    public function updatePassword(Request $request, $id)
+    public function updatePassword(Request $request, $id): JsonResponse
     {
         $rules = [
             'new_password' => 'required|confirmed',
@@ -215,7 +218,7 @@ class UserController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function secret_login($id)
+    public function secret_login($id): RedirectResponse
     {
         $user = User::where('id', $id)->first();
         Auth::guard('web')->login($user);
@@ -224,7 +227,7 @@ class UserController extends Controller
         return redirect()->route('user.dashboard');
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $user = User::query()->findOrFail($id);
 
@@ -290,7 +293,7 @@ class UserController extends Controller
         return redirect()->back()->with('success', __('User deleted successfully!'));
     }
 
-    public function bulkDestroy(Request $request)
+    public function bulkDestroy(Request $request): JsonResponse
     {
         $ids = $request->ids;
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Vendor;
 
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Language;
 use App\Models\Staff\Staff;
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Validator;
 
 class StaffScheduleController extends Controller
 {
-    public function day($id)
+    public function day($id): JsonResponse
     {
         $language = Language::where('is_default', 1)->first();
         $language_id = $language->id;
@@ -39,7 +40,7 @@ class StaffScheduleController extends Controller
     }
 
     // change schedule type
-    public function scheduleType(Request $request, $id)
+    public function scheduleType(Request $request, $id): JsonResponse
     {
         $staffday = Staff::where('vendor_id', Auth::guard('sanctum_vendor')->user()->id)->find($id);
         if ($staffday) {
@@ -61,7 +62,7 @@ class StaffScheduleController extends Controller
     }
 
     // get time slots
-    public function TimeSlots(Request $request)
+    public function TimeSlots(Request $request): JsonResponse
     {
         $information['currentDay'] = StaffDay::where('id', $request->day_id)->select('day')->first();
         $information['staff'] = Staff::where('vendor_id', Auth::guard('sanctum_vendor')->user()->id)->where('id', $request->staff_id)->firstOrFail();
@@ -76,7 +77,7 @@ class StaffScheduleController extends Controller
     }
 
     // store time slot
-    public function storeTimeSlot(Request $request)
+    public function storeTimeSlot(Request $request): JsonResponse
     {
         $rules = [
             'start_time' => 'required',
@@ -109,7 +110,7 @@ class StaffScheduleController extends Controller
     }
 
     // update time slot
-    public function updateSlot(Request $request)
+    public function updateSlot(Request $request): JsonResponse
     {
         $rules = [
             'start_time' => 'required',
@@ -142,7 +143,7 @@ class StaffScheduleController extends Controller
         ]);
     }
 
-    public function update(Request $request)
+    public function update(Request $request): JsonResponse
     {
         $rules = [
             'start_time' => 'required',
@@ -175,7 +176,7 @@ class StaffScheduleController extends Controller
         ]);
     }
 
-    public function destroy($id)
+    public function destroy($id): JsonResponse
     {
         $service_hour = StaffServiceHour::query()->find($id);
         if (! $service_hour) {
@@ -192,7 +193,7 @@ class StaffScheduleController extends Controller
         ]);
     }
 
-    public function bulkDestroy(Request $request)
+    public function bulkDestroy(Request $request): JsonResponse
     {
         $ids = $request->ids;
 
@@ -216,7 +217,7 @@ class StaffScheduleController extends Controller
 
     // change weekend
 
-    public function weekendChange($id, Request $request)
+    public function weekendChange($id, Request $request): JsonResponse
     {
 
         if (! $id) {
@@ -247,7 +248,7 @@ class StaffScheduleController extends Controller
     }
 
     // holidays
-    public function holidays($id)
+    public function holidays($id): JsonResponse
     {
         $language = Language::where('is_default', 1)->first();
         $language_id = $language->id;
@@ -265,7 +266,7 @@ class StaffScheduleController extends Controller
         ]);
     }
 
-    public function holidayStore(Request $request)
+    public function holidayStore(Request $request): JsonResponse
     {
         $rules = ['date' => 'required'];
 
@@ -309,7 +310,7 @@ class StaffScheduleController extends Controller
         }
     }
 
-    public function holidayDestory(Request $request, $id)
+    public function holidayDestory(Request $request, $id): JsonResponse
     {
 
         $UserStaffHoliday = StaffHoliday::where('staff_id', $request->staff_id)->find($id);
@@ -322,7 +323,7 @@ class StaffScheduleController extends Controller
         ]);
     }
 
-    public function holidayBulkDestory(Request $request)
+    public function holidayBulkDestory(Request $request): JsonResponse
     {
         $ids = $request->ids;
 

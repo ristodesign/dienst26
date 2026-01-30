@@ -25,7 +25,7 @@ class ImageMimeTypeRule implements Rule
      * @param  mixed  $value
      * @return bool
      */
-    public function passes($attribute, $value)
+    public function passes(string $attribute, $value): bool
     {
         $image = $value;
 
@@ -54,7 +54,7 @@ class ImageMimeTypeRule implements Rule
      *
      * @return string
      */
-    public function message()
+    public function message(): string
     {
         if (
             URL::current() == Route::is('admin.advertise.store_advertisement') ||

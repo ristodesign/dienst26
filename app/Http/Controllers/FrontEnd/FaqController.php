@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\FrontEnd;
 
+use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 
 class FaqController extends Controller
 {
-    public function faq()
+    public function faq(): View
     {
         $misc = new MiscellaneousController;
 

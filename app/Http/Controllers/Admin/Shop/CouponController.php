@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin\Shop;
 
+use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CouponRequest;
 use App\Models\Shop\Coupon;
@@ -9,7 +12,7 @@ use Carbon\Carbon;
 
 class CouponController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         // get the coupons from db
         $information['coupons'] = Coupon::orderByDesc('id')->get();
@@ -20,7 +23,7 @@ class CouponController extends Controller
         return view('admin.shop.coupon.index', $information);
     }
 
-    public function store(CouponRequest $request)
+    public function store(CouponRequest $request): JsonResponse
     {
         $startDate = Carbon::parse($request->start_date);
         $endDate = Carbon::parse($request->end_date);
@@ -35,7 +38,7 @@ class CouponController extends Controller
         return response()->json(['status' => 'success'], 200);
     }
 
-    public function update(CouponRequest $request)
+    public function update(CouponRequest $request): JsonResponse
     {
         $startDate = Carbon::parse($request->start_date);
         $endDate = Carbon::parse($request->end_date);
@@ -49,7 +52,7 @@ class CouponController extends Controller
         return response()->json(['status' => 'success'], 200);
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         Coupon::find($id)->delete();
 

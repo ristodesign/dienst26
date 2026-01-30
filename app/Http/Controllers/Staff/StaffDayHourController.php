@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Staff;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Staff\Staff;
 use App\Models\Staff\StaffDay;
@@ -27,7 +29,7 @@ class StaffDayHourController extends Controller
         }
     }
 
-    public function changeStaffSetting(Request $request, $id)
+    public function changeStaffSetting(Request $request, $id): RedirectResponse
     {
         $id = Auth::guard('staff')->user()->id;
         $staff = Staff::find($id);
@@ -45,7 +47,7 @@ class StaffDayHourController extends Controller
         }
     }
 
-    public function weekendChange(Request $request, $id)
+    public function weekendChange(Request $request, $id): RedirectResponse
     {
         $staff_id = Auth::guard('staff')->user()->id;
         $staff = Staff::find($staff_id);
@@ -84,7 +86,7 @@ class StaffDayHourController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $id = Auth::guard('staff')->user()->id;
         $staff = Staff::find($id);
@@ -124,7 +126,7 @@ class StaffDayHourController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function update(Request $request)
+    public function update(Request $request): JsonResponse
     {
         $id = Auth::guard('staff')->user()->id;
         $staff = Staff::find($id);
@@ -165,7 +167,7 @@ class StaffDayHourController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $staff_id = Auth::guard('staff')->user()->id;
         $staff = Staff::find($staff_id);
@@ -185,7 +187,7 @@ class StaffDayHourController extends Controller
         return redirect()->back()->with('success', __('Time slot delete successfully!'));
     }
 
-    public function bulkDestroy(Request $request)
+    public function bulkDestroy(Request $request): JsonResponse
     {
         $id = Auth::guard('staff')->user()->id;
         $staff = Staff::find($id);

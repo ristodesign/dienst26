@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin\Staff;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Language;
 use App\Models\Services\Services;
@@ -13,7 +16,7 @@ use Validator;
 
 class StaffServiceController extends Controller
 {
-    public function index($id)
+    public function index($id): View
     {
         $language = Language::where('is_default', 1)->first();
         $information['language'] = $language;
@@ -44,7 +47,7 @@ class StaffServiceController extends Controller
         return view('admin.staff.staff-services.service_assign', $information);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $staffServices = StaffService::where('staff_id', $request->staff_id)->where('service_id', $request->service_id)->get();
 
@@ -83,7 +86,7 @@ class StaffServiceController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $staffService = StaffService::find($id);
         $mainService = Services::findOrFail($staffService->service_id);
@@ -93,7 +96,7 @@ class StaffServiceController extends Controller
         return redirect()->back()->with('success', __('Staff service deleted successfully!'));
     }
 
-    public function bulkDestroy(Request $request)
+    public function bulkDestroy(Request $request): JsonResponse
     {
         $ids = $request->ids;
 

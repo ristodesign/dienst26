@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Payment;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\VendorCheckoutController;
 use App\Http\Helpers\MegaMailer;
@@ -18,7 +20,7 @@ use Midtrans\Snap;
 
 class MidtransController extends Controller
 {
-    public function paymentProcess($request, $_amount, $_success_url, $_cancel_url)
+    public function paymentProcess($request, $_amount, $_success_url, $_cancel_url): View
     {
         Session::put('request', $request->all());
         $data = [];
@@ -68,7 +70,7 @@ class MidtransController extends Controller
         return view('payments.midtrans-membership', $data);
     }
 
-    public function successPayment(Request $request)
+    public function successPayment(Request $request): RedirectResponse
     {
         $requestData = Session::get('request');
         $bs = Basic::select('base_currency_text', 'base_currency_rate')->first();
@@ -178,7 +180,7 @@ class MidtransController extends Controller
         }
     }
 
-    public function cancelPayment()
+    public function cancelPayment(): RedirectResponse
     {
         session()->flash('warning', __('cancel_payment'));
 

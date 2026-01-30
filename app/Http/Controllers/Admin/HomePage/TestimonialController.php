@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin\HomePage;
 
+use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Http\Requests\Testimonial\StoreRequest;
@@ -15,7 +18,7 @@ use Purifier;
 
 class TestimonialController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $language = Language::query()->where('code', '=', $request->language)->firstOrFail();
         $information['language'] = $language;
@@ -27,7 +30,7 @@ class TestimonialController extends Controller
         return view('admin.home-page.testimonial-section.index', $information);
     }
 
-    public function storeTestimonial(StoreRequest $request)
+    public function storeTestimonial(StoreRequest $request): JsonResponse
     {
         // store image in storage
         $imgName = UploadFile::store(public_path('assets/img/clients/'), $request->file('image'));
@@ -41,7 +44,7 @@ class TestimonialController extends Controller
         return response()->json(['status' => 'success'], 200);
     }
 
-    public function updateTestimonial(UpdateRequest $request)
+    public function updateTestimonial(UpdateRequest $request): JsonResponse
     {
         $testimonial = Testimonial::query()->find($request->id);
 
@@ -62,7 +65,7 @@ class TestimonialController extends Controller
         return response()->json(['status' => 'success'], 200);
     }
 
-    public function destroyTestimonial($id)
+    public function destroyTestimonial($id): RedirectResponse
     {
         $testimonial = Testimonial::query()->find($id);
 
@@ -73,7 +76,7 @@ class TestimonialController extends Controller
         return redirect()->back()->with('success', __('Testimonial deleted successfully!'));
     }
 
-    public function bulkDestroyTestimonial(Request $request)
+    public function bulkDestroyTestimonial(Request $request): JsonResponse
     {
         $ids = $request['ids'];
 
@@ -90,7 +93,7 @@ class TestimonialController extends Controller
         return response()->json(['status' => 'success'], 200);
     }
 
-    public function updateSection(Request $request)
+    public function updateSection(Request $request): RedirectResponse
     {
         $Language = Language::where('code', $request->language)->first();
         $Language_id = $Language->id;

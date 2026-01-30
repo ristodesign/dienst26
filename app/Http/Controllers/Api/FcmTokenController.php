@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\FcmToken;
 use Illuminate\Http\Request;
@@ -11,7 +12,7 @@ class FcmTokenController extends Controller
     /**
      * store fcm token after login
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $request->validate(['token' => 'required|string', 'platform' => 'nullable|string']);
 

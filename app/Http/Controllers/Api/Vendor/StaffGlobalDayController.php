@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Vendor;
 
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Staff\StaffGlobalDay;
 use App\Models\Staff\StaffGlobalHoliday;
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\Validator;
 
 class StaffGlobalDayController extends Controller
 {
-    public function index()
+    public function index(): JsonResponse
     {
         $information['days'] = StaffGlobalDay::where('vendor_id', Auth::guard('sanctum_vendor')->user()->id)->get();
 
@@ -23,7 +24,7 @@ class StaffGlobalDayController extends Controller
         ]);
     }
 
-    public function weekendChange($id, Request $request)
+    public function weekendChange($id, Request $request): JsonResponse
     {
         $current_package = \App\Http\Helpers\VendorPermissionHelper::packagePermission(Auth::guard('sanctum_vendor')->user()->id);
 
@@ -52,7 +53,7 @@ class StaffGlobalDayController extends Controller
         }
     }
 
-    public function serviceHour(Request $request)
+    public function serviceHour(Request $request): JsonResponse
     {
         $information['currentDay'] = StaffGlobalDay::where('id', $request->day_id)->select('day')->first();
 
@@ -66,7 +67,7 @@ class StaffGlobalDayController extends Controller
         ], 200);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $current_package = \App\Http\Helpers\VendorPermissionHelper::packagePermission(Auth::guard('sanctum_vendor')->user()->id);
 
@@ -105,7 +106,7 @@ class StaffGlobalDayController extends Controller
         }
     }
 
-    public function update(Request $request)
+    public function update(Request $request): JsonResponse
     {
         $rules = [
             'start_time' => 'required',
@@ -138,7 +139,7 @@ class StaffGlobalDayController extends Controller
         ], 200);
     }
 
-    public function destroy($id)
+    public function destroy($id): JsonResponse
     {
         $service_hour = StaffGlobalHour::query()->find($id);
         $service_hour->delete();
@@ -149,7 +150,7 @@ class StaffGlobalDayController extends Controller
         ], 200);
     }
 
-    public function bulkDestroy(Request $request)
+    public function bulkDestroy(Request $request): JsonResponse
     {
         $ids = $request->ids;
 
@@ -164,7 +165,7 @@ class StaffGlobalDayController extends Controller
         ], 200);
     }
 
-    public function holidayIndex()
+    public function holidayIndex(): JsonResponse
     {
         $globalHoliday = StaffGlobalHoliday::where('vendor_id', Auth::guard('sanctum_vendor')->user()->id)->get();
 
@@ -174,7 +175,7 @@ class StaffGlobalDayController extends Controller
         ]);
     }
 
-    public function holidayStore(Request $request)
+    public function holidayStore(Request $request): JsonResponse
     {
         $current_package = \App\Http\Helpers\VendorPermissionHelper::packagePermission(Auth::guard('sanctum_vendor')->user()->id);
 
@@ -220,7 +221,7 @@ class StaffGlobalDayController extends Controller
         }
     }
 
-    public function holidayDestroy(Request $request, $id)
+    public function holidayDestroy(Request $request, $id): JsonResponse
     {
 
         $UserStaffHoliday = StaffGlobalHoliday::find($id);
@@ -233,7 +234,7 @@ class StaffGlobalDayController extends Controller
         ], 200);
     }
 
-    public function holidayBulkDestroy(Request $request)
+    public function holidayBulkDestroy(Request $request): JsonResponse
     {
         $ids = $request->ids;
 

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Language\StoreRequest;
 use App\Http\Requests\Language\UpdateRequest;
@@ -28,7 +31,7 @@ class LanguageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): View
     {
         $languages = Language::all();
 
@@ -41,7 +44,7 @@ class LanguageController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request): JsonResponse
     {
         // get all the keywords from the default file of language
         $data = file_get_contents(resource_path('lang/').'default.json');
@@ -165,7 +168,7 @@ class LanguageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function makeDefault($id)
+    public function makeDefault(int $id)
     {
         // first, make other languages to non-default language
         $prevDefLang = Language::query()->where('is_default', '=', 1);
@@ -187,7 +190,7 @@ class LanguageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRequest $request)
+    public function update(UpdateRequest $request): JsonResponse
     {
         $language = Language::query()->find($request->id);
         $in = $request->all();
@@ -260,7 +263,7 @@ class LanguageController extends Controller
     /**
      * forntend keyword add
      */
-    public function addKeyword(Request $request)
+    public function addKeyword(Request $request): JsonResponse
     {
         $rules = [
             'keyword' => 'required',
@@ -322,7 +325,7 @@ class LanguageController extends Controller
     /**
      * admin keyword add
      */
-    public function addAdminKeyword(Request $request)
+    public function addAdminKeyword(Request $request): JsonResponse
     {
         $rules = [
             'keyword' => 'required',
@@ -388,7 +391,7 @@ class LanguageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function editKeyword($id)
+    public function editKeyword(int $id): View
     {
         $language = Language::query()->findOrFail($id);
 
@@ -404,7 +407,7 @@ class LanguageController extends Controller
     /**
      * edit admin keyword page
      */
-    public function editAdminKeyword($id)
+    public function editAdminKeyword($id): View
     {
         $language = Language::query()->findOrFail($id);
 
@@ -423,7 +426,7 @@ class LanguageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function updateKeyword(Request $request, $id)
+    public function updateKeyword(Request $request, int $id): RedirectResponse
     {
         $language = Language::query()->find($id);
         $arrData = $request['keyValues'];
@@ -459,7 +462,7 @@ class LanguageController extends Controller
     /**
      * update admin keyword
      */
-    public function updateAdminKeyword(Request $request, $id)
+    public function updateAdminKeyword(Request $request, $id): RedirectResponse
     {
         $language = Language::query()->find($id);
         $arrData = $request['keyValues'];
@@ -504,7 +507,7 @@ class LanguageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id): RedirectResponse
     {
         $language = Language::query()->find($id);
 

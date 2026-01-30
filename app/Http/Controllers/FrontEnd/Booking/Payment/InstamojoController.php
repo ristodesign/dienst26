@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Frontend\Booking\Payment;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Booking\ServicePaymentController;
 use App\Http\Controllers\WhatsAppController;
@@ -29,7 +31,7 @@ class InstamojoController extends Controller
         }
     }
 
-    public function index($arrData, $paymentFor, $cancel_url, $amount)
+    public function index($arrData, $paymentFor, $cancel_url, $amount): JsonResponse
     {
         $title = 'Service Booking';
         $notifyURL = route('frontend.service_booking.instamojo.notify');
@@ -70,7 +72,7 @@ class InstamojoController extends Controller
         }
     }
 
-    public function notify(Request $request)
+    public function notify(Request $request): RedirectResponse
     {
         $arrData = session()->get('arrData');
         $paymentId = session()->get('paymentId');

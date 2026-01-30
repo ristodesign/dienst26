@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin\Withdraw;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Withdraw\WithdrawPaymentMethod;
 use Illuminate\Http\Request;
@@ -12,7 +15,7 @@ use Validator;
 
 class WithdrawController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $data['paymentMethods'] = WithdrawPaymentMethod::all();
 
@@ -22,7 +25,7 @@ class WithdrawController extends Controller
     /**
      * Store Withdraw Payment Method
      */
-    public function storePayment(Request $request)
+    public function storePayment(Request $request): JsonResponse
     {
         $rules = [
             'name' => 'required|string|max:255',
@@ -69,7 +72,7 @@ class WithdrawController extends Controller
     /**
      * Update Withdraw Payment Method
      */
-    public function updatePayment(Request $request)
+    public function updatePayment(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'name' => [
@@ -114,7 +117,7 @@ class WithdrawController extends Controller
     /**
      * Delete Payment Method
      */
-    public function deletePayment($id)
+    public function deletePayment($id): RedirectResponse
     {
         $paymentMethod = WithdrawPaymentMethod::find($id);
         if ($paymentMethod) {
@@ -127,7 +130,7 @@ class WithdrawController extends Controller
     /**
      * bulkDestroy Payment Method
      */
-    public function bulkDestroy(Request $request)
+    public function bulkDestroy(Request $request): JsonResponse
     {
         $ids = $request->ids;
 

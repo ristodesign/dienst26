@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Page\StoreRequest;
 use App\Http\Requests\Page\UpdateRequest;
@@ -20,7 +23,7 @@ class CustomPageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         // first, get the language info from db
         $language = Language::query()->where('code', '=', $request->language)->firstOrFail();
@@ -43,7 +46,7 @@ class CustomPageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         // get all the languages from db
         $information['languages'] = Language::all();
@@ -57,7 +60,7 @@ class CustomPageController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request): JsonResponse
     {
         $page = new Page;
 
@@ -94,7 +97,7 @@ class CustomPageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         $information['page'] = Page::query()->findOrFail($id);
 
@@ -111,7 +114,7 @@ class CustomPageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRequest $request, $id)
+    public function update(UpdateRequest $request, int $id): JsonResponse
     {
         $page = Page::query()->findOrFail($id);
 
@@ -156,7 +159,7 @@ class CustomPageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id): RedirectResponse
     {
         $page = Page::query()->findOrFail($id);
 
@@ -204,7 +207,7 @@ class CustomPageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function bulkDestroy(Request $request)
+    public function bulkDestroy(Request $request): JsonResponse
     {
         $ids = $request->ids;
 

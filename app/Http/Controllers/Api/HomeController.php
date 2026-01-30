@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\Admin\MobileSection;
@@ -18,7 +19,7 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public function getBasic()
+    public function getBasic(): JsonResponse
     {
         $basicData = DB::table('basic_settings')
             ->select('primary_color', 'secondary_color', 'mobile_app_logo', 'mobile_favicon', 'base_currency_text', 'base_currency_rate')

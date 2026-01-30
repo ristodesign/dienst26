@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Vendor;
 
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\VendorPermissionHelper;
 use App\Models\BasicSettings\Basic;
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Config;
 
 class BuyPlanController extends Controller
 {
-    public function index()
+    public function index(): JsonResponse
     {
         $membership = Membership::first();
         $abs = Basic::first();
@@ -73,7 +74,7 @@ class BuyPlanController extends Controller
         ]);
     }
 
-    public function checkout($package_id)
+    public function checkout($package_id): JsonResponse
     {
         $vendorId = Auth::guard('sanctum_vendor')->user()->id;
         $packageCount = Membership::query()->where([

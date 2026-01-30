@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin\Administrator;
 
+use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Models\RolePermission;
 use Illuminate\Http\Request;
@@ -10,14 +13,14 @@ use Illuminate\Support\Facades\Validator;
 
 class RolePermissionController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $roles = RolePermission::query()->orderByDesc('id')->get();
 
         return view('admin.administrator.role-permission.index', compact('roles'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $rule = ['name' => 'required'];
 
@@ -36,14 +39,14 @@ class RolePermissionController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function permissions($id)
+    public function permissions($id): View
     {
         $role = RolePermission::query()->findOrFail($id);
 
         return view('admin.administrator.role-permission.permissions', compact('role'));
     }
 
-    public function updatePermissions(Request $request, $id)
+    public function updatePermissions(Request $request, $id): RedirectResponse
     {
         $role = RolePermission::query()->find($id);
 
@@ -56,7 +59,7 @@ class RolePermissionController extends Controller
         return redirect()->back();
     }
 
-    public function update(Request $request)
+    public function update(Request $request): JsonResponse
     {
         $rule = ['name' => 'required'];
 
@@ -77,7 +80,7 @@ class RolePermissionController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $role = RolePermission::query()->find($id);
 

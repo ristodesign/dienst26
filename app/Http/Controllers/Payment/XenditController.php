@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Payment;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\VendorCheckoutController;
 use App\Http\Helpers\MegaMailer;
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Http;
 
 class XenditController extends Controller
 {
-    public function paymentProcess($request, $_amount, $_success_url, $_cancel_url, $bs)
+    public function paymentProcess($request, $_amount, $_success_url, $_cancel_url, $bs): RedirectResponse
     {
         $paymentMethod = OnlineGateway::where('keyword', 'xendit')->first();
         $paydata = json_decode($paymentMethod->information, true);
@@ -49,7 +50,7 @@ class XenditController extends Controller
         }
     }
 
-    public function successPayment(Request $request)
+    public function successPayment(Request $request): RedirectResponse
     {
         $requestData = session()->get('request');
         $xendit_id = session()->get('xendit_id');
@@ -163,7 +164,7 @@ class XenditController extends Controller
         }
     }
 
-    public function cancelPayment()
+    public function cancelPayment(): RedirectResponse
     {
         session()->flash('warning', __('cancel_payment'));
 

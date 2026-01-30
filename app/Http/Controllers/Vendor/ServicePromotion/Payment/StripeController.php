@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Vendor\ServicePromotion\Payment;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\ServicePromotion\ServicePromotionController;
 use Auth;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\Session;
 
 class StripeController extends Controller
 {
-    public function index($arrData, $paymentFor, $success_url, $amount)
+    public function index($arrData, $paymentFor, $success_url, $amount): RedirectResponse
     {
         $amount = intval($amount);
         $currencyInfo = $this->getCurrencyInfo();

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\FrontEnd\PaymentGateway;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Shop\PurchaseProcessController;
 use App\Models\PaymentGateway\OnlineGateway;
@@ -24,7 +25,7 @@ class FlutterwaveController extends Controller
         $this->secret_key = $flutterwaveData['secret_key'];
     }
 
-    public function index($arrData, $productList)
+    public function index($arrData, $productList): RedirectResponse
     {
         $title = 'Purchase Product';
         $notifyURL = route('shop.purchase_product.flutterwave.notify');
@@ -86,7 +87,7 @@ class FlutterwaveController extends Controller
         }
     }
 
-    public function notify(Request $request)
+    public function notify(Request $request): RedirectResponse
     {
         // get the information from session
         $productList = session()->get('productCart');

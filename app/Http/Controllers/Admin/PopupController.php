@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Http\Requests\Popup\StoreRequest;
@@ -18,7 +21,7 @@ class PopupController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         // first get the language info from db
         $language = Language::query()->where('code', '=', $request->language)->firstOrFail();
@@ -37,7 +40,7 @@ class PopupController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function popupType()
+    public function popupType(): View
     {
         return view('admin.popup.popup-type');
     }
@@ -47,7 +50,7 @@ class PopupController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($type)
+    public function create($type): View
     {
         $information['popupType'] = $type;
 
@@ -63,7 +66,7 @@ class PopupController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request): JsonResponse
     {
         $imageName = UploadFile::store(public_path('assets/img/popups/'), $request->file('image'));
 
@@ -84,7 +87,7 @@ class PopupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function updateStatus(Request $request, $id)
+    public function updateStatus(Request $request, int $id): RedirectResponse
     {
         $popup = Popup::query()->find($id);
 
@@ -107,7 +110,7 @@ class PopupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         $popup = Popup::query()->findOrFail($id);
 
@@ -121,7 +124,7 @@ class PopupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRequest $request, $id)
+    public function update(UpdateRequest $request, int $id): JsonResponse
     {
         $popup = Popup::query()->find($id);
 
@@ -146,7 +149,7 @@ class PopupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id): RedirectResponse
     {
         $popup = Popup::query()->find($id);
 
@@ -162,7 +165,7 @@ class PopupController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function bulkDestroy(Request $request)
+    public function bulkDestroy(Request $request): JsonResponse
     {
         $ids = $request->ids;
 

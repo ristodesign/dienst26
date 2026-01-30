@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Vendor\Staff;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Language;
 use App\Models\Services\ServiceCategory;
@@ -15,7 +18,7 @@ use Validator;
 
 class StaffServiceController extends Controller
 {
-    public function index($id, Request $request)
+    public function index($id, Request $request): View
     {
         $language = Language::where('code', $request->language)->first();
         $language_id = $language->id;
@@ -39,7 +42,7 @@ class StaffServiceController extends Controller
         return view('vendors.staff.staff-services.service_assign', $information);
     }
 
-    public function getServiceCategory($id, Request $request)
+    public function getServiceCategory($id, Request $request): JsonResponse
     {
         $language = Language::where('code', $request->language)->first();
         $categories = ServiceCategory::join('service_category_contents', 'service_categories.id', '=', 'service_category_contents.service_category_id')
@@ -52,7 +55,7 @@ class StaffServiceController extends Controller
         return response()->json($categories);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $staffServices = StaffService::where('staff_id', $request->staff_id)->where('service_id', $request->service_id)->get();
 
@@ -92,7 +95,7 @@ class StaffServiceController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $staffService = StaffService::query()->where('vendor_id', Auth::guard('vendor')->user()->id)->findOrFail($id);
 
@@ -104,7 +107,7 @@ class StaffServiceController extends Controller
         return redirect()->back()->with('success', __('Staff service deleted successfully!'));
     }
 
-    public function blukDestroy(Request $request)
+    public function blukDestroy(Request $request): JsonResponse
     {
         $ids = $request->ids;
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\FrontEnd\Booking;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Admin\Transaction\TransactionController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Booking\Payment\AuthorizenetController;
@@ -435,7 +436,7 @@ class ServicePaymentController extends Controller
 
     }
 
-    public function cancel()
+    public function cancel(): RedirectResponse
     {
         $notification = ['message' => 'Something went wrong', 'alert-type' => 'error'];
 

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin\BasicSettings;
 
+use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Models\BasicSettings\SocialMedia;
 use Illuminate\Http\Request;
@@ -10,14 +13,14 @@ use Validator;
 
 class SocialMediaController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $information['medias'] = SocialMedia::orderByDesc('id')->get();
 
         return view('admin.basic-settings.social-media.index', $information);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $rules = [
             'icon' => 'required',
@@ -40,7 +43,7 @@ class SocialMediaController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function update(Request $request)
+    public function update(Request $request): JsonResponse
     {
         $rules = [
             'url' => 'required|url',
@@ -62,7 +65,7 @@ class SocialMediaController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         SocialMedia::find($id)->delete();
 

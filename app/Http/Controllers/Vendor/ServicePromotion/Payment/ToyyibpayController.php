@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Vendor\ServicePromotion\Payment;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\ServicePromotion\ServicePromotionController;
 use App\Models\PaymentGateway\OnlineGateway;
@@ -64,7 +65,7 @@ class ToyyibpayController extends Controller
         }
     }
 
-    public function notify(Request $request)
+    public function notify(Request $request): RedirectResponse
     {
         $arrData = session()->get('arrData');
         $ref = session()->get('toyyibpay_ref_id');

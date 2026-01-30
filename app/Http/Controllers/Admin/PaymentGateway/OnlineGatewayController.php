@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin\PaymentGateway;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Models\PaymentGateway\OnlineGateway;
 use Illuminate\Http\Request;
@@ -10,7 +12,7 @@ use Illuminate\Support\Facades\Validator;
 
 class OnlineGatewayController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $data['paypal'] = OnlineGateway::where('keyword', 'paypal')->first();
         $data['instamojo'] = OnlineGateway::where('keyword', 'instamojo')->first();
@@ -38,7 +40,7 @@ class OnlineGatewayController extends Controller
     /**
      * update paypal info
      */
-    public function updatePayPalInfo(Request $request)
+    public function updatePayPalInfo(Request $request): RedirectResponse
     {
         $rules = [
             'paypal_status' => 'required',
@@ -137,7 +139,7 @@ class OnlineGatewayController extends Controller
     /**
      * update instamojo info
      */
-    public function updateInstamojoInfo(Request $request)
+    public function updateInstamojoInfo(Request $request): RedirectResponse
     {
         $rules = [
             'instamojo_status' => 'required',
@@ -171,7 +173,7 @@ class OnlineGatewayController extends Controller
     /**
      * update paystack info
      */
-    public function updatePaystackInfo(Request $request)
+    public function updatePaystackInfo(Request $request): RedirectResponse
     {
         $rules = [
             'paystack_status' => 'required',
@@ -213,7 +215,7 @@ class OnlineGatewayController extends Controller
     /**
      * update nowpayments info
      */
-    public function updateNowPayments(Request $request)
+    public function updateNowPayments(Request $request): RedirectResponse
     {
         $rules = [
             'status' => 'required',
@@ -256,7 +258,7 @@ class OnlineGatewayController extends Controller
     /**
      * update flutterwave info
      */
-    public function updateFlutterwaveInfo(Request $request)
+    public function updateFlutterwaveInfo(Request $request): RedirectResponse
     {
         $rules = [
             'flutterwave_status' => 'required',
@@ -310,7 +312,7 @@ class OnlineGatewayController extends Controller
     /**
      * update razorpay info
      */
-    public function updateRazorpayInfo(Request $request)
+    public function updateRazorpayInfo(Request $request): RedirectResponse
     {
         $rules = [
             'razorpay_status' => 'required',
@@ -347,7 +349,7 @@ class OnlineGatewayController extends Controller
     /**
      * update mercado pago info
      */
-    public function updateMercadoPagoInfo(Request $request)
+    public function updateMercadoPagoInfo(Request $request): RedirectResponse
     {
         $rules = [
             'mercadopago_status' => 'required',
@@ -392,7 +394,7 @@ class OnlineGatewayController extends Controller
     /**
      * update mollie info
      */
-    public function updateMollieInfo(Request $request)
+    public function updateMollieInfo(Request $request): RedirectResponse
     {
         $rules = [
             'mollie_status' => 'required',
@@ -440,7 +442,7 @@ class OnlineGatewayController extends Controller
     /**
      * update stripe info
      */
-    public function updateStripeInfo(Request $request)
+    public function updateStripeInfo(Request $request): RedirectResponse
     {
         $rules = [
             'stripe_status' => 'required',
@@ -494,7 +496,7 @@ class OnlineGatewayController extends Controller
     /**
      * update paytm info
      */
-    public function updatePaytmInfo(Request $request)
+    public function updatePaytmInfo(Request $request): RedirectResponse
     {
         $rules = [
             'paytm_status' => 'required',

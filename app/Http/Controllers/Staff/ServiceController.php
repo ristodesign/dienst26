@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Staff;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Http\Helpers\VendorPermissionHelper;
@@ -29,7 +32,7 @@ use Validator;
 
 class ServiceController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $language = Language::where('code', $request->language)->firstOrFail();
         $information['language_id'] = $language->id;
@@ -118,7 +121,7 @@ class ServiceController extends Controller
     }
 
     // delete slider image after reload
-    public function deleteSliderImage()
+    public function deleteSliderImage(): JsonResponse
     {
         try {
             $images = ServiceImage::all();
@@ -387,7 +390,7 @@ class ServiceController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $staffId = Auth::guard('staff')->user()->id;
         $staff = Staff::findOrFail($staffId);
@@ -448,7 +451,7 @@ class ServiceController extends Controller
         }
     }
 
-    public function bulkDestroy(Request $request)
+    public function bulkDestroy(Request $request): JsonResponse
     {
         $ids = $request->ids;
 
@@ -517,7 +520,7 @@ class ServiceController extends Controller
         return response()->json(['status' => 'success'], 200);
     }
 
-    public function getSucategory(Request $request, $categoryId)
+    public function getSucategory(Request $request, $categoryId): JsonResponse
     {
         $categories = ServiceSubCategory::where('category_id', $categoryId)->get();
 

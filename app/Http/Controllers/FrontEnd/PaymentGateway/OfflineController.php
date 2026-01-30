@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\FrontEnd\PaymentGateway;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Shop\PurchaseProcessController;
 use App\Http\Helpers\UploadFile;
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\Validator;
 
 class OfflineController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): RedirectResponse
     {
         $gatewayId = $request->gateway;
         $offlineGateway = OfflineGateway::query()->findOrFail($gatewayId);

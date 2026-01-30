@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin\Staff;
 
+use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Http\Requests\Staff\StaffStoreRequest;
@@ -87,7 +90,7 @@ class StaffController extends Controller
         return view('admin.staff.staff', $information);
     }
 
-    public function checkPackge(Request $request)
+    public function checkPackge(Request $request): JsonResponse
     {
         if ($request->vendor_id != 0) {
             $current_package = \App\Http\Helpers\VendorPermissionHelper::packagePermission($request->vendor_id);
@@ -99,7 +102,7 @@ class StaffController extends Controller
         }
     }
 
-    public function create()
+    public function create(): View
     {
         $information['vendors'] = Vendor::join('memberships', 'vendors.id', '=', 'memberships.vendor_id')
             ->where([
@@ -185,7 +188,7 @@ class StaffController extends Controller
         return 'success';
     }
 
-    public function edit($id)
+    public function edit($id): View
     {
         $information['languages'] = Language::all();
         $language = Language::where('is_default', 1)->first();
@@ -268,7 +271,7 @@ class StaffController extends Controller
         return 'success';
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         StaffHoliday::where('staff_id', $id)->delete();
         StaffService::where('staff_id', $id)->delete();
@@ -309,7 +312,7 @@ class StaffController extends Controller
         return redirect()->back()->with('success', __('Service deleted successfully!'));
     }
 
-    public function bulkDestroy(Request $request)
+    public function bulkDestroy(Request $request): JsonResponse
     {
         $ids = $request->ids;
 
@@ -373,7 +376,7 @@ class StaffController extends Controller
         return back();
     }
 
-    public function secret_login($id)
+    public function secret_login($id): RedirectResponse
     {
         Session::put('secret_login', 1);
         $staff = Staff::where('id', $id)->first();
@@ -382,7 +385,7 @@ class StaffController extends Controller
         return redirect()->route('staff.dashboard');
     }
 
-    public function permission($id)
+    public function permission($id): View
     {
         $language = Language::where('is_default', 1)->first();
         $language_id = $language->id;
@@ -395,14 +398,14 @@ class StaffController extends Controller
         return view('admin.staff.permission', $information);
     }
 
-    public function changePassword($id)
+    public function changePassword($id): View
     {
         $staffInfo = Staff::findOrFail($id);
 
         return view('admin.staff.change-password', compact('staffInfo'));
     }
 
-    public function updatePassword(Request $request, $id)
+    public function updatePassword(Request $request, $id): JsonResponse
     {
         $rules = [
             'new_password' => 'required|confirmed',
@@ -432,7 +435,7 @@ class StaffController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function permissionUpdate($id, Request $request)
+    public function permissionUpdate($id, Request $request): RedirectResponse
     {
         $staff = Staff::findOrFail($id);
         $staff->update([

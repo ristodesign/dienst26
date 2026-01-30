@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Staff;
 
+use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\Language;
@@ -150,7 +151,7 @@ class AppointmentController extends Controller
         return view('staffs.appointment.rejected', $information);
     }
 
-    public function show($id)
+    public function show($id): View
     {
         $language = Language::where('is_default', 1)->first();
         $language_id = $language->id;

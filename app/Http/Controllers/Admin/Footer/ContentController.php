@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin\Footer;
 
+use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Footer\FooterContent;
 use App\Models\Language;
@@ -12,7 +14,7 @@ use Purifier;
 
 class ContentController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         // first, get the language info from db
         $language = Language::query()->where('code', '=', $request->language)->firstOrFail();
@@ -27,7 +29,7 @@ class ContentController extends Controller
         return view('admin.footer.content', $information);
     }
 
-    public function update(Request $request)
+    public function update(Request $request): JsonResponse
     {
         $rules = [
             'copyright_text' => 'required',

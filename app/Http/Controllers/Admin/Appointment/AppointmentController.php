@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin\Appointment;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Admin\Transaction\TransactionController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Booking\ServicePaymentController;
@@ -25,14 +28,14 @@ use Response;
 
 class AppointmentController extends Controller
 {
-    public function setting(Request $request)
+    public function setting(Request $request): View
     {
         $info['info'] = DB::table('basic_settings')->select('booking_type')->first();
 
         return view('admin.appointment.setting', $info);
     }
 
-    public function updatesetting(Request $request)
+    public function updatesetting(Request $request): RedirectResponse
     {
         $rules = [
             'booking_type' => 'required',
@@ -182,7 +185,7 @@ class AppointmentController extends Controller
         return view('admin.appointment.rejected', $information);
     }
 
-    public function show($id)
+    public function show($id): View
     {
         $language = Language::where('is_default', 1)->first();
         $language_id = $language->id;
@@ -215,7 +218,7 @@ class AppointmentController extends Controller
     /**
      * Update payment status
      */
-    public function updatePaymentStatus(Request $request, $id)
+    public function updatePaymentStatus(Request $request, $id): RedirectResponse
     {
         $language = Language::where('is_default', 1)->first();
         $language_id = $language->id;
@@ -282,7 +285,7 @@ class AppointmentController extends Controller
     /**
      * Update order status
      */
-    public function updateAppointmentStatus(Request $request, $id)
+    public function updateAppointmentStatus(Request $request, $id): RedirectResponse
     {
         $booking = ServiceBooking::findOrFail($id);
         if ($booking->vendor_id != 0) {
@@ -380,7 +383,7 @@ class AppointmentController extends Controller
     }
 
     // refund status change
-    public function updateRefundStatus(Request $request, $id)
+    public function updateRefundStatus(Request $request, $id): RedirectResponse
     {
         $language = Language::where('is_default', 1)->first();
         $language_id = $language->id;
@@ -422,7 +425,7 @@ class AppointmentController extends Controller
         }
     }
 
-    public function staffAssign(Request $request)
+    public function staffAssign(Request $request): JsonResponse
     {
         $ruels = ['staff_id' => 'required'];
         $messages = [
@@ -444,7 +447,7 @@ class AppointmentController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $appointment = ServiceBooking::find($id);
 
@@ -458,7 +461,7 @@ class AppointmentController extends Controller
         return redirect()->back()->with('success', __('Appointment delete successfully!'));
     }
 
-    public function bulkDestroy(Request $request)
+    public function bulkDestroy(Request $request): JsonResponse
     {
         $ids = $request->ids;
 

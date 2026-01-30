@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Payment;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\VendorCheckoutController;
 use App\Http\Helpers\MegaMailer;
@@ -37,7 +38,7 @@ class MyFatoorahController extends Controller
         $this->myfatoorah = MyFatoorah::getInstance($sandboxMode);
     }
 
-    public function paymentProcess($request, $_amount, $_cancel_url)
+    public function paymentProcess($request, $_amount, $_cancel_url): RedirectResponse
     {
         $cancel_url = $_cancel_url;
 
@@ -77,7 +78,7 @@ class MyFatoorahController extends Controller
         }
     }
 
-    public function successPayment(Request $request)
+    public function successPayment(Request $request): RedirectResponse
     {
         $requestData = Session::get('request');
         $bs = Basic::first();
@@ -216,7 +217,7 @@ class MyFatoorahController extends Controller
         return redirect()->route('payment.cancel');
     }
 
-    public function cancelPayment()
+    public function cancelPayment(): RedirectResponse
     {
         session()->flash('warning', __('cancel_payment'));
 

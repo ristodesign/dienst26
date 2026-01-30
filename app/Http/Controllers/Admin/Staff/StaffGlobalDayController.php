@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Staff;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\VendorPermissionHelper;
 use App\Models\Admin\AdminGlobalDay;
@@ -47,7 +48,7 @@ class StaffGlobalDayController extends Controller
         }
     }
 
-    public function weekendChange(Request $request, $id)
+    public function weekendChange(Request $request, $id): RedirectResponse
     {
         if ($request->vendor_id == 'admin') {
             $vendor_id = 0;

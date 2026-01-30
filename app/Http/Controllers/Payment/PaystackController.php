@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Payment;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\VendorCheckoutController;
 use App\Http\Helpers\MegaMailer;
@@ -21,7 +22,7 @@ class PaystackController extends Controller
     /**
      * Redirect the User to Paystack Payment Page
      */
-    public function paymentProcess(Request $request, $_amount, $_email, $_success_url, $bex)
+    public function paymentProcess(Request $request, $_amount, $_email, $_success_url, $bex): RedirectResponse
     {
         $data = OnlineGateway::whereKeyword('paystack')->first();
         $paydata = $data->convertAutoData();
@@ -61,7 +62,7 @@ class PaystackController extends Controller
         return redirect($tranx['data']['authorization_url']);
     }
 
-    public function successPayment(Request $request)
+    public function successPayment(Request $request): RedirectResponse
     {
         $requestData = Session::get('request');
         $bs = Basic::select('base_currency_text', 'base_currency_rate')->first();

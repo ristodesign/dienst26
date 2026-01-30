@@ -28,7 +28,7 @@ class MatchOldPasswordRule implements Rule
      * @param  mixed  $value
      * @return bool
      */
-    public function passes($attribute, $value)
+    public function passes(string $attribute, $value): bool
     {
         if ($this->personType == 'admin') {
             $authAdminPass = Auth::guard('admin')->user()->password;
@@ -54,7 +54,7 @@ class MatchOldPasswordRule implements Rule
      *
      * @return string
      */
-    public function message()
+    public function message(): string
     {
         return __('Your provided current password does not match!');
     }

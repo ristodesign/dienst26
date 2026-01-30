@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Models\BasicSettings\Basic;
@@ -17,7 +20,7 @@ use Validator;
 
 class ServiceCategoryController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $language = Language::where('code', $request->language)->firstOrFail();
 
@@ -34,7 +37,7 @@ class ServiceCategoryController extends Controller
         return view('admin.service-categories.index', $information);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $themeVersion = Basic::query()->pluck('theme_version')->first();
         $rules = [
@@ -82,7 +85,7 @@ class ServiceCategoryController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function update(Request $request)
+    public function update(Request $request): JsonResponse
     {
         $category = ServiceCategory::find($request->id);
 
@@ -138,7 +141,7 @@ class ServiceCategoryController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $servicesCount = ServiceContent::where('category_id', $id)->count();
 
@@ -155,7 +158,7 @@ class ServiceCategoryController extends Controller
         }
     }
 
-    public function bulkDestroy(Request $request)
+    public function bulkDestroy(Request $request): JsonResponse
     {
         $ids = $request->ids;
         $errorOccured = false;

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin\PaymentGateway;
 
+use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Models\PaymentGateway\OfflineGateway;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -12,14 +15,14 @@ use Mews\Purifier\Facades\Purifier;
 
 class OfflineGatewayController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $offlineGateways = OfflineGateway::orderBy('id', 'desc')->get();
 
         return view('admin.payment-gateways.offline-gateways.index', compact('offlineGateways'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $rules = [
             'name' => 'required',
@@ -48,7 +51,7 @@ class OfflineGatewayController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function updateStatus(Request $request, $id)
+    public function updateStatus(Request $request, $id): RedirectResponse
     {
         try {
             $offlineGateway = OfflineGateway::findOrFail($id);
@@ -67,7 +70,7 @@ class OfflineGatewayController extends Controller
         return redirect()->back();
     }
 
-    public function update(Request $request)
+    public function update(Request $request): JsonResponse
     {
         $rules = [
             'name' => 'required',
@@ -102,7 +105,7 @@ class OfflineGatewayController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         try {
             OfflineGateway::findOrFail($id)->delete();

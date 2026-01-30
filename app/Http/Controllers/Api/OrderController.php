@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\MiscellaneousController;
 use App\Models\BasicSettings\Basic;
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 class OrderController extends Controller
 {
     // index
-    public function order(Request $request)
+    public function order(Request $request): JsonResponse
     {
         $misc = new MiscellaneousController;
 
@@ -52,7 +53,7 @@ class OrderController extends Controller
     }
 
     // details
-    public function details($id, Request $request)
+    public function details($id, Request $request): JsonResponse
     {
         $misc = new MiscellaneousController;
 
@@ -109,7 +110,7 @@ class OrderController extends Controller
         ]);
     }
 
-    public function download($id)
+    public function download($id): JsonResponse
     {
         $product = Product::findOrFail($id);
         $filePath = asset('assets/file/products/'.$product->file);

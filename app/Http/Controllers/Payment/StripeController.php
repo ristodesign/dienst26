@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Payment;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\VendorCheckoutController;
 use App\Http\Helpers\MegaMailer;
@@ -173,7 +174,7 @@ class StripeController extends Controller
         return redirect($cancel_url)->with('error', 'Please Enter Valid Credit Card Informations.');
     }
 
-    public function cancelPayment()
+    public function cancelPayment(): RedirectResponse
     {
         $requestData = Session::get('request');
         $paymentFor = Session::get('paymentFor');

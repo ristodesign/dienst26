@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\MiscellaneousController;
 use App\Http\Helpers\BasicMailer;
@@ -24,7 +25,7 @@ use Laravel\Socialite\Facades\Socialite;
 
 class UserController extends Controller
 {
-    public function login(Request $request)
+    public function login(Request $request): JsonResponse
     {
         $misc = new MiscellaneousController;
 
@@ -50,7 +51,7 @@ class UserController extends Controller
     }
 
     // login submit
-    public function loginSubmit(Request $request)
+    public function loginSubmit(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'username' => 'required',
@@ -106,7 +107,7 @@ class UserController extends Controller
     /**
      * Sign up method for user registration.
      */
-    public function signup(Request $request)
+    public function signup(Request $request): JsonResponse
     {
         $misc = new MiscellaneousController;
 
@@ -132,7 +133,7 @@ class UserController extends Controller
     /**
      * Sign up method for user registration submission.
      */
-    public function signupSubmit(Request $request)
+    public function signupSubmit(Request $request): JsonResponse
     {
         $info = Basic::select('google_recaptcha_status', 'website_title')->first();
 
@@ -199,7 +200,7 @@ class UserController extends Controller
         ]);
     }
 
-    public function facebookLogin(Request $request)
+    public function facebookLogin(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'access_token' => 'required|string',
@@ -260,7 +261,7 @@ class UserController extends Controller
     }
 
     // edit profile
-    public function editProfile(Request $request)
+    public function editProfile(Request $request): JsonResponse
     {
         $misc = new MiscellaneousController;
         $data['bgImg'] = asset('assets/img/'.@$misc->getBreadcrumb()->breadcrumb);
@@ -282,7 +283,7 @@ class UserController extends Controller
     }
 
     // update profile
-    public function updateProfile(Request $request)
+    public function updateProfile(Request $request): JsonResponse
     {
 
         $request->validate([
@@ -320,7 +321,7 @@ class UserController extends Controller
     }
 
     // change password
-    public function changePassword(Request $request)
+    public function changePassword(Request $request): JsonResponse
     {
         $misc = new MiscellaneousController;
 
@@ -343,7 +344,7 @@ class UserController extends Controller
     }
 
     // update password
-    public function updatePassword(Request $request)
+    public function updatePassword(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'current_password' => 'required',
@@ -374,7 +375,7 @@ class UserController extends Controller
     }
 
     // logout
-    public function logoutSubmit(Request $request)
+    public function logoutSubmit(Request $request): JsonResponse
     {
         $request->user()->currentAccessToken()->delete();
 
@@ -385,7 +386,7 @@ class UserController extends Controller
     }
 
     // dashboard
-    public function redirectToDashboard(Request $request)
+    public function redirectToDashboard(Request $request): JsonResponse
     {
         $user = Auth::guard('sanctum')->user();
 
@@ -497,7 +498,7 @@ class UserController extends Controller
     }
 
     // add to wishlist
-    public function add_to_wishlist($id)
+    public function add_to_wishlist($id): JsonResponse
     {
         $user_id = Auth::id();
         $check = Wishlist::where('service_id', $id)->where('user_id', $user_id)->first();
@@ -523,7 +524,7 @@ class UserController extends Controller
     }
 
     // remove_wishlist
-    public function remove_wishlist($id)
+    public function remove_wishlist($id): JsonResponse
     {
         $remove = Wishlist::where('service_id', $id)->first();
         if ($remove) {
@@ -544,7 +545,7 @@ class UserController extends Controller
     /**
      * forgetPasswordMail
      */
-    public function forgetPassword(Request $request)
+    public function forgetPassword(Request $request): JsonResponse
     {
         $rules = [
             'email' => [
@@ -612,7 +613,7 @@ class UserController extends Controller
         ]);
     }
 
-    public function resetPasswordSubmit(Request $request)
+    public function resetPasswordSubmit(Request $request): JsonResponse
     {
         $rules = [
             'email' => 'required|email',

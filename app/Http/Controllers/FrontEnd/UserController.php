@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\FrontEnd;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\BasicMailer;
 use App\Models\BasicSettings\Basic;
@@ -41,7 +43,7 @@ class UserController extends Controller
         Config::set('services.google.redirect', url('login/google/callback'));
     }
 
-    public function login(Request $request)
+    public function login(Request $request): View
     {
         $misc = new MiscellaneousController;
 
@@ -89,7 +91,7 @@ class UserController extends Controller
         return $this->authenticationViaProvider('google');
     }
 
-    public function authenticationViaProvider($driver)
+    public function authenticationViaProvider($driver): RedirectResponse
     {
         // get the url from session which will be redirect after login
         if (Session::has('redirectTo')) {
@@ -149,7 +151,7 @@ class UserController extends Controller
         }
     }
 
-    public function loginSubmit(Request $request)
+    public function loginSubmit(Request $request): RedirectResponse
     {
         // get the url from session which will be redirect after login
         if ($request->session()->has('redirectTo')) {
@@ -221,7 +223,7 @@ class UserController extends Controller
         }
     }
 
-    public function forgetPassword()
+    public function forgetPassword(): View
     {
         $misc = new MiscellaneousController;
 
@@ -237,7 +239,7 @@ class UserController extends Controller
         return view('frontend.user.forget-password', $queryResult);
     }
 
-    public function forgetPasswordMail(Request $request)
+    public function forgetPasswordMail(Request $request): RedirectResponse
     {
         $rules = [
             'email' => [
@@ -297,7 +299,7 @@ class UserController extends Controller
         return redirect()->back();
     }
 
-    public function resetPassword()
+    public function resetPassword(): View
     {
         $misc = new MiscellaneousController;
 
@@ -306,7 +308,7 @@ class UserController extends Controller
         return view('frontend.user.reset-password', compact('bgImg'));
     }
 
-    public function resetPasswordSubmit(Request $request)
+    public function resetPasswordSubmit(Request $request): RedirectResponse
     {
         if ($request->session()->has('userEmail')) {
             // get the user email from session
@@ -337,7 +339,7 @@ class UserController extends Controller
         return redirect()->route('user.login');
     }
 
-    public function signup()
+    public function signup(): View
     {
         $misc = new MiscellaneousController;
 
@@ -416,7 +418,7 @@ class UserController extends Controller
         return back()->with('success', __('A verification mail has been sent to your email address'));
     }
 
-    public function signupVerify($id)
+    public function signupVerify($id): RedirectResponse
     {
         $user = User::where('id', $id)->firstOrFail();
         $user->email_verified_at = Carbon::now();
@@ -426,7 +428,7 @@ class UserController extends Controller
         return redirect()->route('user.dashboard');
     }
 
-    public function redirectToDashboard()
+    public function redirectToDashboard(): View
     {
         $misc = new MiscellaneousController;
 
@@ -450,7 +452,7 @@ class UserController extends Controller
         return view('frontend.user.dashboard', $queryResult);
     }
 
-    public function editProfile()
+    public function editProfile(): View
     {
         $misc = new MiscellaneousController;
 
@@ -463,7 +465,7 @@ class UserController extends Controller
         return view('frontend.user.edit-profile', $queryResult);
     }
 
-    public function updateProfile(Request $request)
+    public function updateProfile(Request $request): RedirectResponse
     {
 
         $request->validate([
@@ -499,7 +501,7 @@ class UserController extends Controller
         return redirect()->back();
     }
 
-    public function changePassword()
+    public function changePassword(): View
     {
         $misc = new MiscellaneousController;
 
@@ -510,7 +512,7 @@ class UserController extends Controller
         return view('frontend.user.change-password', compact('bgImg', 'pageHeading'));
     }
 
-    public function updatePassword(Request $request)
+    public function updatePassword(Request $request): RedirectResponse
     {
         $rules = [
             'current_password' => [
@@ -637,7 +639,7 @@ class UserController extends Controller
         }
     }
 
-    public function logoutSubmit(Request $request)
+    public function logoutSubmit(Request $request): RedirectResponse
     {
         Auth::guard('web')->logout();
         Session::forget('secret_login');

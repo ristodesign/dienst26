@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Staff;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Http\Helpers\VendorPermissionHelper;
@@ -28,7 +29,7 @@ class PluginController extends Controller
         ]);
     }
 
-    public function updateCalendar(Request $request)
+    public function updateCalendar(Request $request): RedirectResponse
     {
         $request->validate([
             'google_calendar' => 'required|mimes:json',

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Payment;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\VendorCheckoutController;
 use App\Http\Helpers\MegaMailer;
@@ -27,7 +29,7 @@ class RazorpayController extends Controller
         $this->api = new Api($this->keyId, $this->keySecret);
     }
 
-    public function paymentProcess(Request $request, $_amount, $_item_number, $_cancel_url, $_success_url, $_title, $_description, $bs)
+    public function paymentProcess(Request $request, $_amount, $_item_number, $_cancel_url, $_success_url, $_title, $_description, $bs): View
     {
         $cancel_url = $_cancel_url;
         $notify_url = $_success_url;
@@ -82,7 +84,7 @@ class RazorpayController extends Controller
         return view('front.razorpay', compact('data', 'displayCurrency', 'json', 'notify_url'));
     }
 
-    public function successPayment(Request $request)
+    public function successPayment(Request $request): RedirectResponse
     {
         $requestData = Session::get('request');
         if (session()->has('lang')) {
@@ -210,7 +212,7 @@ class RazorpayController extends Controller
         }
     }
 
-    public function cancelPayment()
+    public function cancelPayment(): RedirectResponse
     {
         $requestData = Session::get('request');
         $paymentFor = Session::get('paymentFor');

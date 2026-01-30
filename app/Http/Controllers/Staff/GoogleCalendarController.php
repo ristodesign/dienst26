@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Staff;
 
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\MiscellaneousController;
 use App\Models\Services\ServiceContent;
@@ -14,7 +15,7 @@ use Google\Service\Calendar;
 
 class GoogleCalendarController extends Controller
 {
-    public function createEvent($data)
+    public function createEvent($data): JsonResponse
     {
         try {
             $misc = new MiscellaneousController;

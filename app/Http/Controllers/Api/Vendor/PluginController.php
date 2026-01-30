@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Vendor;
 
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Http\Helpers\VendorPermissionHelper;
@@ -30,7 +31,7 @@ class PluginController extends Controller
         ]);
     }
 
-    public function zoomUpdate(Request $request)
+    public function zoomUpdate(Request $request): JsonResponse
     {
         $rules = [
             'zoom_account_id' => 'required',
@@ -63,7 +64,7 @@ class PluginController extends Controller
         ]);
     }
 
-    public function updateCalendar(Request $request)
+    public function updateCalendar(Request $request): JsonResponse
     {
         $data = VendorPlugin::where('vendor_id', Auth::guard('sanctum_vendor')->user()->id)
             ->select('google_calendar')

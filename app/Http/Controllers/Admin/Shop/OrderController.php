@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin\Shop;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Exports\ProductOrdersExport;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\BasicMailer;
@@ -46,7 +49,7 @@ class OrderController extends Controller
         return view('admin.shop.order.index', compact('orders'));
     }
 
-    public function updatePaymentStatus(Request $request, $id)
+    public function updatePaymentStatus(Request $request, $id): RedirectResponse
     {
         $order = ProductOrder::find($id);
 
@@ -154,7 +157,7 @@ class OrderController extends Controller
         return $fileName;
     }
 
-    public function updateOrderStatus(Request $request, $id)
+    public function updateOrderStatus(Request $request, $id): RedirectResponse
     {
         $order = ProductOrder::find($id);
 
@@ -234,7 +237,7 @@ class OrderController extends Controller
         }
     }
 
-    public function show($id)
+    public function show($id): View
     {
         $order = ProductOrder::findOrFail($id);
 
@@ -255,7 +258,7 @@ class OrderController extends Controller
         return view('admin.shop.order.details', $information);
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $order = ProductOrder::find($id);
 
@@ -279,7 +282,7 @@ class OrderController extends Controller
         return redirect()->back()->with('success', __('Order deleted successfully!'));
     }
 
-    public function bulkDestroy(Request $request)
+    public function bulkDestroy(Request $request): JsonResponse
     {
         $ids = $request->ids;
 

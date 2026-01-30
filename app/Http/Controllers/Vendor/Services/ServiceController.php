@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Vendor\Services;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Http\Helpers\VendorPermissionHelper;
@@ -31,7 +34,7 @@ use Validator;
 
 class ServiceController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $language = Language::where('code', $request->language)->firstOrFail();
 
@@ -76,7 +79,7 @@ class ServiceController extends Controller
         return view('vendors.services.index', $information);
     }
 
-    public function create()
+    public function create(): View
     {
         $information['languages'] = Language::all();
         $information['currencyInfo'] = $this->getCurrencyInfo();
@@ -122,7 +125,7 @@ class ServiceController extends Controller
     }
 
     // delete slider image after reload
-    public function deleteSliderImage()
+    public function deleteSliderImage(): JsonResponse
     {
         try {
             $images = ServiceImage::all();
@@ -314,7 +317,7 @@ class ServiceController extends Controller
         return 'success';
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $hasService = checkService($id);
 
@@ -384,7 +387,7 @@ class ServiceController extends Controller
         }
     }
 
-    public function bulkDestroy(Request $request)
+    public function bulkDestroy(Request $request): JsonResponse
     {
         $ids = $request->ids;
 
@@ -479,17 +482,17 @@ class ServiceController extends Controller
     }
 
     // onlineSuccess
-    public function onlineSuccess()
+    public function onlineSuccess(): View
     {
         return view('vendors.services.online-success');
     }
 
-    public function offlineSuccess()
+    public function offlineSuccess(): View
     {
         return view('vendors.services.offline-success');
     }
 
-    public function getSucategory(Request $request, $categoryId)
+    public function getSucategory(Request $request, $categoryId): JsonResponse
     {
         $categories = ServiceSubCategory::where('category_id', $categoryId)->get();
 

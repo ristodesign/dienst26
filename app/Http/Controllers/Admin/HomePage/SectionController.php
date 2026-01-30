@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin\HomePage;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Models\Admin\SectionContent;
@@ -16,7 +19,7 @@ use Purifier;
 
 class SectionController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $sectionInfo = Section::query()->first();
 
@@ -26,7 +29,7 @@ class SectionController extends Controller
         return view('admin.home-page.section-customization', compact('sectionInfo', 'themeVersion', 'customSectons'));
     }
 
-    public function update(Request $request)
+    public function update(Request $request): RedirectResponse
     {
         $sectionInfo = Section::query()->first();
 
@@ -40,7 +43,7 @@ class SectionController extends Controller
     /**
      * home page section content
      */
-    public function sectionContent(Request $request)
+    public function sectionContent(Request $request): View
     {
         $Language = Language::where('code', $request->language)->first();
         $information['langs'] = Language::all();
@@ -54,7 +57,7 @@ class SectionController extends Controller
     /**
      * home page section update
      */
-    public function updateContent(Request $request)
+    public function updateContent(Request $request): JsonResponse
     {
         $Language = Language::where('code', $request->language)->first();
         $information['languages'] = Language::all();

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Vendor\ServicePromotion\Payment;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\ServicePromotion\ServicePromotionController;
 use App\Models\PaymentGateway\OnlineGateway;
@@ -43,7 +44,7 @@ class YocoController extends Controller
         }
     }
 
-    public function notify()
+    public function notify(): RedirectResponse
     {
         $arrData = Session::get('arrData');
         $id = Session::get('yoco_id');

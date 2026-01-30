@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\FrontEnd\PaymentGateway;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Shop\PurchaseProcessController;
 use App\Models\BasicSettings\Basic;
@@ -33,7 +34,7 @@ class MyFatoorahController extends Controller
         $this->myfatoorah = MyFatoorah::getInstance($sandboxMode);
     }
 
-    public function index($arrData, $productList)
+    public function index($arrData, $productList): RedirectResponse
     {
         $info = OnlineGateway::where('keyword', 'myfatoorah')->first();
         $information = json_decode($info->information, true);
@@ -71,7 +72,7 @@ class MyFatoorahController extends Controller
         }
     }
 
-    public function notify(Request $request)
+    public function notify(Request $request): RedirectResponse
     {
         // get the information from session
         $arrData = session()->get('arrData');

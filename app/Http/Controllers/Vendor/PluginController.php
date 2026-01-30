@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Vendor;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Http\Helpers\VendorPermissionHelper;
@@ -28,7 +29,7 @@ class PluginController extends Controller
         return view('vendors.plugins.index', compact('data'));
     }
 
-    public function zoomUpdate(Request $request)
+    public function zoomUpdate(Request $request): RedirectResponse
     {
         $rules = [
             'zoom_account_id' => 'required',
@@ -57,7 +58,7 @@ class PluginController extends Controller
         return redirect()->back();
     }
 
-    public function updateCalendar(Request $request)
+    public function updateCalendar(Request $request): RedirectResponse
     {
         $data = VendorPlugin::where('vendor_id', Auth::guard('vendor')->user()->id)
             ->select('google_calendar')

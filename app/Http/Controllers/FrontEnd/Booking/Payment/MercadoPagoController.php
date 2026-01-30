@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Frontend\Booking\Payment;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Booking\ServicePaymentController;
 use App\Http\Controllers\WhatsAppController;
@@ -24,7 +26,7 @@ class MercadoPagoController extends Controller
         $this->sandbox_status = $mercadopagoData['sandbox_status'];
     }
 
-    public function index($arrData, $paymentFor, $cancel_url, $amount)
+    public function index($arrData, $paymentFor, $cancel_url, $amount): JsonResponse
     {
         $customerpaid = intval($amount);
 
@@ -91,7 +93,7 @@ class MercadoPagoController extends Controller
         }
     }
 
-    public function notify(Request $request)
+    public function notify(Request $request): RedirectResponse
     {
         $arrData = session()->get('arrData');
 

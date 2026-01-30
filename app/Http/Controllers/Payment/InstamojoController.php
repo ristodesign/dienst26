@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Payment;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\VendorCheckoutController;
 use App\Http\Helpers\Instamojo;
@@ -19,7 +20,7 @@ use PHPMailer\PHPMailer\Exception;
 
 class InstamojoController extends Controller
 {
-    public function paymentProcess(Request $request, $_amount, $_success_url, $_cancel_url, $_title, $bex)
+    public function paymentProcess(Request $request, $_amount, $_success_url, $_cancel_url, $_title, $bex): RedirectResponse
     {
         $data = OnlineGateway::whereKeyword('instamojo')->first();
         $paydata = $data->convertAutoData();
@@ -56,7 +57,7 @@ class InstamojoController extends Controller
         }
     }
 
-    public function successPayment(Request $request)
+    public function successPayment(Request $request): RedirectResponse
     {
         $requestData = Session::get('request');
         if (session()->has('lang')) {
@@ -168,7 +169,7 @@ class InstamojoController extends Controller
         return redirect($cancel_url);
     }
 
-    public function cancelPayment()
+    public function cancelPayment(): RedirectResponse
     {
         $requestData = Session::get('request');
         $paymentFor = Session::get('paymentFor');

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\FrontEnd\Shop;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\MiscellaneousController;
 use App\Http\Controllers\FrontEnd\PaymentGateway\AuthorizenetController;
@@ -437,7 +439,7 @@ class PurchaseProcessController extends Controller
 
     }
 
-    public function complete($type = null)
+    public function complete($type = null): View
     {
         $misc = new MiscellaneousController;
 
@@ -448,7 +450,7 @@ class PurchaseProcessController extends Controller
         return view('frontend.payment.purchase-success', $queryResult);
     }
 
-    public function cancel(Request $request)
+    public function cancel(Request $request): RedirectResponse
     {
         $notification = ['message' => 'Something went wrong', 'alert-type' => 'error'];
 

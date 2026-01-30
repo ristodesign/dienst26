@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin\User;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\BasicMailer;
 use App\Models\Subscriber;
@@ -28,7 +31,7 @@ class SubscriberController extends Controller
         return view('admin.end-user.subscriber.index', compact('subscribers'));
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         try {
             Subscriber::query()->findOrFail($id)->delete();
@@ -39,7 +42,7 @@ class SubscriberController extends Controller
         }
     }
 
-    public function bulkDestroy(Request $request)
+    public function bulkDestroy(Request $request): JsonResponse
     {
         $ids = $request->ids;
 
@@ -52,12 +55,12 @@ class SubscriberController extends Controller
         return response()->json(['status' => 'success'], 200);
     }
 
-    public function writeEmail()
+    public function writeEmail(): View
     {
         return view('admin.end-user.subscriber.write-email');
     }
 
-    public function prepareEmail(Request $request)
+    public function prepareEmail(Request $request): RedirectResponse
     {
         $subscribers = Subscriber::all();
 

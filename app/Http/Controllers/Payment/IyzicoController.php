@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Payment;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\VendorCheckoutController;
 use App\Http\Helpers\VendorPermissionHelper;
@@ -12,7 +13,7 @@ use Illuminate\Http\Request;
 
 class IyzicoController extends Controller
 {
-    public function paymentProcess(Request $request, $_amount, $_success_url, $_cancel_url, $_title, $bex)
+    public function paymentProcess(Request $request, $_amount, $_success_url, $_cancel_url, $_title, $bex): RedirectResponse
     {
         // get vendor details for iyzico payment configuration
         $name = Vendor::where('id', $request->vendor_id)->value('username');
@@ -109,7 +110,7 @@ class IyzicoController extends Controller
         }
     }
 
-    public function successPayment()
+    public function successPayment(): RedirectResponse
     {
         $paymentFor = session()->get('paymentFor');
         $requestData = session()->get('request');
@@ -131,7 +132,7 @@ class IyzicoController extends Controller
         return redirect()->route('success.page');
     }
 
-    public function cancelPayment()
+    public function cancelPayment(): RedirectResponse
     {
         $requestData = session()->get('request');
         $paymentFor = session()->get('paymentFor');

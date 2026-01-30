@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\MiscellaneousController;
 use App\Http\Controllers\FrontEnd\VendorDistanceController;
@@ -280,7 +281,7 @@ class VendorController extends Controller
     /**
      * send email to vendor
      */
-    public function contact(Request $request)
+    public function contact(Request $request): JsonResponse
     {
         $rules = [
             'name' => 'required',

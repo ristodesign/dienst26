@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Payment;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\VendorCheckoutController;
 use App\Http\Helpers\MegaMailer;
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ToyyibpayController extends Controller
 {
-    public function paymentProcess($request, $_amount, $_success_url, $_cancel_url)
+    public function paymentProcess($request, $_amount, $_success_url, $_cancel_url): RedirectResponse
     {
         $info = OnlineGateway::where('keyword', 'toyyibpay')->first();
         $paydata = json_decode($info->information, true);
@@ -67,7 +68,7 @@ class ToyyibpayController extends Controller
         }
     }
 
-    public function successPayment(Request $request)
+    public function successPayment(Request $request): RedirectResponse
     {
         $requestData = session()->get('request');
         $ref = session()->get('toyyibpay_ref_id');
@@ -177,7 +178,7 @@ class ToyyibpayController extends Controller
         }
     }
 
-    public function cancelPayment()
+    public function cancelPayment(): RedirectResponse
     {
         session()->flash('warning', __('cancel_payment'));
 

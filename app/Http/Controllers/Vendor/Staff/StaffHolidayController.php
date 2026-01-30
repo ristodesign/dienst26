@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Vendor\Staff;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Language;
 use App\Models\Staff\Staff;
@@ -13,7 +16,7 @@ use Illuminate\Support\Facades\Validator;
 
 class StaffHolidayController extends Controller
 {
-    public function index($id)
+    public function index($id): View
     {
         $language = Language::where('is_default', 1)->first();
         $language_id = $language->id;
@@ -28,7 +31,7 @@ class StaffHolidayController extends Controller
         return view('vendors.staff.staff-holiday.index', $information);
     }
 
-    public function changeStaffSetting(Request $request, $id)
+    public function changeStaffSetting(Request $request, $id): RedirectResponse
     {
         $staffday = Staff::where('vendor_id', Auth::guard('vendor')->user()->id)->find($id);
         if ($staffday) {
@@ -43,7 +46,7 @@ class StaffHolidayController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $rules = ['date' => 'required'];
 
@@ -76,7 +79,7 @@ class StaffHolidayController extends Controller
         }
     }
 
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request, $id): RedirectResponse
     {
 
         $UserStaffHoliday = StaffHoliday::where('staff_id', $request->staff_id)->find($id);
@@ -86,7 +89,7 @@ class StaffHolidayController extends Controller
         return redirect()->back()->with('success', __('Holiday delete successfully!'));
     }
 
-    public function blukDestroy(Request $request)
+    public function blukDestroy(Request $request): JsonResponse
     {
         $ids = $request->ids;
 

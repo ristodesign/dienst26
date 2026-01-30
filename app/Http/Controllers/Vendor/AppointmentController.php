@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Vendor;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Booking\ServicePaymentController;
 use App\Http\Controllers\WhatsAppController;
@@ -22,7 +25,7 @@ use Response;
 
 class AppointmentController extends Controller
 {
-    public function setting(Request $request)
+    public function setting(Request $request): View
     {
         $info['info'] = Vendor::where('id', Auth::guard('vendor')->user()->id)
             ->select('booking_type')->first();
@@ -30,7 +33,7 @@ class AppointmentController extends Controller
         return view('vendors.appointment.setting', $info);
     }
 
-    public function updatesetting(Request $request)
+    public function updatesetting(Request $request): RedirectResponse
     {
         $rules = [
             'booking_type' => 'required',
@@ -184,7 +187,7 @@ class AppointmentController extends Controller
         return view('vendors.appointment.rejected', $information);
     }
 
-    public function show($id)
+    public function show($id): View
     {
         $language = Language::where('is_default', 1)->first();
         $language_id = $language->id;
@@ -208,7 +211,7 @@ class AppointmentController extends Controller
         return view('vendors.appointment.details', $information);
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $appointment = ServiceBooking::where('vendor_id', Auth::guard('vendor')->user()->id)->findOrFail($id);
         // delete the attachment
@@ -219,7 +222,7 @@ class AppointmentController extends Controller
         return redirect()->back()->with('success', __('Appointment delete successfully!'));
     }
 
-    public function bulkDestroy(Request $request)
+    public function bulkDestroy(Request $request): JsonResponse
     {
         $ids = $request->ids;
 
@@ -237,7 +240,7 @@ class AppointmentController extends Controller
     }
 
     // order status change
-    public function updateAppointmentStatus(Request $request, $id)
+    public function updateAppointmentStatus(Request $request, $id): RedirectResponse
     {
         $language = Language::where('is_default', 1)->first();
         $language_id = $language->id;
@@ -337,7 +340,7 @@ class AppointmentController extends Controller
         return redirect()->back()->with('success', __('Appointment status update successful!'));
     }
 
-    public function staffAssign(Request $request)
+    public function staffAssign(Request $request): JsonResponse
     {
         $ruels = ['staff_id' => 'required'];
         $messages = [

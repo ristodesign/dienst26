@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Vendor;
 
+use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Transaction;
 use App\Models\Vendor;
@@ -17,7 +20,7 @@ use Validator;
 
 class VendorWithdrawController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $collection = Withdraw::with('method')
             ->where('vendor_id', Auth::guard('vendor')->user()->id)
@@ -28,7 +31,7 @@ class VendorWithdrawController extends Controller
     }
 
     // create
-    public function create()
+    public function create(): View
     {
         $information = [];
         $methods = WithdrawPaymentMethod::where('status', '=', 1)->get();
@@ -62,7 +65,7 @@ class VendorWithdrawController extends Controller
     }
 
     // send_request
-    public function send_request(Request $request)
+    public function send_request(Request $request): JsonResponse
     {
         $method = WithdrawPaymentMethod::where('id', $request->withdraw_method)->first();
         $vendor = Vendor::where('id', Auth::guard('vendor')->user()->id)->first();
@@ -169,7 +172,7 @@ class VendorWithdrawController extends Controller
     }
 
     // bulkDelete
-    public function bulkDelete(Request $request)
+    public function bulkDelete(Request $request): JsonResponse
     {
         $ids = $request->ids;
         foreach ($ids as $id) {
@@ -182,7 +185,7 @@ class VendorWithdrawController extends Controller
     }
 
     // Delete
-    public function Delete(Request $request)
+    public function Delete(Request $request): RedirectResponse
     {
         $withdraw = Withdraw::where('id', $request->id)->first();
         $vendor = Vendor::find(Auth::guard('vendor')->user()->id);

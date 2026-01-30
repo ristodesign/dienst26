@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\FrontEnd;
 
+use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use App\Models\Package;
 
 class PricingController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $misc = new MiscellaneousController;
         $language = $misc->getLanguage();

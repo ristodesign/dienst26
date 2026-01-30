@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Payment;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\VendorCheckoutController;
 use App\Http\Helpers\MegaMailer;
@@ -28,7 +29,7 @@ class FlutterWaveController extends Controller
         $this->secret_key = $paydata['secret_key'];
     }
 
-    public function paymentProcess(Request $request, $_amount, $_email, $_item_number, $_successUrl, $_cancelUrl, $bex)
+    public function paymentProcess(Request $request, $_amount, $_email, $_item_number, $_successUrl, $_cancelUrl, $bex): RedirectResponse
     {
         $cancel_url = $_cancelUrl;
         $notify_url = $_successUrl;
@@ -81,7 +82,7 @@ class FlutterWaveController extends Controller
         return redirect()->to($transaction->data->link);
     }
 
-    public function successPayment(Request $request)
+    public function successPayment(Request $request): RedirectResponse
     {
         $requestData = Session::get('request');
         if (session()->has('lang')) {
@@ -217,7 +218,7 @@ class FlutterWaveController extends Controller
         return redirect($cancel_url);
     }
 
-    public function cancelPayment()
+    public function cancelPayment(): RedirectResponse
     {
         $requestData = Session::get('request');
         $paymentFor = Session::get('paymentFor');

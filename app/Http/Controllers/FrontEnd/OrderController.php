@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\FrontEnd;
 
+use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use App\Http\Controllers\Controller;
 use App\Models\BasicSettings\Basic;
 use App\Models\Shop\Product;
@@ -12,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 class OrderController extends Controller
 {
     // index
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $misc = new MiscellaneousController;
 
@@ -86,7 +88,7 @@ class OrderController extends Controller
         }
     }
 
-    public function download($id)
+    public function download($id): BinaryFileResponse
     {
         $product = Product::findOrFail($id);
         $filePath = public_path('assets/file/products/'.$product->file);
