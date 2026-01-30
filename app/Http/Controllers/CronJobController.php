@@ -363,7 +363,7 @@ class CronJobController extends Controller
         // Basic info
         $websiteTitle = optional(Basic::select('website_title')->first())->website_title ?? 'Website';
         $vendorName = optional(VendorInfo::where('vendor_id', $featuredRequest->vendor_id)->first())->name ?? 'Vendor';
-        $vendorEmail = optional($featuredRequest->vendor)->email;
+        $vendorEmail = $featuredRequest->vendor?->email;
 
         // Update payment status
         $paymentStatus = $status;

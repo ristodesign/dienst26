@@ -79,7 +79,7 @@
                             {{ $item->withdraw_id }}
                           </td>
                           <td>
-                            {{ optional($item->method)->name }}
+                            {{ $item->method?->name }}
                           </td>
 
                           <td>
