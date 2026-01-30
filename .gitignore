@@ -49,3 +49,5 @@ public/css/*
 public/js/*
 !public/css/app.css   # optional: keep if you commit built assets
 !public/js/app.js
+
+/.phpunit.cache
