@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Staff;
 
-use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Http\Helpers\VendorPermissionHelper;
 use App\Models\Staff\Staff;
 use App\Models\Staff\StaffPlugin;
 use Auth;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class PluginController extends Controller

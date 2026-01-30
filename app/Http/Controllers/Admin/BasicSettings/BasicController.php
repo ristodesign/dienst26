@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Admin\BasicSettings;
 
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Http\Requests\MailFromAdminRequest;
@@ -12,11 +10,13 @@ use App\Models\Timezone;
 use App\Models\Vendor;
 use App\Rules\ImageMimeTypeRule;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 use Mews\Purifier\Facades\Purifier;
 
 class BasicController extends Controller

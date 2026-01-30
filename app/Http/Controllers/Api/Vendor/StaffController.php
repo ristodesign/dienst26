@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\Vendor;
 
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Http\Helpers\VendorPermissionHelper;
@@ -19,6 +18,7 @@ use App\Models\Staff\StaffPlugin;
 use App\Models\Staff\StaffService;
 use App\Models\Staff\StaffServiceHour;
 use Hash;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;

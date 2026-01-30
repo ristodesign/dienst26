@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Payment;
 
-use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\VendorCheckoutController;
 use App\Http\Helpers\VendorPermissionHelper;
 use App\Models\BasicSettings\Basic;
 use App\Models\PaymentGateway\OnlineGateway;
 use App\Models\Vendor;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class IyzicoController extends Controller

@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Admin\AboutUs;
 
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Models\BasicSettings\AboutUs;
@@ -11,8 +9,10 @@ use App\Models\CustomSection;
 use App\Models\HomePage\Section;
 use App\Models\Language;
 use App\Rules\ImageMimeTypeRule;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 use Purifier;
 
 class AboutSectionController extends Controller

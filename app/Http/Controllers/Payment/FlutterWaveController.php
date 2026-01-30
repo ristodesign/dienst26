@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Payment;
 
-use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\VendorCheckoutController;
 use App\Http\Helpers\MegaMailer;
@@ -12,6 +11,7 @@ use App\Models\Language;
 use App\Models\Package;
 use App\Models\PaymentGateway\OnlineGateway;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 

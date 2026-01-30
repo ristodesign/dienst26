@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class SummernoteController extends Controller

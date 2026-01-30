@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\FrontEnd\Shop;
 
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\MiscellaneousController;
 use App\Http\Controllers\FrontEnd\PaymentGateway\AuthorizenetController;
@@ -35,10 +33,12 @@ use App\Models\Shop\ProductOrder;
 use App\Models\Shop\ProductPurchaseItem;
 use App\Models\Shop\ShippingCharge;
 use App\Rules\ImageMimeTypeRule;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 use PDF;
 
 class PurchaseProcessController extends Controller

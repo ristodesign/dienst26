@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\FrontEnd;
 
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Services\ServiceContent;
 use App\Models\Staff\Staff;
@@ -11,6 +10,7 @@ use Carbon\Carbon;
 use DB;
 use Google\Client as Google_Client;
 use Google\Service\Calendar;
+use Illuminate\Http\JsonResponse;
 
 class GoogleCalendarController extends Controller
 {

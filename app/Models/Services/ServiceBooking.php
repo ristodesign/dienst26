@@ -2,8 +2,6 @@
 
 namespace App\Models\Services;
 
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Staff\Staff;
 use App\Models\Staff\StaffServiceHour;
 use App\Models\User;
@@ -11,6 +9,8 @@ use App\Models\Vendor;
 use App\Models\VendorInfo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ServiceBooking extends Model
 {

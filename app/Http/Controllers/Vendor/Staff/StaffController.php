@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers\Vendor\Staff;
 
-use Illuminate\View\View;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Http\Helpers\VendorPermissionHelper;
@@ -22,7 +19,10 @@ use App\Models\Staff\StaffService;
 use App\Models\Staff\StaffServiceHour;
 use Auth;
 use Hash;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Purifier;
 use Response;
 use Session;

@@ -2,10 +2,10 @@
 
 namespace App\Models\Staff;
 
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Admin\AdminGlobalDay;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class StaffGlobalHour extends Model
 {

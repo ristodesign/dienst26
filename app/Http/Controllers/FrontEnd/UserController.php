@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\FrontEnd;
 
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\BasicMailer;
 use App\Models\BasicSettings\Basic;
@@ -16,6 +14,7 @@ use App\Models\User;
 use App\Rules\MatchEmailRule;
 use App\Rules\MatchOldPasswordRule;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -24,6 +23,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\View\View;
 use Laravel\Socialite\Facades\Socialite;
 
 class UserController extends Controller

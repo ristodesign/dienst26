@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Admin\Withdraw;
 
-use Illuminate\Http\JsonResponse;
-use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use App\Models\Withdraw\WithdrawMethodInput;
 use App\Models\Withdraw\WithdrawMethodOption;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 use Response;
 
 class WithdrawPaymentMethodInputController extends Controller
@@ -134,7 +134,7 @@ class WithdrawPaymentMethodInputController extends Controller
                         }
                     }
                 },
-        ],
+            ],
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);

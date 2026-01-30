@@ -19,7 +19,7 @@ class Instamojo
      * @param  string  $endpoint  can be set if you are working on an alternative server.
      * @return array AuthToken object.
      */
-    public function __construct(string $api_key, string $auth_token = null, string $endpoint = null)
+    public function __construct(string $api_key, ?string $auth_token = null, ?string $endpoint = null)
     {
         $this->api_key = (string) $api_key;
         $this->auth_token = (string) $auth_token;

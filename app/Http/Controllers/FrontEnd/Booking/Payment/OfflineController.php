@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\FrontEnd\Booking\Payment;
 
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Booking\ServicePaymentController;
 use App\Http\Controllers\WhatsAppController;
 use App\Http\Helpers\UploadFile;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Session;
 
 class OfflineController extends Controller

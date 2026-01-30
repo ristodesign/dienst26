@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Page\StoreRequest;
 use App\Http\Requests\Page\UpdateRequest;
@@ -13,7 +10,10 @@ use App\Models\BasicSettings\SEO;
 use App\Models\CustomPage\Page;
 use App\Models\CustomPage\PageContent;
 use App\Models\Language;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Mews\Purifier\Facades\Purifier;
 
 class CustomPageController extends Controller

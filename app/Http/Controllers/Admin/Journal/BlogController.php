@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers\Admin\Journal;
 
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Http\Requests\Blog\StoreRequest;
@@ -12,8 +9,11 @@ use App\Http\Requests\Blog\UpdateRequest;
 use App\Models\Journal\Blog;
 use App\Models\Journal\BlogInformation;
 use App\Models\Language;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
+use Illuminate\View\View;
 use Mews\Purifier\Facades\Purifier;
 
 class BlogController extends Controller

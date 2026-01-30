@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers\Admin\FeaturedService;
 
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\BasicMailer;
 use App\Models\BasicSettings\Basic;
@@ -14,7 +11,10 @@ use App\Models\FeaturedService\ServicePromotion;
 use App\Models\Language;
 use App\Models\VendorInfo;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use PDF;
 use Response;
 use Validator;

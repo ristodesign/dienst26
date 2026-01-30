@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Vendor\ServicePromotion\Payment;
 
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\ServicePromotion\ServicePromotionController;
 use App\Http\Helpers\UploadFile;
 use App\Models\FeaturedService\FeaturedServiceCharge;
 use App\Models\PaymentGateway\OfflineGateway;
 use App\Rules\ImageMimeTypeRule;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Response;

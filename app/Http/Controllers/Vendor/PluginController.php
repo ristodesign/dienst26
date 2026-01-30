@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Vendor;
 
-use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Http\Helpers\VendorPermissionHelper;
 use App\Models\VendorPlugins\VendorPlugin;
 use Auth;
 use DB;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Session;
 use Validator;

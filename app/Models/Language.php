@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Models\BasicSettings\AboutUs;
 use App\Models\BasicSettings\CookieAlert;
 use App\Models\BasicSettings\PageHeading;
@@ -25,6 +22,9 @@ use App\Models\Shop\ShippingCharge;
 use App\Models\Staff\StaffContent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Language extends Model
 {

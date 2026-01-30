@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api\Vendor;
 
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Http\Helpers\VendorPermissionHelper;
 use App\Models\VendorPlugins\VendorPlugin;
 use Auth;
 use DB;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Validator;
 

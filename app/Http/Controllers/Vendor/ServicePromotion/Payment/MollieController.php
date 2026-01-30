@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Vendor\ServicePromotion\Payment;
 
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\ServicePromotion\ServicePromotionController;
 use Auth;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Mollie\Laravel\Facades\Mollie;
 

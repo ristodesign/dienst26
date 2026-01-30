@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\FrontEnd\PaymentGateway;
 
-use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Shop\PurchaseProcessController;
 use App\Http\Helpers\UploadFile;
 use App\Models\PaymentGateway\OfflineGateway;
 use App\Models\Shop\Product;
 use App\Rules\ImageMimeTypeRule;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;

@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers\Admin\Shop;
 
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Http\Requests\Shop\ProductStoreRequest;
@@ -15,10 +12,13 @@ use App\Models\Shop\ProductContent;
 use App\Models\Shop\ProductOrder;
 use App\Models\Shop\ProductPurchaseItem;
 use App\Rules\ImageMimeTypeRule;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 use Mews\Purifier\Facades\Purifier;
 
 class ProductController extends Controller

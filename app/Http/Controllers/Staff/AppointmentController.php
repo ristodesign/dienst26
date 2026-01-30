@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Staff;
 
-use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\Language;
@@ -11,6 +10,7 @@ use App\Models\Staff\Staff;
 use App\Models\Vendor;
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class AppointmentController extends Controller
 {

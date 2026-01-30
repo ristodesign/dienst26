@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\FrontEnd\PaymentGateway;
 
-use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Shop\PurchaseProcessController;
 use App\Models\Shop\Product;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Mollie\Laravel\Facades\Mollie;
 

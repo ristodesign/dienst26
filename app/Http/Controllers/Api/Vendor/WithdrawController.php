@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\Vendor;
 
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Transaction;
 use App\Models\Vendor;
@@ -11,6 +10,7 @@ use App\Models\Withdraw\WithdrawMethodInput;
 use App\Models\Withdraw\WithdrawPaymentMethod;
 use Auth;
 use DB;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Response;
 use Validator;

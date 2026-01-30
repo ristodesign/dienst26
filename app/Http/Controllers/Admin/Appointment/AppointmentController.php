@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers\Admin\Appointment;
 
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Admin\Transaction\TransactionController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Booking\ServicePaymentController;
@@ -20,10 +17,13 @@ use App\Models\Services\ServiceContent;
 use App\Models\Staff\Staff;
 use App\Models\Vendor;
 use App\Services\FirebaseService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 use Response;
 
 class AppointmentController extends Controller

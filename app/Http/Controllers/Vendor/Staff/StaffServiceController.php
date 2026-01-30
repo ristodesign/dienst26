@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers\Vendor\Staff;
 
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Language;
 use App\Models\Services\ServiceCategory;
@@ -12,7 +9,10 @@ use App\Models\Services\Services;
 use App\Models\Staff\Staff;
 use App\Models\Staff\StaffService;
 use Auth;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Response;
 use Validator;
 

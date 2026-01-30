@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Vendor;
 
-use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\VendorPermissionHelper;
 use App\Models\BasicSettings\Basic;
@@ -15,6 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
+use Illuminate\View\View;
 
 class BuyPlanController extends Controller
 {

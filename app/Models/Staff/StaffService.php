@@ -2,10 +2,10 @@
 
 namespace App\Models\Staff;
 
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Services\ServiceContent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class StaffService extends Model
 {

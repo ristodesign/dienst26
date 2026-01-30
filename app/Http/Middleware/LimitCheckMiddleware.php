@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use Symfony\Component\HttpFoundation\Response;
 use App\Http\Helpers\CheckLimitHelper;
 use App\Http\Helpers\VendorPermissionHelper;
 use App\Models\Staff\Staff;
@@ -10,6 +9,7 @@ use App\Models\Vendor;
 use Auth;
 use Closure;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class LimitCheckMiddleware
 {

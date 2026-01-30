@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers\FrontEnd;
 
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\JsonResponse;
-use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use App\Models\Advertisement;
 use App\Models\BasicSettings\Basic;
 use App\Models\Language;
 use App\Models\Subscriber;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\View\View;
 
 class MiscellaneousController extends Controller
 {

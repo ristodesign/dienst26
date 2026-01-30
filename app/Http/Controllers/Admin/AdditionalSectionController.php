@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddtionalSectionStore;
 use App\Http\Requests\AddtionalSectionUpdate;
@@ -12,7 +9,10 @@ use App\Models\CustomSection;
 use App\Models\CustomSectionContent;
 use App\Models\HomePage\Section;
 use App\Models\Language;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Purifier;
 
 class AdditionalSectionController extends Controller

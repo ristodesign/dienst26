@@ -2,12 +2,12 @@
 
 namespace App\Models\Admin;
 
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Membership;
 use App\Models\Vendor;
 use App\Models\Withdraw\WithdrawPaymentMethod;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Transaction extends Model
 {

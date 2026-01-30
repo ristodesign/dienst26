@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\FrontEnd\Booking;
 
-use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Admin\Transaction\TransactionController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Booking\Payment\AuthorizenetController;
@@ -41,6 +40,7 @@ use App\Models\Vendor;
 use App\Rules\ImageMimeTypeRule;
 use Auth;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;

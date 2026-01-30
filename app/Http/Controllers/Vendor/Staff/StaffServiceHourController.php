@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers\Vendor\Staff;
 
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Language;
 use App\Models\Staff\Staff;
@@ -12,9 +9,12 @@ use App\Models\Staff\StaffDay;
 use App\Models\Staff\StaffServiceHour;
 use Auth;
 use DB;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 
 class StaffServiceHourController extends Controller
 {

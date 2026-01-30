@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\FrontEnd;
 
-use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MailFromUserRequest;
 use App\Models\BasicSettings\Basic;
@@ -11,6 +10,7 @@ use DB;
 use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+use Illuminate\View\View;
 
 class ContactController extends Controller
 {

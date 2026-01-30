@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Admin\PaymentGateway;
 
-use Illuminate\View\View;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Models\PaymentGateway\OfflineGateway;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 use Mews\Purifier\Facades\Purifier;
 
 class OfflineGatewayController extends Controller

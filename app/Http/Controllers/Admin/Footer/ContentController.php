@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Admin\Footer;
 
-use Illuminate\View\View;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Footer\FooterContent;
 use App\Models\Language;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 use Purifier;
 
 class ContentController extends Controller

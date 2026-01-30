@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Vendor\Staff;
 
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Staff\StaffGlobalDay;
 use App\Models\Staff\StaffGlobalHour;
 use Auth;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class StaffGlobalDayController extends Controller
 {

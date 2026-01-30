@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers\Staff;
 
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Http\Helpers\VendorPermissionHelper;
@@ -24,8 +21,11 @@ use App\Models\Services\Wishlist;
 use App\Models\Staff\Staff;
 use App\Models\Staff\StaffService;
 use Auth;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Purifier;
 use Session;
 use Validator;

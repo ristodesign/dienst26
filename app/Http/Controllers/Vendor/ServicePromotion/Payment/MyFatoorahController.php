@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Vendor\ServicePromotion\Payment;
 
-use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\ServicePromotion\ServicePromotionController;
 use App\Models\BasicSettings\Basic;
 use App\Models\PaymentGateway\OnlineGateway;
 use Basel\MyFatoorah\MyFatoorah;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Session;

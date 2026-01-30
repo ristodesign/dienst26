@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Vendor\Staff;
 
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Services\ServiceContent;
 use App\Models\VendorPlugins\VendorPlugin;
 use Carbon\Carbon;
 use DB;
 use GuzzleHttp\Client;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;

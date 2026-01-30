@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers\Admin\HomePage;
 
-use Illuminate\View\View;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Http\Requests\Testimonial\StoreRequest;
@@ -13,7 +10,10 @@ use App\Models\Admin\SectionContent;
 use App\Models\HomePage\Testimony\Testimonial;
 use App\Models\Language;
 use App\Rules\ImageMimeTypeRule;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Purifier;
 
 class TestimonialController extends Controller

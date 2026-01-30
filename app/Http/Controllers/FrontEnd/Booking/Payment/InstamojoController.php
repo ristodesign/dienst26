@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Frontend\Booking\Payment;
 
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Booking\ServicePaymentController;
 use App\Http\Controllers\WhatsAppController;
 use App\Http\Helpers\Instamojo;
 use App\Models\PaymentGateway\OnlineGateway;
 use Exception;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Response;

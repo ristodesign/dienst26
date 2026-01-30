@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Vendor\ServicePromotion;
 
-use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\ServicePromotion\Payment\AuthorizenetController;
 use App\Http\Controllers\Vendor\ServicePromotion\Payment\FlutterwaveController;
@@ -35,6 +34,7 @@ use App\Models\Services\ServiceContent;
 use App\Models\VendorInfo;
 use App\Rules\ImageMimeTypeRule;
 use Auth;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use PDF;
 use Response;

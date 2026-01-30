@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers\FrontEnd\Services;
 
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\MiscellaneousController;
 use App\Http\Controllers\StaffDistanceController;
@@ -37,10 +34,13 @@ use App\Models\Staff\StaffServiceHour;
 use App\Models\Vendor;
 use Auth;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 use Response;
 use Session;
 

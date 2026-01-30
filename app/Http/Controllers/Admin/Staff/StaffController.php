@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers\Admin\Staff;
 
-use Illuminate\View\View;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Http\Requests\Staff\StaffStoreRequest;
@@ -23,7 +20,10 @@ use App\Models\Vendor;
 use Auth;
 use Carbon\Carbon;
 use Hash;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Purifier;
 use Response;
 use Session;

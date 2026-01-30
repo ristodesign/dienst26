@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin\Withdraw;
 
-use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\BasicMailer;
 use App\Models\Admin\Transaction;
@@ -11,6 +10,7 @@ use App\Models\BasicSettings\MailTemplate;
 use App\Models\Vendor;
 use App\Models\Withdraw\Withdraw;
 use DB;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class WithdrawRequestController extends Controller

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Payment;
 
-use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\VendorCheckoutController;
 use App\Http\Helpers\MegaMailer;
@@ -12,6 +11,7 @@ use App\Models\Membership;
 use App\Models\Package;
 use App\Models\PaymentGateway\OnlineGateway;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Redirect;
@@ -67,7 +67,7 @@ class PaypalController extends Controller
         $payer->setPaymentMethod('paypal');
         $item_1 = new Item;
         $item_1->setName($title)
-          /** item name **/
+            /** item name **/
             ->setCurrency('USD')
             ->setQuantity(1)
             ->setPrice($price);
@@ -83,7 +83,7 @@ class PaypalController extends Controller
             ->setDescription($title.' Via Paypal');
         $redirect_urls = new RedirectUrls;
         $redirect_urls->setReturnUrl($success_url)
-          /** Specify return URL **/
+            /** Specify return URL **/
             ->setCancelUrl($cancel_url);
         $payment = new Payment;
         $payment->setIntent('Sale')

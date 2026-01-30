@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\Vendor;
 
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\Booking\ServicePaymentController;
 use App\Http\Helpers\BasicMailer;
@@ -13,6 +12,7 @@ use App\Models\Services\ServiceBooking;
 use App\Models\Staff\Staff;
 use App\Models\Vendor;
 use Auth;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\FrontEnd;
 
-use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\Admin\SectionContent;
@@ -19,6 +18,7 @@ use App\Models\Services\Services;
 use App\Models\Vendor;
 use Carbon\Carbon;
 use DB;
+use Illuminate\View\View;
 
 class HomeController extends Controller
 {

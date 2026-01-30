@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\FrontEnd;
 
-use Illuminate\View\View;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use App\Http\Controllers\Controller;
 use App\Models\BasicSettings\Basic;
 use App\Models\Shop\Product;
 use App\Models\Shop\ProductOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class OrderController extends Controller
 {

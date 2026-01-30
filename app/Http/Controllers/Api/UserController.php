@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\MiscellaneousController;
 use App\Http\Helpers\BasicMailer;
@@ -15,6 +14,7 @@ use App\Models\Services\Wishlist;
 use App\Models\Shop\ProductOrder;
 use App\Models\User;
 use App\Rules\MatchEmailRule;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;

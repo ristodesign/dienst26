@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Payment;
 
-use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\VendorCheckoutController;
 use App\Http\Helpers\MegaMailer;
@@ -14,6 +13,7 @@ use App\Models\VendorInfo;
 use Carbon\Carbon;
 use Cartalyst\Stripe\Laravel\Facades\Stripe;
 use Config;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use PHPMailer\PHPMailer\Exception;
 use Session;

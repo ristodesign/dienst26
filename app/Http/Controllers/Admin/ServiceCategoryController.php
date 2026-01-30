@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Models\BasicSettings\Basic;
@@ -13,9 +10,12 @@ use App\Models\Services\ServiceCategory;
 use App\Models\Services\ServiceContent;
 use App\Rules\ImageMimeTypeRule;
 use DB;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\Rule;
+use Illuminate\View\View;
 use Validator;
 
 class ServiceCategoryController extends Controller

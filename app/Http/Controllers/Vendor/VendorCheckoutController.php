@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Vendor;
 
-use Illuminate\View\View;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Payment\AuthorizeController;
 use App\Http\Controllers\Payment\FlutterWaveController;
@@ -33,10 +31,12 @@ use App\Models\PaymentGateway\OfflineGateway;
 use App\Models\Vendor;
 use Auth;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 
 class VendorCheckoutController extends Controller
 {

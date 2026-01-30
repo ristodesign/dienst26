@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\FrontEnd;
 
-use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use App\Models\Package;
+use Illuminate\View\View;
 
 class PricingController extends Controller
 {

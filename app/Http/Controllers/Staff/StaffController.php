@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers\Staff;
 
-use Illuminate\View\View;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FrontEnd\MiscellaneousController;
 use App\Http\Helpers\UploadFile;
@@ -16,9 +13,12 @@ use App\Models\Staff\StaffContent;
 use App\Models\Staff\StaffService;
 use App\Rules\MatchOldPasswordRule;
 use Auth;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Illuminate\View\View;
 use Response;
 use Session;
 use Validator;

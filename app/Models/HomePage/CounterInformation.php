@@ -2,10 +2,10 @@
 
 namespace App\Models\HomePage;
 
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Language;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class CounterInformation extends Model
 {
