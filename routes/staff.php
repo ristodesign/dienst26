@@ -88,7 +88,7 @@ Route::prefix('staff')->middleware('auth:staff', 'staffCheck', 'stafflang')->gro
 
     Route::post(
         'service-inquiry/delete/{id}',
-        [Staff\ServiceInqueryController.php::class, 'messageDestroy']
+        [Staff\ServiceInqueryController::class, 'messageDestroy']
     )->name('staff.service_inquery.message.destory');
 
     Route::post('bulk_delete', [Staff\ServiceInqueryController::class, 'bulkDelete'])->name('staff.service_inquery.message.bulk_delete');
