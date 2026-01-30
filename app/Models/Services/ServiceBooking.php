@@ -2,6 +2,8 @@
 
 namespace App\Models\Services;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Staff\Staff;
 use App\Models\Staff\StaffServiceHour;
 use App\Models\User;
@@ -16,37 +18,37 @@ class ServiceBooking extends Model
 
     protected $guarded = [];
 
-    public function service()
+    public function service(): BelongsTo
     {
         return $this->belongsTo(Services::class, 'service_id', 'id');
     }
 
-    public function staff()
+    public function staff(): BelongsTo
     {
         return $this->belongsTo(Staff::class, 'staff_id', 'id');
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function serviceHoureTime()
+    public function serviceHoureTime(): BelongsTo
     {
         return $this->belongsTo(StaffServiceHour::class, 'service_hour_id', 'id');
     }
 
-    public function serviceContent()
+    public function serviceContent(): HasMany
     {
         return $this->hasMany(ServiceContent::class, 'service_id', 'service_id');
     }
 
-    public function vendorInfo()
+    public function vendorInfo(): HasMany
     {
         return $this->hasMany(VendorInfo::class, 'vendor_id', 'vendor_id');
     }
 
-    public function vendor()
+    public function vendor(): BelongsTo
     {
         return $this->belongsTo(Vendor::class, 'vendor_id', 'id');
     }

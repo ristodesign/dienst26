@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Shop\ProductOrder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -26,25 +27,25 @@ class Transcation extends Model
     ];
 
     // order
-    public function order()
+    public function order(): BelongsTo
     {
         return $this->belongsTo(ProductOrder::class, 'payment_id', 'id');
     }
 
     // order
-    public function memberships()
+    public function memberships(): BelongsTo
     {
         return $this->belongsTo(Membership::class, 'payment_id', 'id');
     }
 
     // vendor_id
-    public function vendor()
+    public function vendor(): BelongsTo
     {
         return $this->belongsTo(Vendor::class, 'user_id', 'id');
     }
 
     // vendor_id
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }

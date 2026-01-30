@@ -2,6 +2,8 @@
 
 namespace App\Models\Staff;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Models\Vendor;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -33,12 +35,12 @@ class Staff extends Model implements AuthenticatableContract
         'phone_status',
     ];
 
-    public function StaffContent()
+    public function StaffContent(): HasMany
     {
         return $this->hasMany(StaffContent::class, 'staff_id', 'id');
     }
 
-    public function vendor()
+    public function vendor(): HasOne
     {
         return $this->hasOne(Vendor::class, 'id', 'vendor_id');
     }

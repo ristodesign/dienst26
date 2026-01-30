@@ -2,6 +2,7 @@
 
 namespace App\Models\BasicSettings;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Language;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,7 +23,7 @@ class CookieAlert extends Model
         'cookie_alert_text',
     ];
 
-    public function cookieAlertLang()
+    public function cookieAlertLang(): BelongsTo
     {
         return $this->belongsTo(Language::class);
     }

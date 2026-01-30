@@ -13,7 +13,7 @@ class UpdateRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -23,7 +23,7 @@ class UpdateRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $ad = Advertisement::find($this->id);
 
@@ -49,7 +49,7 @@ class UpdateRequest extends FormRequest
         return $array;
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
             'image.required' => 'The image field is required when ad type is banner.',

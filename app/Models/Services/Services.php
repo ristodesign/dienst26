@@ -2,6 +2,8 @@
 
 namespace App\Models\Services;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Language;
 use App\Models\Vendor;
 use App\Models\VendorInfo;
@@ -27,37 +29,37 @@ class Services extends Model
         'longitude',
     ];
 
-    public function language()
+    public function language(): BelongsTo
     {
         return $this->belongsTo(Language::class);
     }
 
-    public function vendor()
+    public function vendor(): BelongsTo
     {
         return $this->belongsTo(Vendor::class, 'vendor_id', 'id');
     }
 
-    public function vendorInfo()
+    public function vendorInfo(): BelongsTo
     {
         return $this->belongsTo(VendorInfo::class, 'vendor_id', 'vendor_id');
     }
 
-    public function content()
+    public function content(): HasMany
     {
         return $this->hasMany(ServiceContent::class, 'service_id', 'id');
     }
 
-    public function sliderImage()
+    public function sliderImage(): HasMany
     {
         return $this->hasMany(ServiceImage::class, 'service_id', 'id');
     }
 
-    public function appointment()
+    public function appointment(): HasMany
     {
         return $this->hasMany(ServiceBooking::class, 'service_id', 'id');
     }
 
-    public function reviews()
+    public function reviews(): HasMany
     {
         return $this->hasMany(ServiceReview::class, 'service_id', 'id')
             ->select('id', 'service_id', 'user_id', 'rating', 'comment', 'created_at'); // select needed fields

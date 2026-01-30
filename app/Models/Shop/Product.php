@@ -2,6 +2,7 @@
 
 namespace App\Models\Shop;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -30,17 +31,17 @@ class Product extends Model
         'is_featured',
     ];
 
-    public function content()
+    public function content(): HasMany
     {
         return $this->hasMany(ProductContent::class);
     }
 
-    public function purchase()
+    public function purchase(): HasMany
     {
         return $this->hasMany(ProductPurchaseItem::class, 'product_id', 'id');
     }
 
-    public function review()
+    public function review(): HasMany
     {
         return $this->hasMany(ProductReview::class);
     }

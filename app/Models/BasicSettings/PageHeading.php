@@ -2,6 +2,7 @@
 
 namespace App\Models\BasicSettings;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Language;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -47,7 +48,7 @@ class PageHeading extends Model
         'custom_page_heading',
     ];
 
-    public function headingLang()
+    public function headingLang(): BelongsTo
     {
         return $this->belongsTo(Language::class);
     }

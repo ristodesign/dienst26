@@ -2,6 +2,8 @@
 
 namespace App\Models\Shop;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Language;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -25,12 +27,12 @@ class ShippingCharge extends Model
         'serial_number',
     ];
 
-    public function language()
+    public function language(): BelongsTo
     {
         return $this->belongsTo(Language::class);
     }
 
-    public function order()
+    public function order(): HasMany
     {
         return $this->hasMany(ProductOrder::class, 'product_shipping_charge_id', 'id');
     }

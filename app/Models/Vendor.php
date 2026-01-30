@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Services\ServiceBooking;
 use App\Models\Services\ServiceReview;
 use App\Models\Services\Services;
@@ -54,43 +56,43 @@ class Vendor extends Model implements AuthenticatableContract
         return null;
     }
 
-    public function vendor_info()
+    public function vendor_info(): HasOne
     {
         return $this->hasOne(VendorInfo::class, 'vendor_id', 'id');
     }
 
-    public function vendor_infos()
+    public function vendor_infos(): HasMany
     {
         return $this->hasMany(VendorInfo::class);
     }
 
     // support ticket
-    public function support_ticket()
+    public function support_ticket(): HasMany
     {
         return $this->hasMany(SupportTicket::class, 'vendor_id', 'id');
     }
 
-    public function memberships()
+    public function memberships(): HasMany
     {
         return $this->hasMany(Membership::class);
     }
 
-    public function service()
+    public function service(): HasMany
     {
         return $this->hasMany(Services::class, 'vendor_id', 'id');
     }
 
-    public function staff()
+    public function staff(): HasMany
     {
         return $this->hasMany(Staff::class);
     }
 
-    public function appointment()
+    public function appointment(): HasMany
     {
         return $this->hasMany(ServiceBooking::class);
     }
 
-    public function serviceReview()
+    public function serviceReview(): HasMany
     {
         return $this->hasMany(ServiceReview::class, 'vendor_id', 'id');
     }

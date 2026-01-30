@@ -2,6 +2,7 @@
 
 namespace App\Models\CustomPage;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,7 +17,7 @@ class Page extends Model
      */
     protected $fillable = ['status'];
 
-    public function content()
+    public function content(): HasMany
     {
         return $this->hasMany(PageContent::class, 'page_id', 'id');
     }

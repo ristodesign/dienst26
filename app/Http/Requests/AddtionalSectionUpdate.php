@@ -14,7 +14,7 @@ class AddtionalSectionUpdate extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -24,7 +24,7 @@ class AddtionalSectionUpdate extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
+    public function rules(): array
     {
         $ruleArray = [
             'order' => 'required',
@@ -73,7 +73,7 @@ class AddtionalSectionUpdate extends FormRequest
      *
      * @return array
      */
-    public function messages()
+    public function messages(): array
     {
         $messageArray = [];
         $messageArray = [

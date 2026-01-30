@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,7 +17,7 @@ class MenuBuilder extends Model
      */
     protected $fillable = ['language_id', 'menus'];
 
-    public function languageInfo()
+    public function languageInfo(): BelongsTo
     {
         return $this->belongsTo(Language::class, 'language_id', 'id');
     }

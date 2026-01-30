@@ -2,6 +2,7 @@
 
 namespace App\Models\Shop;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -17,12 +18,12 @@ class ProductReview extends Model
      */
     protected $fillable = ['user_id', 'product_id', 'comment', 'rating'];
 
-    public function userInfo()
+    public function userInfo(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function productInfo()
+    public function productInfo(): BelongsTo
     {
         return $this->belongsTo(Product::class);
     }

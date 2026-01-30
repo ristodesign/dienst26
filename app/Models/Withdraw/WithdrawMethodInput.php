@@ -2,6 +2,7 @@
 
 namespace App\Models\Withdraw;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -20,7 +21,7 @@ class WithdrawMethodInput extends Model
         'order_number',
     ];
 
-    public function options()
+    public function options(): HasMany
     {
         return $this->hasMany(WithdrawMethodOption::class);
     }

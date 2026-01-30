@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use Symfony\Component\HttpFoundation\Response;
 use App\Http\Helpers\CheckLimitHelper;
 use App\Http\Helpers\VendorPermissionHelper;
 use App\Models\Staff\Staff;
@@ -18,7 +19,7 @@ class LimitCheckMiddleware
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next, $feature = null, $method = null, $type = null)
+    public function handle(Request $request, Closure $next, $feature = null, $method = null, $type = null): Response
     {
 
         if (Auth::guard('vendor')->check()) {

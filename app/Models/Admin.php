@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -37,7 +38,7 @@ class Admin extends Model implements AuthenticatableContract
      */
     protected $hidden = ['password'];
 
-    public function role()
+    public function role(): BelongsTo
     {
         return $this->belongsTo(RolePermission::class, 'role_id', 'id');
     }

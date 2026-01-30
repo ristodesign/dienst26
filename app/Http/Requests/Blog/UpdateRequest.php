@@ -15,7 +15,7 @@ class UpdateRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -25,7 +25,7 @@ class UpdateRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $ruleArray = [
             'image' => $this->hasFile('image') ? new ImageMimeTypeRule : '',
@@ -78,7 +78,7 @@ class UpdateRequest extends FormRequest
         return $ruleArray;
     }
 
-    public function messages()
+    public function messages(): array
     {
         $messageArray = [];
 

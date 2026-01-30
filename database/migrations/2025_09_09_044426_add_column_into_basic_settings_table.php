@@ -11,7 +11,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('basic_settings', function (Blueprint $table) {
             $table->string('whatsapp_number_id')->nullable();
@@ -25,7 +25,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('basic_settings', function (Blueprint $table) {
             $table->dropColumn('whatsapp_number_id');

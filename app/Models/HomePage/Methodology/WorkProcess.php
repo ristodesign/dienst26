@@ -2,6 +2,7 @@
 
 namespace App\Models\HomePage\Methodology;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Language;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -17,7 +18,7 @@ class WorkProcess extends Model
      */
     protected $guarded = [];
 
-    public function language()
+    public function language(): BelongsTo
     {
         return $this->belongsTo(Language::class, 'language_id', 'id');
     }

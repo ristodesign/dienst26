@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Services\ServiceBooking;
 use App\Models\Services\ServiceReview;
 use App\Models\Shop\ProductOrder;
@@ -41,27 +42,27 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function productOrder()
+    public function productOrder(): HasMany
     {
         return $this->hasMany(ProductOrder::class, 'user_id', 'id');
     }
 
-    public function productReview()
+    public function productReview(): HasMany
     {
         return $this->hasMany(ProductReview::class, 'user_id', 'id');
     }
 
-    public function serviceBooking()
+    public function serviceBooking(): HasMany
     {
         return $this->hasMany(ServiceBooking::class, 'user_id', 'id');
     }
 
-    public function serviceReview()
+    public function serviceReview(): HasMany
     {
         return $this->hasMany(ServiceReview::class, 'user_id', 'id');
     }
 
-    public function fcmTokens()
+    public function fcmTokens(): HasMany
     {
         return $this->hasMany(\App\Models\FcmToken::class);
     }

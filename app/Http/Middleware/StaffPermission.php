@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use Symfony\Component\HttpFoundation\Response;
 use App\Http\Helpers\VendorPermissionHelper;
 use App\Models\Staff\Staff;
 use App\Models\Vendor;
@@ -18,7 +19,7 @@ class StaffPermission
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
         $staffId = Auth::guard('staff')->user()->id;
         $vendor = Staff::where('id', $staffId)->select('vendor_id', 'status')->firstOrFail();

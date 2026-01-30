@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -33,7 +34,7 @@ class Popup extends Model
         'status',
     ];
 
-    public function popupLang()
+    public function popupLang(): BelongsTo
     {
         return $this->belongsTo(Language::class);
     }

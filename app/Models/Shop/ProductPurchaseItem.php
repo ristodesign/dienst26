@@ -2,6 +2,7 @@
 
 namespace App\Models\Shop;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,12 +17,12 @@ class ProductPurchaseItem extends Model
      */
     protected $guarded = [];
 
-    public function order()
+    public function order(): BelongsTo
     {
         return $this->belongsTo(ProductOrder::class, 'product_order_id', 'id');
     }
 
-    public function productInfo()
+    public function productInfo(): BelongsTo
     {
         return $this->belongsTo(Product::class, 'product_id', 'id');
     }

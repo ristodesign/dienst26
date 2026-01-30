@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use Symfony\Component\HttpFoundation\Response;
 use App\Models\Language;
 use Closure;
 use Illuminate\Http\Request;
@@ -14,7 +15,7 @@ class ChangeLanguage
      *
      * @return mixed
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
         if ($request->session()->has('currentLocaleCode')) {
             $locale = $request->session()->get('currentLocaleCode');

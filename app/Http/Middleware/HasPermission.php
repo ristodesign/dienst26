@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use Symfony\Component\HttpFoundation\Response;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,7 +14,7 @@ class HasPermission
      *
      * @return mixed
      */
-    public function handle(Request $request, Closure $next, $menuName)
+    public function handle(Request $request, Closure $next, $menuName): Response
     {
         $authAdmin = Auth::guard('admin')->user();
         $role = null;

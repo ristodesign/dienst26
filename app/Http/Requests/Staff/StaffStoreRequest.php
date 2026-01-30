@@ -14,7 +14,7 @@ class StaffStoreRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -24,7 +24,7 @@ class StaffStoreRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
+    public function rules(): array
     {
         $ruleArray = [
             'staff_image' => [
@@ -75,7 +75,7 @@ class StaffStoreRequest extends FormRequest
         return $ruleArray;
     }
 
-    public function messages()
+    public function messages(): array
     {
         $messageArray = [];
 

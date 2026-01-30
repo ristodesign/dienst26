@@ -11,7 +11,7 @@ class PurchaseProcessRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -21,7 +21,7 @@ class PurchaseProcessRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $rules = [
             'billing_name' => 'required',
@@ -51,7 +51,7 @@ class PurchaseProcessRequest extends FormRequest
      *
      * @return array
      */
-    public function messages()
+    public function messages(): array
     {
         return [
             'billing_name.required' => 'The first name field is required.',

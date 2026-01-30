@@ -2,6 +2,8 @@
 
 namespace App\Models\Shop;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -17,17 +19,17 @@ class ProductOrder extends Model
      */
     protected $guarded = [];
 
-    public function userInfo()
+    public function userInfo(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function item()
+    public function item(): HasMany
     {
         return $this->hasMany(ProductPurchaseItem::class, 'product_order_id', 'id');
     }
 
-    public function shippingMethod()
+    public function shippingMethod(): BelongsTo
     {
         return $this->belongsTo(ShippingCharge::class, 'product_shipping_charge_id', 'id');
     }

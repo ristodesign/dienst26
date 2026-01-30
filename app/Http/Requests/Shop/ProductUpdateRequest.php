@@ -16,7 +16,7 @@ class ProductUpdateRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -26,7 +26,7 @@ class ProductUpdateRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $product = Product::find($this->id);
         $sliderImages = json_decode($product->slider_images);
@@ -100,7 +100,7 @@ class ProductUpdateRequest extends FormRequest
      *
      * @return array
      */
-    public function messages()
+    public function messages(): array
     {
         $messageArray = [];
 

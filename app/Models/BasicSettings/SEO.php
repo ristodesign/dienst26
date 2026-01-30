@@ -2,6 +2,7 @@
 
 namespace App\Models\BasicSettings;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Language;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -55,7 +56,7 @@ class SEO extends Model
         'custome_page_meta_description',
     ];
 
-    public function seoLang()
+    public function seoLang(): BelongsTo
     {
         return $this->belongsTo(Language::class);
     }

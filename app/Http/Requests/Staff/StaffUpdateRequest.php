@@ -15,7 +15,7 @@ class StaffUpdateRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -25,7 +25,7 @@ class StaffUpdateRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
+    public function rules(): array
     {
         $ruleArray = [
             'status' => 'required',
@@ -79,7 +79,7 @@ class StaffUpdateRequest extends FormRequest
         return $ruleArray;
     }
 
-    public function messages()
+    public function messages(): array
     {
         $messageArray = [];
 

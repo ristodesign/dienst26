@@ -17,7 +17,7 @@ class ServiceStoreRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -27,7 +27,7 @@ class ServiceStoreRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
+    public function rules(): array
     {
         $vendorId = $this->vendor_id;
 
@@ -99,7 +99,7 @@ class ServiceStoreRequest extends FormRequest
         return $ruleArray;
     }
 
-    public function messages()
+    public function messages(): array
     {
         $messageArray = [];
 

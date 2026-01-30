@@ -2,6 +2,7 @@
 
 namespace App\Models\Staff;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Language;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,12 +19,12 @@ class StaffContent extends Model
         'location',
     ];
 
-    public function staff()
+    public function staff(): BelongsTo
     {
         return $this->belongsTo(Staff::class, 'id', 'staff_id');
     }
 
-    public function language()
+    public function language(): BelongsTo
     {
         return $this->belongsTo(Language::class, 'language_id', 'id');
     }

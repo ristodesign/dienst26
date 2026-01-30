@@ -2,6 +2,7 @@
 
 namespace App\Models\Staff;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,7 +12,7 @@ class StaffServiceHour extends Model
 
     protected $guarded = [];
 
-    public function staffday()
+    public function staffday(): BelongsTo
     {
         return $this->belongsTo(StaffDay::class, 'staff_day_id', 'id');
     }

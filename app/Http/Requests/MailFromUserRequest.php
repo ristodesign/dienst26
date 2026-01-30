@@ -12,7 +12,7 @@ class MailFromUserRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -22,7 +22,7 @@ class MailFromUserRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $info = Basic::select('google_recaptcha_status')->first();
 
@@ -40,7 +40,7 @@ class MailFromUserRequest extends FormRequest
      *
      * @return array
      */
-    public function messages()
+    public function messages(): array
     {
         $info = Basic::select('google_recaptcha_status')->first();
 

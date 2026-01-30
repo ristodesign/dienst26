@@ -2,6 +2,7 @@
 
 namespace App\Models\CustomPage;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Language;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -25,12 +26,12 @@ class PageContent extends Model
         'meta_description',
     ];
 
-    public function contentLang()
+    public function contentLang(): BelongsTo
     {
         return $this->belongsTo(Language::class);
     }
 
-    public function page()
+    public function page(): BelongsTo
     {
         return $this->belongsTo(Page::class, 'page_id', 'id');
     }

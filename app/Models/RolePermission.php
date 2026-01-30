@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,7 +17,7 @@ class RolePermission extends Model
      */
     protected $fillable = ['name', 'permissions'];
 
-    public function adminInfo()
+    public function adminInfo(): HasMany
     {
         return $this->hasMany(Admin::class, 'role_id', 'id');
     }

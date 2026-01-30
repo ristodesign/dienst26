@@ -2,6 +2,7 @@
 
 namespace App\Models\Journal;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,7 +17,7 @@ class Blog extends Model
      */
     protected $fillable = ['image', 'serial_number'];
 
-    public function information()
+    public function information(): HasMany
     {
         return $this->hasMany(BlogInformation::class);
     }

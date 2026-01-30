@@ -2,6 +2,7 @@
 
 namespace App\Models\Journal;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Language;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -29,17 +30,17 @@ class BlogInformation extends Model
         'meta_description',
     ];
 
-    public function language()
+    public function language(): BelongsTo
     {
         return $this->belongsTo(Language::class);
     }
 
-    public function blogCategory()
+    public function blogCategory(): BelongsTo
     {
         return $this->belongsTo(BlogCategory::class);
     }
 
-    public function blog()
+    public function blog(): BelongsTo
     {
         return $this->belongsTo(Blog::class);
     }

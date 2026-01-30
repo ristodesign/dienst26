@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use Symfony\Component\HttpFoundation\Response;
 use App\Models\Curriculum\Course;
 use Closure;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ class EnsureCertificateIsEnable
      *
      * @return mixed
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
         $courseId = $request->route('id');
 

@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Models\BasicSettings\AboutUs;
 use App\Models\BasicSettings\CookieAlert;
 use App\Models\BasicSettings\PageHeading;
@@ -34,127 +37,127 @@ class Language extends Model
      */
     protected $fillable = ['name', 'code', 'direction', 'is_default'];
 
-    public function faq()
+    public function faq(): HasMany
     {
         return $this->hasMany(FAQ::class);
     }
 
-    public function customPageInfo()
+    public function customPageInfo(): HasMany
     {
         return $this->hasMany(PageContent::class);
     }
 
-    public function footerContent()
+    public function footerContent(): HasOne
     {
         return $this->hasOne(FooterContent::class);
     }
 
-    public function footerQuickLink()
+    public function footerQuickLink(): HasMany
     {
         return $this->hasMany(QuickLink::class);
     }
 
-    public function announcementPopup()
+    public function announcementPopup(): HasMany
     {
         return $this->hasMany(Popup::class);
     }
 
-    public function blogCategory()
+    public function blogCategory(): HasMany
     {
         return $this->hasMany(BlogCategory::class);
     }
 
-    public function blogInformation()
+    public function blogInformation(): HasMany
     {
         return $this->hasMany(BlogInformation::class);
     }
 
-    public function menuInfo()
+    public function menuInfo(): HasOne
     {
         return $this->hasOne(MenuBuilder::class, 'language_id', 'id');
     }
 
-    public function aboutSection()
+    public function aboutSection(): BelongsTo
     {
         return $this->belongsTo(AboutUs::class);
     }
 
-    public function workProcess()
+    public function workProcess(): HasMany
     {
         return $this->hasMany(WorkProcess::class, 'language_id', 'id');
     }
 
-    public function features()
+    public function features(): HasMany
     {
         return $this->hasMany(Features::class, 'language_id', 'id');
     }
 
-    public function testimonial()
+    public function testimonial(): HasMany
     {
         return $this->hasMany(Testimonial::class, 'language_id', 'id');
     }
 
-    public function serviceCategory()
+    public function serviceCategory(): HasMany
     {
         return $this->hasMany(ServiceCategory::class, 'language_id', 'id');
     }
 
-    public function aboutUsSection()
+    public function aboutUsSection(): HasOne
     {
         return $this->hasOne(AboutUs::class, 'language_id', 'id');
     }
 
-    public function featuresInfos()
+    public function featuresInfos(): HasMany
     {
         return $this->hasMany(Features::class, 'language_id', 'id');
     }
 
-    public function shippingCharge()
+    public function shippingCharge(): HasMany
     {
         return $this->hasMany(ShippingCharge::class);
     }
 
-    public function serviceContent()
+    public function serviceContent(): HasMany
     {
         return $this->hasMany(ServiceContent::class, 'language_id', 'id');
     }
 
-    public function productCategory()
+    public function productCategory(): HasMany
     {
         return $this->hasMany(ProductCategory::class);
     }
 
-    public function staffContent()
+    public function staffContent(): HasMany
     {
         return $this->hasMany(StaffContent::class);
     }
 
-    public function productContent()
+    public function productContent(): HasMany
     {
         return $this->hasMany(ProductContent::class);
     }
 
-    public function vendorInfo()
+    public function vendorInfo(): HasOne
     {
         return $this->hasOne(VendorInfo::class);
     }
 
-    public function banner()
+    public function banner(): HasOne
     {
         return $this->hasOne(Banner::class);
     }
 
-    public function pageName()
+    public function pageName(): HasOne
     {
         return $this->hasOne(PageHeading::class);
     }
 
-    public function seoInfo()
+    public function seoInfo(): HasOne
     {
         return $this->hasOne(SEO::class);
     }
 
-    public function cookieAlertInfo()
+    public function cookieAlertInfo(): HasOne
     {
         return $this->hasOne(CookieAlert::class);
     }

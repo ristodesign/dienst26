@@ -11,7 +11,7 @@ class MailFromAdminRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -21,7 +21,7 @@ class MailFromAdminRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'smtp_status' => 'required',
@@ -35,7 +35,7 @@ class MailFromAdminRequest extends FormRequest
         ];
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
             'from_mail.required' => __('The mail address field is required.'),

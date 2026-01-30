@@ -11,7 +11,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('basic_settings', function (Blueprint $table) {
             $table->tinyInteger('whatsapp_manager_status')->default(0);
@@ -23,7 +23,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('basic_settings', function (Blueprint $table) {
             $table->dropColumn('whatsapp_manager_status');
