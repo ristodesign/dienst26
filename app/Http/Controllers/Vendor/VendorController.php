@@ -276,16 +276,18 @@ class VendorController extends Controller
             'username' => $request->username,
             'password' => $request->password,
         ])) {
-            $authAdmin = Auth::guard('vendor')->user();
+            $authVendor = Auth::guard('vendor')->user();
 
             $setting = DB::table('basic_settings')->where('uniqid', 12345)->select('vendor_email_verification', 'vendor_admin_approval')->first();
 
             // check whether the admin's account is active or not
-            if ($setting->vendor_email_verification == 1 && $authAdmin->email_verified_at == null && $authAdmin->status == 0) {
+            if ($setting->vendor_email_verification == 1 && $authVendor->email_verified_at == null) {
                 Session::flash('error', 'Please verify your email address');
 
-                // logout auth admin as condition not satisfied
+                // logout vendor as condition not satisfied
                 Auth::guard('vendor')->logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
 
                 return redirect()->back();
             } elseif ($setting->vendor_email_verification == 0 && $setting->vendor_admin_approval == 1) {
@@ -337,6 +339,8 @@ class VendorController extends Controller
     {
         Auth::guard('vendor')->logout();
         Session::forget('secret_login');
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         return redirect()->route('vendor.login');
     }

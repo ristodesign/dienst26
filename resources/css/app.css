@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+@source "./**/*.{blade.php,js,ts,jsx,tsx,vue}";  /* Scans your Laravel views/components */
+@source "../resources/js/**/*.{js,ts,jsx,tsx}";   /* Scans your JS files */
+
+@theme {
+  /* Optional: customize colors, fonts, etc. here if needed */
+}

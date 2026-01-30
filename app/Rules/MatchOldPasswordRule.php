@@ -2,11 +2,12 @@
 
 namespace App\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-class MatchOldPasswordRule implements Rule
+class MatchOldPasswordRule implements ValidationRule
 {
     private $personType;
 
@@ -22,36 +23,28 @@ class MatchOldPasswordRule implements Rule
     }
 
     /**
-     * Determine if the validation rule passes.
-     *
-     * @param  mixed  $value
+     * Run the validation rule.
      */
-    public function passes(string $attribute, $value): bool
+    public function validate(string $attribute, mixed $value, Closure $fail): void
     {
+        $passwordMatches = false;
+
         if ($this->personType == 'admin') {
             $authAdminPass = Auth::guard('admin')->user()->password;
-
-            return Hash::check($value, $authAdminPass);
+            $passwordMatches = Hash::check($value, $authAdminPass);
         } elseif ($this->personType == 'user') {
             $authUserPass = Auth::guard('web')->user()->password;
-
-            return Hash::check($value, $authUserPass);
+            $passwordMatches = Hash::check($value, $authUserPass);
         } elseif ($this->personType == 'vendor') {
             $authUserPass = Auth::guard('vendor')->user()->password;
-
-            return Hash::check($value, $authUserPass);
+            $passwordMatches = Hash::check($value, $authUserPass);
         } elseif ($this->personType == 'staff') {
             $authUserPass = Auth::guard('staff')->user()->password;
-
-            return Hash::check($value, $authUserPass);
+            $passwordMatches = Hash::check($value, $authUserPass);
         }
-    }
 
-    /**
-     * Get the validation error message.
-     */
-    public function message(): string
-    {
-        return __('Your provided current password does not match!');
+        if (!$passwordMatches) {
+            $fail(__('Your provided current password does not match!'));
+        }
     }
 }

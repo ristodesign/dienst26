@@ -18,10 +18,20 @@ use Illuminate\Support\Facades\Session;
 
 class MyFatoorahController extends Controller
 {
-    private $myfatoorah;
+    private ?MyFatoorah $myfatoorah = null;
 
-    public function __construct()
+    /**
+     * Lazily initialize the MyFatoorah client.
+     *
+     * Important: don't do DB calls in the controller constructor, because
+     * it breaks artisan commands like `route:list` that instantiate controllers.
+     */
+    private function client(): MyFatoorah
     {
+        if ($this->myfatoorah instanceof MyFatoorah) {
+            return $this->myfatoorah;
+        }
+
         $info = OnlineGateway::where('keyword', 'myfatoorah')->firstOrFail();
         $bs = Basic::first();
 
@@ -34,8 +44,9 @@ class MyFatoorahController extends Controller
         ]);
 
         $sandboxMode = isset($information['sandbox_status']) && $information['sandbox_status'] == 1;
-
         $this->myfatoorah = MyFatoorah::getInstance($sandboxMode);
+
+        return $this->myfatoorah;
     }
 
     public function paymentProcess($request, $_amount, $_cancel_url): RedirectResponse
@@ -49,7 +60,7 @@ class MyFatoorahController extends Controller
         $random_1 = rand(999, 9999);
         $random_2 = rand(9999, 99999);
         try {
-            $result = $this->myfatoorah->sendPayment(
+            $result = $this->client()->sendPayment(
                 Auth::guard('vendor')->user()->username,
                 intval($_amount),
                 [
@@ -84,7 +95,7 @@ class MyFatoorahController extends Controller
         $bs = Basic::first();
         /** Get the payment ID before session clear **/
         if (! empty($request->paymentId)) {
-            $result = $this->myfatoorah->getPaymentStatus('paymentId', $request->paymentId);
+            $result = $this->client()->getPaymentStatus('paymentId', $request->paymentId);
 
             if ($result && $result['IsSuccess'] == true && $result['Data']['InvoiceStatus'] == 'Paid') {
                 // transaction create

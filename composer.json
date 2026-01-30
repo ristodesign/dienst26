@@ -15,7 +15,6 @@
         "barryvdh/laravel-dompdf": "^2.1",
         "baselrabia/myfatoorah-with-laravel": "^1.0",
         "cartalyst/stripe-laravel": "^16.0",
-        "doctrine/dbal": "^3.5.1",
         "google/apiclient": "^2.15.0",
         "guzzlehttp/guzzle": "^7.8",
         "kreait/firebase-php": "^7.16",

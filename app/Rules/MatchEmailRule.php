@@ -5,9 +5,10 @@ namespace App\Rules;
 use App\Models\Admin;
 use App\Models\User;
 use App\Models\Vendor;
-use Illuminate\Contracts\Validation\Rule;
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
 
-class MatchEmailRule implements Rule
+class MatchEmailRule implements ValidationRule
 {
     public $personType;
 
@@ -23,44 +24,25 @@ class MatchEmailRule implements Rule
     }
 
     /**
-     * Determine if the validation rule passes.
-     *
-     * @param  mixed  $value
+     * Run the validation rule.
      */
-    public function passes(string $attribute, $value): bool
+    public function validate(string $attribute, mixed $value, Closure $fail): void
     {
+        $exists = false;
+
         if ($this->personType == 'admin') {
             $admin = Admin::where('email', $value)->first();
-
-            if (is_null($admin)) {
-                return false;
-            } else {
-                return true;
-            }
+            $exists = !is_null($admin);
         } elseif ($this->personType == 'user') {
             $user = User::where('email', $value)->first();
-
-            if (is_null($user)) {
-                return false;
-            } else {
-                return true;
-            }
+            $exists = !is_null($user);
         } elseif ($this->personType == 'vendor') {
             $user = Vendor::where('email', $value)->first();
-
-            if (is_null($user)) {
-                return false;
-            } else {
-                return true;
-            }
+            $exists = !is_null($user);
         }
-    }
 
-    /**
-     * Get the validation error message.
-     */
-    public function message(): string
-    {
-        return 'This email does not exist!';
+        if (!$exists) {
+            $fail('This email does not exist!');
+        }
     }
 }
