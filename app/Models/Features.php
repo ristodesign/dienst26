@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Features extends Model
 {
-  use HasFactory;
-  protected $guarded = [];
+    use HasFactory;
 
-  public function language()
-  {
-    return $this->belongsTo(Language::class, 'language_id', 'id');
-  }
+    protected $guarded = [];
+
+    public function language()
+    {
+        return $this->belongsTo(Language::class, 'language_id', 'id');
+    }
 }

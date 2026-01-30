@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App;
 use App\Http\Controllers\Controller;
 use App\Models\Language;
 use App\Models\MenuBuilder;
@@ -11,43 +10,44 @@ use Illuminate\Support\Facades\DB;
 
 class MenuBuilderController extends Controller
 {
-  public function index(Request $request)
-  {
-    // first, get the language info from db
-    $language = Language::query()->where('code', '=', $request->language)->firstOrFail();
+    public function index(Request $request)
+    {
+        // first, get the language info from db
+        $language = Language::query()->where('code', '=', $request->language)->firstOrFail();
 
-    $information['language'] = $language;
+        $information['language'] = $language;
 
-    //then, get the menus
-    $websiteMenuInfo = $language->menuInfo()->first();
+        // then, get the menus
+        $websiteMenuInfo = $language->menuInfo()->first();
 
-    if (is_null($websiteMenuInfo)) {
-      $information['menuData'] = '';
-    } else {
-      $information['menuData'] = $websiteMenuInfo->menus;
+        if (is_null($websiteMenuInfo)) {
+            $information['menuData'] = '';
+        } else {
+            $information['menuData'] = $websiteMenuInfo->menus;
+        }
+
+        // now, get the custom pages of that language from db
+        $information['customPages'] = DB::table('pages')
+            ->join('page_contents', 'pages.id', '=', 'page_contents.page_id')
+            ->where('page_contents.language_id', $language->id)
+            ->orderByDesc('pages.id')
+            ->get();
+
+        $information['langs'] = Language::all();
+
+        return view('admin.menu-builder', $information);
     }
 
-    // now, get the custom pages of that language from db
-    $information['customPages'] = DB::table('pages')
-      ->join('page_contents', 'pages.id', '=', 'page_contents.page_id')
-      ->where('page_contents.language_id', $language->id)
-      ->orderByDesc('pages.id')
-      ->get();
+    public function update(Request $request)
+    {
+        MenuBuilder::query()->updateOrCreate(
+            ['language_id' => $request['languageId']],
+            [
+                'language_id' => $request['languageId'],
+                'menus' => $request['str'],
+            ]
+        );
 
-    $information['langs'] = Language::all();
-    return view('admin.menu-builder', $information);
-  }
-
-  public function update(Request $request)
-  {
-    MenuBuilder::query()->updateOrCreate(
-      ['language_id' => $request['languageId']],
-      [
-        'language_id' => $request['languageId'],
-        'menus' => $request['str']
-      ]
-    );
-
-    return response()->json(['message' => __('Website menus updated successfully!')], 200);
-  }
+        return response()->json(['message' => __('Website menus updated successfully!')], 200);
+    }
 }

@@ -31,7 +31,7 @@ return [
             'fileinfo',
             'exif',
             'gmp',
-            'sodium'
+            'sodium',
         ],
     ],
 
@@ -45,9 +45,9 @@ return [
     |
     */
     'permissions' => [
-        'storage/framework/'     => '775',
-        'storage/logs/'          => '775',
-        'bootstrap/cache/'       => '775'
+        'storage/framework/' => '775',
+        'storage/logs/' => '775',
+        'bootstrap/cache/' => '775',
     ],
 
     /*
@@ -62,13 +62,13 @@ return [
     'environment' => [
         'form' => [
             'rules' => [
-                'app_name'              => 'required|string|max:50',
-                'app_debug'             => 'required|string',
-                'app_url'               => 'required|url',
-                'database_hostname'     => 'required|string|max:50',
-                'database_name'         => 'required|string|max:50',
-                'database_username'     => 'required|string|max:50',
-                'database_password'     => 'nullable|string|max:50',
+                'app_name' => 'required|string|max:50',
+                'app_debug' => 'required|string',
+                'app_url' => 'required|url',
+                'database_hostname' => 'required|string|max:50',
+                'database_name' => 'required|string|max:50',
+                'database_username' => 'required|string|max:50',
+                'database_password' => 'nullable|string|max:50',
             ],
         ],
     ],

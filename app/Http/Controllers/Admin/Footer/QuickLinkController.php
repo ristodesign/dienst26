@@ -11,77 +11,76 @@ use Illuminate\Support\Facades\Validator;
 
 class QuickLinkController extends Controller
 {
-  public function index(Request $request)
-  {
-    // first, get the language info from db
-    $language = Language::query()->where('code', '=', $request->language)->firstOrFail();
-    $information['language'] = $language;
+    public function index(Request $request)
+    {
+        // first, get the language info from db
+        $language = Language::query()->where('code', '=', $request->language)->firstOrFail();
+        $information['language'] = $language;
 
-    // then, get the quick-links of that language from db
-    $information['quickLinks'] = $language->footerQuickLink()->orderByDesc('id')->get();
+        // then, get the quick-links of that language from db
+        $information['quickLinks'] = $language->footerQuickLink()->orderByDesc('id')->get();
 
-    // also, get all the languages from db
-    $information['langs'] = Language::all();
+        // also, get all the languages from db
+        $information['langs'] = Language::all();
 
-    return view('admin.footer.quick-link.index', $information);
-  }
-
-  public function store(Request $request)
-  {
-    $rules = [
-      'language_id' => 'required',
-      'title' => 'required|max:255',
-      'url' => 'required|url',
-      'serial_number' => 'required|numeric'
-    ];
-
-
-    $validator = Validator::make($request->all(), $rules);
-
-    if ($validator->fails()) {
-      return Response::json([
-        'errors' => $validator->getMessageBag()->toArray()
-      ], 400);
+        return view('admin.footer.quick-link.index', $information);
     }
 
-    QuickLink::query()->create($request->all());
+    public function store(Request $request)
+    {
+        $rules = [
+            'language_id' => 'required',
+            'title' => 'required|max:255',
+            'url' => 'required|url',
+            'serial_number' => 'required|numeric',
+        ];
 
-    session()->flash('success', __('New quick link added successfully!'));
+        $validator = Validator::make($request->all(), $rules);
 
-    return Response::json(['status' => 'success'], 200);
-  }
+        if ($validator->fails()) {
+            return Response::json([
+                'errors' => $validator->getMessageBag()->toArray(),
+            ], 400);
+        }
 
-  public function update(Request $request)
-  {
-    $rules = [
-      'title' => 'required|max:255',
-      'url' => 'required|url',
-      'serial_number' => 'required|numeric'
-    ];
+        QuickLink::query()->create($request->all());
 
-    $validator = Validator::make($request->all(), $rules);
+        session()->flash('success', __('New quick link added successfully!'));
 
-    if ($validator->fails()) {
-      return Response::json([
-        'errors' => $validator->getMessageBag()->toArray()
-      ], 400);
+        return Response::json(['status' => 'success'], 200);
     }
 
-    $quickLink = QuickLink::query()->findOrFail($request->id);
+    public function update(Request $request)
+    {
+        $rules = [
+            'title' => 'required|max:255',
+            'url' => 'required|url',
+            'serial_number' => 'required|numeric',
+        ];
 
-    $quickLink->update($request->all());
+        $validator = Validator::make($request->all(), $rules);
 
-    session()->flash('success', __('Quick link updated successfully!'));
+        if ($validator->fails()) {
+            return Response::json([
+                'errors' => $validator->getMessageBag()->toArray(),
+            ], 400);
+        }
 
-    return Response::json(['status' => 'success'], 200);
-  }
+        $quickLink = QuickLink::query()->findOrFail($request->id);
 
-  public function destroy($id)
-  {
-    $quickLink = QuickLink::query()->findOrFail($id);
+        $quickLink->update($request->all());
 
-    $quickLink->delete();
+        session()->flash('success', __('Quick link updated successfully!'));
 
-    return redirect()->back()->with('success', __('Quick link deleted successfully!'));
-  }
+        return Response::json(['status' => 'success'], 200);
+    }
+
+    public function destroy($id)
+    {
+        $quickLink = QuickLink::query()->findOrFail($id);
+
+        $quickLink->delete();
+
+        return redirect()->back()->with('success', __('Quick link deleted successfully!'));
+    }
 }

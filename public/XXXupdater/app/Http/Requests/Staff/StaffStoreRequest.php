@@ -9,86 +9,84 @@ use Illuminate\Validation\Rule;
 
 class StaffStoreRequest extends FormRequest
 {
-  /**
-   * Determine if the user is authorized to make this request.
-   *
-   * @return bool
-   */
-  public function authorize()
-  {
-    return true;
-  }
-
-  /**
-   * Get the validation rules that apply to the request.
-   *
-   * @return array<string, mixed>
-   */
-  public function rules()
-  {
-    $ruleArray = [
-      'staff_image' => [
-        'required',
-        new ImageMimeTypeRule()
-      ],
-      'status' => 'required',
-      'email' => 'required',
-      'phone' => 'required',
-      'login_allow_toggle' => 'required',
-      'order_number' => 'required',
-    ];
-
-    $vendorId = $this->input('vendorId');
-    $staffId = $this->input('staffId');
-
-    if ($this->input('login_allow_toggle') == 1) {
-      $ruleArray['username'] = [
-        'required',
-        Rule::unique('staff', 'username')->where(function ($query) use ($vendorId) {
-          return $query->where('vendor_id', $vendorId);
-        })->ignore($staffId, 'id')
-      ];
-      $ruleArray['password'] = 'required';
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
     }
 
-    $defaultLanguage = Language::where('is_default', 1)->first();
-    $ruleArray[$defaultLanguage->code . '_name'] = 'required|max:255';
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, mixed>
+     */
+    public function rules()
+    {
+        $ruleArray = [
+            'staff_image' => [
+                'required',
+                new ImageMimeTypeRule,
+            ],
+            'status' => 'required',
+            'email' => 'required',
+            'phone' => 'required',
+            'login_allow_toggle' => 'required',
+            'order_number' => 'required',
+        ];
 
+        $vendorId = $this->input('vendorId');
+        $staffId = $this->input('staffId');
 
-    $languages = Language::all();
-    foreach ($languages as $language) {
-      $code = $language->code;
+        if ($this->input('login_allow_toggle') == 1) {
+            $ruleArray['username'] = [
+                'required',
+                Rule::unique('staff', 'username')->where(function ($query) use ($vendorId) {
+                    return $query->where('vendor_id', $vendorId);
+                })->ignore($staffId, 'id'),
+            ];
+            $ruleArray['password'] = 'required';
+        }
 
-      // Skip the default language as it's always required
-      if ($language->id == $defaultLanguage->id) {
-        continue;
-      }
-      // Check if any field for this language is filled
-      if (
-        $this->filled($code . '_name') ||
-        $this->filled($code . '_location') ||
-        $this->filled($code . '_information')
-      ) {
-        $ruleArray[$code . '_name'] = 'required|max:255';
-      }
+        $defaultLanguage = Language::where('is_default', 1)->first();
+        $ruleArray[$defaultLanguage->code.'_name'] = 'required|max:255';
+
+        $languages = Language::all();
+        foreach ($languages as $language) {
+            $code = $language->code;
+
+            // Skip the default language as it's always required
+            if ($language->id == $defaultLanguage->id) {
+                continue;
+            }
+            // Check if any field for this language is filled
+            if (
+                $this->filled($code.'_name') ||
+                $this->filled($code.'_location') ||
+                $this->filled($code.'_information')
+            ) {
+                $ruleArray[$code.'_name'] = 'required|max:255';
+            }
+        }
+
+        return $ruleArray;
     }
 
-    return $ruleArray;
-  }
+    public function messages()
+    {
+        $messageArray = [];
 
-  public function messages()
-  {
-    $messageArray = [];
+        $languages = Language::all();
 
+        foreach ($languages as $language) {
+            $messageArray[$language->code.'_name.required'] = __('The name field is required for').' '.$language->name.' '.__('language.');
+            $messageArray[$language->code.'_location.required'] = __('The location field is required for').' '.$language->name.' '.__('language.');
+            $messageArray[$language->code.'_name.max'] = __('The name field cannot contain more than 255 characters for').' '.$language->name.' '.__('language.');
+        }
 
-    $languages = Language::all();
-
-    foreach ($languages as $language) {
-      $messageArray[$language->code . '_name.required'] = __('The name field is required for') . ' ' . $language->name . ' ' . __('language.');
-      $messageArray[$language->code . '_location.required'] = __('The location field is required for')  . ' ' . $language->name . ' ' .  __('language.');
-      $messageArray[$language->code . '_name.max'] = __('The name field cannot contain more than 255 characters for') . ' ' . $language->name . ' ' . __('language.');
+        return $messageArray;
     }
-
-    return $messageArray;
-  }
 }

@@ -8,32 +8,33 @@ use Illuminate\Database\Eloquent\Model;
 
 class ServiceContent extends Model
 {
-  use HasFactory;
+    use HasFactory;
 
-  protected $fillable = [
-    'service_id',
-    'language_id',
-    'category_id',
-    'name',
-    'description',
-    'slug',
-    'meta_keyword',
-    'meta_description',
-    'features',
-    'address'
-  ];
+    protected $fillable = [
+        'service_id',
+        'language_id',
+        'category_id',
+        'name',
+        'description',
+        'slug',
+        'meta_keyword',
+        'meta_description',
+        'features',
+        'address',
+    ];
 
-  public function service()
-  {
-    return $this->belongsTo(Services::class);
-  }
-  public function language()
-  {
-    return $this->belongsTo(Language::class, 'language_id', 'id');
-  }
+    public function service()
+    {
+        return $this->belongsTo(Services::class);
+    }
 
-  public function category()
-  {
-    return $this->belongsTo(ServiceCategory::class);
-  }
+    public function language()
+    {
+        return $this->belongsTo(Language::class, 'language_id', 'id');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(ServiceCategory::class);
+    }
 }

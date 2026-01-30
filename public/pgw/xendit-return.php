@@ -1,11 +1,17 @@
 <?php
 $invoiceId = $_GET['invoice_id'] ?? '';
-$error     = isset($_GET['error']) ? '1' : '';
+$error = isset($_GET['error']) ? '1' : '';
 $schemeUrl = 'myapp://xendit-finish';
 $qs = [];
-if ($invoiceId) $qs['invoice_id'] = $invoiceId;
-if ($error)     $qs['error'] = $error;
-if ($qs) $schemeUrl .= '?' . http_build_query($qs);
+if ($invoiceId) {
+    $qs['invoice_id'] = $invoiceId;
+}
+if ($error) {
+    $qs['error'] = $error;
+}
+if ($qs) {
+    $schemeUrl .= '?'.http_build_query($qs);
+}
 ?>
 <!doctype html>
 <html>

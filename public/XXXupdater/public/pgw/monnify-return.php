@@ -5,10 +5,18 @@ $payRef = $_GET['paymentReference'] ?? '';
 $status = $_GET['paymentStatus'] ?? '';
 $scheme = 'myapp://monnify-finish';
 $q = [];
-if ($trxRef) $q[] = 'transactionReference='.rawurlencode($trxRef);
-if ($payRef) $q[] = 'paymentReference='.rawurlencode($payRef);
-if ($status) $q[] = 'status='.rawurlencode($status);
-if ($q) $scheme .= '?'.implode('&', $q);
+if ($trxRef) {
+    $q[] = 'transactionReference='.rawurlencode($trxRef);
+}
+if ($payRef) {
+    $q[] = 'paymentReference='.rawurlencode($payRef);
+}
+if ($status) {
+    $q[] = 'status='.rawurlencode($status);
+}
+if ($q) {
+    $scheme .= '?'.implode('&', $q);
+}
 ?>
 <!doctype html>
 <html><head><meta charset="utf-8"><title>Returning…</title></head>

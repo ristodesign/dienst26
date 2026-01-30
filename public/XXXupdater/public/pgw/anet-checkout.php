@@ -1,7 +1,11 @@
 <?php
 // Auto POST the token to Accept Hosted page
 $token = $_GET['token'] ?? '';
-if ($token === '') { http_response_code(400); echo "Missing token"; exit; }
+if ($token === '') {
+    http_response_code(400);
+    echo 'Missing token';
+    exit;
+}
 ?>
 <!doctype html>
 <html>

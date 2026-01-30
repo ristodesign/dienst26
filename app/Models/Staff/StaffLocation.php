@@ -8,5 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class StaffLocation extends Model
 {
     use HasFactory;
-  protected $guarded = [];
+
+    protected $guarded = [];
 }

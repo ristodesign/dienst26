@@ -7,7 +7,7 @@ return [
      * Shared translations.
      *
      */
-    'title' => config('installer.item_name') . ' Installer',
+    'title' => config('installer.item_name').' Installer',
     'next' => 'Next Step',
     'back' => 'Previous',
     'finish' => 'Install',
@@ -22,9 +22,9 @@ return [
      */
     'welcome' => [
         'templateTitle' => 'Welcome',
-        'title'   => config('installer.item_name') . ' Installer',
+        'title' => config('installer.item_name').' Installer',
         'message' => 'Easy Installation and Setup Wizard.',
-        'next'    => 'Check Requirements',
+        'next' => 'Check Requirements',
     ],
 
     /*
@@ -35,7 +35,7 @@ return [
     'requirements' => [
         'templateTitle' => 'Step 1 | Server Requirements',
         'title' => 'Server Requirements',
-        'next'    => 'Check Permissions',
+        'next' => 'Check Permissions',
     ],
 
     /*
@@ -187,7 +187,7 @@ return [
      *
      */
     'installed' => [
-        'success_log_message' => config('installer.item_name') . ' successfully INSTALLED on ',
+        'success_log_message' => config('installer.item_name').' successfully INSTALLED on ',
     ],
 
     /*
@@ -225,7 +225,7 @@ return [
          *
          */
         'welcome' => [
-            'title'   => 'Welcome To The Updater',
+            'title' => 'Welcome To The Updater',
             'message' => 'Welcome to the update wizard.',
         ],
 
@@ -235,7 +235,7 @@ return [
          *
          */
         'overview' => [
-            'title'   => 'Overview',
+            'title' => 'Overview',
             'message' => 'There is 1 update.|There are :number updates.',
             'install_updates' => 'Install Updates',
         ],

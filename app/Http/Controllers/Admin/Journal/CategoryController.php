@@ -12,113 +12,113 @@ use Illuminate\Validation\Rule;
 
 class CategoryController extends Controller
 {
-  public function index(Request $request)
-  {
-    $language = Language::where('code', $request->language)->firstOrFail();
-    $information['language'] = $language;
+    public function index(Request $request)
+    {
+        $language = Language::where('code', $request->language)->firstOrFail();
+        $information['language'] = $language;
 
-    $information['categories'] = $language->blogCategory()->orderByDesc('id')->get();
+        $information['categories'] = $language->blogCategory()->orderByDesc('id')->get();
 
-    $information['langs'] = Language::all();
+        $information['langs'] = Language::all();
 
-    return view('admin.journal.category.index', $information);
-  }
-
-  public function store(Request $request)
-  {
-    $rules = [
-      'language_id' => 'required',
-      'name' => 'required|unique:blog_categories|max:255',
-      'status' => 'required|numeric',
-      'serial_number' => 'required|numeric'
-    ];
-
-    $validator = Validator::make($request->all(), $rules);
-
-    if ($validator->fails()) {
-      return Response::json([
-        'errors' => $validator->getMessageBag()
-      ], 400);
+        return view('admin.journal.category.index', $information);
     }
 
-    BlogCategory::create($request->except('slug') + [
-      'slug' => createSlug($request->name)
-    ]);
+    public function store(Request $request)
+    {
+        $rules = [
+            'language_id' => 'required',
+            'name' => 'required|unique:blog_categories|max:255',
+            'status' => 'required|numeric',
+            'serial_number' => 'required|numeric',
+        ];
 
-    session()->flash('success', __('New blog category added successfully!') );
+        $validator = Validator::make($request->all(), $rules);
 
-    return Response::json(['status' => 'success'], 200);
-  }
+        if ($validator->fails()) {
+            return Response::json([
+                'errors' => $validator->getMessageBag(),
+            ], 400);
+        }
 
-  public function update(Request $request)
-  {
-    $rules = [
-      'name' => [
-        'required',
-        'max:255',
-        Rule::unique('blog_categories', 'name')->ignore($request->id, 'id')
-      ],
-      'status' => 'required|numeric',
-      'serial_number' => 'required|numeric'
-    ];
+        BlogCategory::create($request->except('slug') + [
+            'slug' => createSlug($request->name),
+        ]);
 
-    $validator = Validator::make($request->all(), $rules);
+        session()->flash('success', __('New blog category added successfully!'));
 
-    if ($validator->fails()) {
-      return Response::json([
-        'errors' => $validator->getMessageBag()
-      ], 400);
+        return Response::json(['status' => 'success'], 200);
     }
 
-    $category = BlogCategory::find($request->id);
+    public function update(Request $request)
+    {
+        $rules = [
+            'name' => [
+                'required',
+                'max:255',
+                Rule::unique('blog_categories', 'name')->ignore($request->id, 'id'),
+            ],
+            'status' => 'required|numeric',
+            'serial_number' => 'required|numeric',
+        ];
 
-    $category->update($request->except('slug') + [
-      'slug' => createSlug($request->name)
-    ]);
+        $validator = Validator::make($request->all(), $rules);
 
-    session()->flash('success', __('Blog category updated successfully!') );
+        if ($validator->fails()) {
+            return Response::json([
+                'errors' => $validator->getMessageBag(),
+            ], 400);
+        }
 
-    return Response::json(['status' => 'success'], 200);
-  }
+        $category = BlogCategory::find($request->id);
 
-  public function destroy($id)
-  {
-    $category = BlogCategory::find($id);
-    $blogInformations = $category->blogInfo()->get();
+        $category->update($request->except('slug') + [
+            'slug' => createSlug($request->name),
+        ]);
 
-    if (count($blogInformations) > 0) {
-      return redirect()->back()->with('warning', __('First delete all the blog of this category!') );
-    } else {
-      $category->delete();
+        session()->flash('success', __('Blog category updated successfully!'));
 
-      return redirect()->back()->with('success', __('Blog category deleted successfully!') );
-    }
-  }
-
-  public function bulkDestroy(Request $request)
-  {
-    $ids = $request->ids;
-
-    $errorOccured = false;
-
-    foreach ($ids as $id) {
-      $category = BlogCategory::find($id);
-      $blogInformations = $category->blogInfo()->get();
-
-      if (count($blogInformations) > 0) {
-        $errorOccured = true;
-        break;
-      } else {
-        $category->delete();
-      }
+        return Response::json(['status' => 'success'], 200);
     }
 
-    if ($errorOccured == true) {
-      session()->flash('warning', __('First delete all the blog of these categories!') );
-    } else {
-      session()->flash('success', __('Blog categories deleted successfully!') );
+    public function destroy($id)
+    {
+        $category = BlogCategory::find($id);
+        $blogInformations = $category->blogInfo()->get();
+
+        if (count($blogInformations) > 0) {
+            return redirect()->back()->with('warning', __('First delete all the blog of this category!'));
+        } else {
+            $category->delete();
+
+            return redirect()->back()->with('success', __('Blog category deleted successfully!'));
+        }
     }
 
-    return Response::json(['status' => 'success'], 200);
-  }
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->ids;
+
+        $errorOccured = false;
+
+        foreach ($ids as $id) {
+            $category = BlogCategory::find($id);
+            $blogInformations = $category->blogInfo()->get();
+
+            if (count($blogInformations) > 0) {
+                $errorOccured = true;
+                break;
+            } else {
+                $category->delete();
+            }
+        }
+
+        if ($errorOccured == true) {
+            session()->flash('warning', __('First delete all the blog of these categories!'));
+        } else {
+            session()->flash('success', __('Blog categories deleted successfully!'));
+        }
+
+        return Response::json(['status' => 'success'], 200);
+    }
 }

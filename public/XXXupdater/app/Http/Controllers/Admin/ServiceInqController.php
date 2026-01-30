@@ -12,62 +12,63 @@ use Illuminate\Http\Request;
 
 class ServiceInqController extends Controller
 {
-  public function message(Request $request)
-  {
-    $vendor_id  = null;
-    if ($request->filled('vendor_id')) {
-      $vendor_id = $request->vendor_id;
-    }
-    $language = Language::where('code', request()->language)->firstOrFail();
-    $language_id = $language->id;
-    $information['langs'] = Language::all();
-
-    $information['vendors'] = Vendor::join('memberships', 'vendors.id', '=', 'memberships.vendor_id')
-      ->where([
-        ['memberships.status', '=', 1],
-        ['memberships.start_date', '<=', Carbon::now()->format('Y-m-d')],
-        ['memberships.expire_date', '>=', Carbon::now()->format('Y-m-d')]
-      ])
-      ->select('vendors.id', 'vendors.username')
-      ->get();
-
-    $information['messages'] = InqueryMessage::with(['serviceContent' => function ($q) use ($language_id) {
-      $q->where('language_id', $language_id);
-    }])
-      ->when($vendor_id, function ($query) use ($vendor_id) {
-        if ($vendor_id == 'admin') {
-          return $query->where('vendor_id', '0');
-        } else {
-          return $query->where('vendor_id', $vendor_id);
+    public function message(Request $request)
+    {
+        $vendor_id = null;
+        if ($request->filled('vendor_id')) {
+            $vendor_id = $request->vendor_id;
         }
-      })
-      ->orderBy('id', 'desc')
-      ->paginate(10);
+        $language = Language::where('code', request()->language)->firstOrFail();
+        $language_id = $language->id;
+        $information['langs'] = Language::all();
 
-    return view('admin.email.message', $information);
-  }
+        $information['vendors'] = Vendor::join('memberships', 'vendors.id', '=', 'memberships.vendor_id')
+            ->where([
+                ['memberships.status', '=', 1],
+                ['memberships.start_date', '<=', Carbon::now()->format('Y-m-d')],
+                ['memberships.expire_date', '>=', Carbon::now()->format('Y-m-d')],
+            ])
+            ->select('vendors.id', 'vendors.username')
+            ->get();
 
-  public function messageDestroy($id)
-  {
-    $message = InqueryMessage::find($id);
-    $message->delete();
+        $information['messages'] = InqueryMessage::with(['serviceContent' => function ($q) use ($language_id) {
+            $q->where('language_id', $language_id);
+        }])
+            ->when($vendor_id, function ($query) use ($vendor_id) {
+                if ($vendor_id == 'admin') {
+                    return $query->where('vendor_id', '0');
+                } else {
+                    return $query->where('vendor_id', $vendor_id);
+                }
+            })
+            ->orderBy('id', 'desc')
+            ->paginate(10);
 
-    return redirect()->back()->with('success', 'Message delete successfully!');
-  }
-
-  public function bulkDelete(Request $request)
-  {
-    $ids = $request->ids;
-
-    foreach ($ids as $id) {
-      $message = InqueryMessage::where('vendor_id', Auth::guard('vendor')->user()->id)->find($id);
-
-      if ($message) {
-        $message->delete();
-      }
+        return view('admin.email.message', $information);
     }
 
-    session()->flash('success', 'Message deleted successfully!');
-    return response()->json(['status' => 'success'], 200);
-  }
+    public function messageDestroy($id)
+    {
+        $message = InqueryMessage::find($id);
+        $message->delete();
+
+        return redirect()->back()->with('success', 'Message delete successfully!');
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->ids;
+
+        foreach ($ids as $id) {
+            $message = InqueryMessage::where('vendor_id', Auth::guard('vendor')->user()->id)->find($id);
+
+            if ($message) {
+                $message->delete();
+            }
+        }
+
+        session()->flash('success', 'Message deleted successfully!');
+
+        return response()->json(['status' => 'success'], 200);
+    }
 }

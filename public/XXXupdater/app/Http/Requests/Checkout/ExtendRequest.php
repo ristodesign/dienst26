@@ -40,7 +40,7 @@ class ExtendRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'receipt.required' => 'The receipt field image is required when instruction required receipt image'
+            'receipt.required' => 'The receipt field image is required when instruction required receipt image',
         ];
     }
 }

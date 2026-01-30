@@ -7,19 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Advertisement extends Model
 {
-  use HasFactory;
+    use HasFactory;
 
-  /**
-   * The attributes that are mass assignable.
-   *
-   * @var array
-   */
-  protected $fillable = [
-    'ad_type', 
-    'resolution_type', 
-    'image', 
-    'url', 
-    'slot', 
-    'views'
-  ];
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'ad_type',
+        'resolution_type',
+        'image',
+        'url',
+        'slot',
+        'views',
+    ];
 }

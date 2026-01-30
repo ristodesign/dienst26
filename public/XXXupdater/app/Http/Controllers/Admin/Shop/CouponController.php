@@ -9,48 +9,50 @@ use Carbon\Carbon;
 
 class CouponController extends Controller
 {
-  public function index()
-  {
-    // get the coupons from db
-    $information['coupons'] = Coupon::orderByDesc('id')->get();
+    public function index()
+    {
+        // get the coupons from db
+        $information['coupons'] = Coupon::orderByDesc('id')->get();
 
-    // also, get the currency information from db
-    $information['currencyInfo'] = $this->getCurrencyInfo();
+        // also, get the currency information from db
+        $information['currencyInfo'] = $this->getCurrencyInfo();
 
-    return view('admin.shop.coupon.index', $information);
-  }
-  public function store(CouponRequest $request)
-  {
-    $startDate = Carbon::parse($request->start_date);
-    $endDate = Carbon::parse($request->end_date);
+        return view('admin.shop.coupon.index', $information);
+    }
 
-    Coupon::create($request->except('start_date', 'end_date') + [
-      'start_date' => date_format($startDate, 'Y-m-d'),
-      'end_date' => date_format($endDate, 'Y-m-d')
-    ]);
+    public function store(CouponRequest $request)
+    {
+        $startDate = Carbon::parse($request->start_date);
+        $endDate = Carbon::parse($request->end_date);
 
-    session()->flash('success', __('New coupon added successfully!'));
+        Coupon::create($request->except('start_date', 'end_date') + [
+            'start_date' => date_format($startDate, 'Y-m-d'),
+            'end_date' => date_format($endDate, 'Y-m-d'),
+        ]);
 
-    return response()->json(['status' => 'success'], 200);
-  }
+        session()->flash('success', __('New coupon added successfully!'));
 
-  public function update(CouponRequest $request)
-  {
-    $startDate = Carbon::parse($request->start_date);
-    $endDate = Carbon::parse($request->end_date);
+        return response()->json(['status' => 'success'], 200);
+    }
 
-    Coupon::find($request->id)->update($request->except('start_date', 'end_date') + [
-      'start_date' => date_format($startDate, 'Y-m-d'),
-      'end_date' => date_format($endDate, 'Y-m-d')
-    ]);
-    session()->flash('success', __('Coupon updated successfully!'));
+    public function update(CouponRequest $request)
+    {
+        $startDate = Carbon::parse($request->start_date);
+        $endDate = Carbon::parse($request->end_date);
 
-    return response()->json(['status' => 'success'], 200);
-  }
-  public function destroy($id)
-  {
-    Coupon::find($id)->delete();
+        Coupon::find($request->id)->update($request->except('start_date', 'end_date') + [
+            'start_date' => date_format($startDate, 'Y-m-d'),
+            'end_date' => date_format($endDate, 'Y-m-d'),
+        ]);
+        session()->flash('success', __('Coupon updated successfully!'));
 
-    return redirect()->back()->with('success', __('Coupon deleted successfully!'));
-  }
+        return response()->json(['status' => 'success'], 200);
+    }
+
+    public function destroy($id)
+    {
+        Coupon::find($id)->delete();
+
+        return redirect()->back()->with('success', __('Coupon deleted successfully!'));
+    }
 }

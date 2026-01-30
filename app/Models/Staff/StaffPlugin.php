@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class StaffPlugin extends Model
 {
-  use HasFactory;
-  protected $fillable = ['staff_id', 'google_calendar', 'calender_id'];
+    use HasFactory;
+
+    protected $fillable = ['staff_id', 'google_calendar', 'calender_id'];
 }

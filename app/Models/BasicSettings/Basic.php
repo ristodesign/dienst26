@@ -7,14 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Basic extends Model
 {
-  use HasFactory;
+    use HasFactory;
 
-  protected $table = 'basic_settings';
+    protected $table = 'basic_settings';
 
-  /**
-   * The attributes that aren't mass assignable.
-   *
-   * @var array
-   */
-  protected $guarded = [];
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = [];
 }

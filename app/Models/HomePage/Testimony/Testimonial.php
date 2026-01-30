@@ -8,17 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Testimonial extends Model
 {
-  use HasFactory;
+    use HasFactory;
 
-  /**
-   * The attributes that aren't mass assignable.
-   *
-   * @var array
-   */
-  protected $guarded = [];
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = [];
 
-  public function language()
-  {
-    return $this->belongsTo(Language::class, 'language_id', 'id');
-  }
+    public function language()
+    {
+        return $this->belongsTo(Language::class, 'language_id', 'id');
+    }
 }

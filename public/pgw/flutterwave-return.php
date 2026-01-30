@@ -2,7 +2,7 @@
 // Bounce back into the app to close the WebView.
 // Flutterwave appends ?status=successful&tx_ref=...&transaction_id=...
 $txRef = $_GET['tx_ref'] ?? '';
-$schemeUrl = 'myapp://flutterwave-finish' . ($txRef ? ('?tx_ref=' . urlencode($txRef)) : '');
+$schemeUrl = 'myapp://flutterwave-finish'.($txRef ? ('?tx_ref='.urlencode($txRef)) : '');
 ?>
 <!doctype html>
 <html>

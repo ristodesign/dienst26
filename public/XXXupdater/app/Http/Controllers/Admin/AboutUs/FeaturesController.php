@@ -10,75 +10,74 @@ use Validator;
 
 class FeaturesController extends Controller
 {
-  public function storeFeatures(Request $request)
-  {
-    $rules = [
-      'language_id' => 'required',
-      'title' => 'required|max:255',
-      'serial_number' => 'required|numeric',
-      'icon' => 'required',
-      'text' => 'required'
-    ];
+    public function storeFeatures(Request $request)
+    {
+        $rules = [
+            'language_id' => 'required',
+            'title' => 'required|max:255',
+            'serial_number' => 'required|numeric',
+            'icon' => 'required',
+            'text' => 'required',
+        ];
 
-    $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules);
 
-    if ($validator->fails()) {
-      return Response::json([
-        'errors' => $validator->getMessageBag()
-      ], 400);
+        if ($validator->fails()) {
+            return Response::json([
+                'errors' => $validator->getMessageBag(),
+            ], 400);
+        }
+
+        Features::query()->create($request->except('language'));
+
+        session()->flash('success', __('New features added successfully!'));
+
+        return Response::json(['status' => 'success'], 200);
     }
 
-    Features::query()->create($request->except('language'));
+    public function updateFeatures(Request $request)
+    {
+        $rules = [
+            'title' => 'required|max:255',
+            'text' => 'required',
+            'serial_number' => 'required|numeric',
+        ];
 
-    session()->flash('success', __('New features added successfully!') );
+        $validator = Validator::make($request->all(), $rules);
 
-    return Response::json(['status' => 'success'], 200);
-  }
+        if ($validator->fails()) {
+            return Response::json([
+                'errors' => $validator->getMessageBag(),
+            ], 400);
+        }
+        $features = Features::query()->find($request->id);
 
+        $features->update($request->except('language'));
 
-  public function updateFeatures(Request $request)
-  {
-    $rules = [
-      'title' => 'required|max:255',
-      'text' => 'required',
-      'serial_number' => 'required|numeric'
-    ];
+        session()->flash('success', __('Features updated successfully!'));
 
-    $validator = Validator::make($request->all(), $rules);
-
-    if ($validator->fails()) {
-      return Response::json([
-        'errors' => $validator->getMessageBag()
-      ], 400);
-    }
-    $features = Features::query()->find($request->id);
-
-    $features->update($request->except('language'));
-
-    session()->flash('success', __('Features updated successfully!') );
-
-    return Response::json(['status' => 'success'], 200);
-  }
-
-  public function destroy($id)
-  {
-    $Features = Features::query()->find($id);
-    $Features->delete();
-
-    return redirect()->back()->with('success', __('Features deleted successfully!') );
-  }
-
-  public function bulkDestroy(Request $request)
-  {
-    $ids = $request['ids'];
-
-    foreach ($ids as $id) {
-      $Features = Features::query()->find($id);
-      $Features->delete();
+        return Response::json(['status' => 'success'], 200);
     }
 
-    session()->flash('success', __('Features deleted successfully!') );
+    public function destroy($id)
+    {
+        $Features = Features::query()->find($id);
+        $Features->delete();
 
-    return Response::json(['status' => 'success'], 200);
-  }
+        return redirect()->back()->with('success', __('Features deleted successfully!'));
+    }
+
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request['ids'];
+
+        foreach ($ids as $id) {
+            $Features = Features::query()->find($id);
+            $Features->delete();
+        }
+
+        session()->flash('success', __('Features deleted successfully!'));
+
+        return Response::json(['status' => 'success'], 200);
+    }
 }

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class FeaturedServiceCharge extends Model
 {
-  use HasFactory;
-  protected $guarded = [];
+    use HasFactory;
+
+    protected $guarded = [];
 }

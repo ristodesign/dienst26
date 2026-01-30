@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers\Payment;
 
-use App\Http\Controllers\Vendor\VendorCheckoutController;
-use App\Http\Helpers\VendorPermissionHelper;
-use App\Models\PaymentGateway\OnlineGateway;
-use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Vendor\VendorCheckoutController;
 use App\Http\Helpers\MegaMailer;
+use App\Http\Helpers\VendorPermissionHelper;
 use App\Models\BasicSettings\Basic;
-use Illuminate\Http\Request;
 use App\Models\Language;
 use App\Models\Package;
+use App\Models\PaymentGateway\OnlineGateway;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class FlutterWaveController extends Controller
 {
     public $public_key;
+
     private $secret_key;
 
     public function __construct()
@@ -41,13 +42,12 @@ class FlutterWaveController extends Controller
         $txref = $_item_number; // ensure you generate unique references per transaction.
         $PBFPubKey = $this->public_key; // get your public key from the dashboard.
         $redirect_url = $notify_url;
-        $payment_plan = ""; // this is only required for recurring payments.
+        $payment_plan = ''; // this is only required for recurring payments.
 
-
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://api.ravepay.co/flwv3-pug/getpaidx/api/v2/hosted/pay",
+        curl_setopt_array($curl, [
+            CURLOPT_URL => 'https://api.ravepay.co/flwv3-pug/getpaidx/api/v2/hosted/pay',
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => json_encode([
                 'amount' => $_amount,
                 'customer_email' => $_email,
@@ -55,27 +55,27 @@ class FlutterWaveController extends Controller
                 'txref' => $txref,
                 'PBFPubKey' => $PBFPubKey,
                 'redirect_url' => $redirect_url,
-                'payment_plan' => $payment_plan
+                'payment_plan' => $payment_plan,
             ]),
             CURLOPT_HTTPHEADER => [
-                "content-type: application/json",
-                "cache-control: no-cache"
+                'content-type: application/json',
+                'cache-control: no-cache',
             ],
-        ));
+        ]);
 
         $response = curl_exec($curl);
         $err = curl_error($curl);
 
         if ($err) {
             // there was an error contacting the rave API
-            return redirect($cancel_url)->with('error', 'Curl returned error: ' . $err);
+            return redirect($cancel_url)->with('error', 'Curl returned error: '.$err);
         }
 
         $transaction = json_decode($response);
 
-        if (!$transaction->data && !$transaction->data->link) {
+        if (! $transaction->data && ! $transaction->data->link) {
             // there was an error from the API
-            return redirect($cancel_url)->with('error', 'API returned error: ' . $transaction->message);
+            return redirect($cancel_url)->with('error', 'API returned error: '.$transaction->message);
         }
 
         return redirect()->to($transaction->data->link);
@@ -97,17 +97,17 @@ class FlutterWaveController extends Controller
         $payment_id = Session::get('payment_id');
         if (isset($request['txref'])) {
             $ref = $payment_id;
-            $query = array(
-                "SECKEY" => $this->secret_key,
-                "txref" => $ref
-            );
+            $query = [
+                'SECKEY' => $this->secret_key,
+                'txref' => $ref,
+            ];
             $data_string = json_encode($query);
             $ch = curl_init('https://api.ravepay.co/flwv3-pug/getpaidx/api/v2/verify');
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
             curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+            curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
             $response = curl_exec($ch);
             curl_close($ch);
             $resp = json_decode($response, true);
@@ -115,10 +115,10 @@ class FlutterWaveController extends Controller
             if ($resp['status'] == 'error') {
                 return redirect($cancel_url);
             }
-            if ($resp['status'] = "success") {
-                //transaction create
-                $after_balance = NULL;
-                $pre_balance = NULL;
+            if ($resp['status'] = 'success') {
+                // transaction create
+                $after_balance = null;
+                $pre_balance = null;
                 $transactionData = [
                     'vendor_id' => $requestData['vendor_id'],
                     'transaction_type' => 'membership_buy',
@@ -135,81 +135,85 @@ class FlutterWaveController extends Controller
 
                 $paymentStatus = $resp['data']['status'];
                 $paymentFor = Session::get('paymentFor');
-                if ($resp['status'] = "success") {
+                if ($resp['status'] = 'success') {
                     $package = Package::find($requestData['package_id']);
                     $transaction_id = VendorPermissionHelper::uniqidReal(8);
                     $transaction_details = json_encode($resp['data']);
-                    if ($paymentFor == "membership") {
+                    if ($paymentFor == 'membership') {
                         $amount = $requestData['price'];
                         $password = $requestData['password'];
-                        $checkout = new VendorCheckoutController();
+                        $checkout = new VendorCheckoutController;
                         $user = $checkout->store($requestData, $transaction_id, $transaction_details, $amount, $bs, $password);
 
                         $lastMemb = $user->memberships()->orderBy('id', 'DESC')->first();
                         $activation = Carbon::parse($lastMemb->start_date);
                         $expire = Carbon::parse($lastMemb->expire_date);
-                        $file_name = $this->makeInvoice($requestData, "membership", $user, $password, $amount, "Flutterwave", $requestData['phone'], $bs->base_currency_symbol_position, $bs->base_currency_symbol, $bs->base_currency_text, $transaction_id, $package->title, $lastMemb);
+                        $file_name = $this->makeInvoice($requestData, 'membership', $user, $password, $amount, 'Flutterwave', $requestData['phone'], $bs->base_currency_symbol_position, $bs->base_currency_symbol, $bs->base_currency_text, $transaction_id, $package->title, $lastMemb);
 
-                        $mailer = new MegaMailer();
+                        $mailer = new MegaMailer;
                         $data = [
                             'toMail' => $user->email,
                             'toName' => $user->fname,
                             'username' => $user->username,
                             'package_title' => $package->title,
-                            'package_price' => ($bs->base_currency_text_position == 'left' ? $bs->base_currency_text . ' ' : '') . $package->price . ($bs->base_currency_text_position == 'right' ? ' ' . $bs->base_currency_text : ''),
+                            'package_price' => ($bs->base_currency_text_position == 'left' ? $bs->base_currency_text.' ' : '').$package->price.($bs->base_currency_text_position == 'right' ? ' '.$bs->base_currency_text : ''),
                             'activation_date' => $activation->toFormattedDateString(),
-                            'discount' => ($bs->base_currency_text_position == 'left' ? $bs->base_currency_text . ' ' : '') . $lastMemb->discount . ($bs->base_currency_text_position == 'right' ? ' ' . $bs->base_currency_text : ''),
-                            'total' => ($bs->base_currency_text_position == 'left' ? $bs->base_currency_text . ' ' : '') . $lastMemb->price . ($bs->base_currency_text_position == 'right' ? ' ' . $bs->base_currency_text : ''),
+                            'discount' => ($bs->base_currency_text_position == 'left' ? $bs->base_currency_text.' ' : '').$lastMemb->discount.($bs->base_currency_text_position == 'right' ? ' '.$bs->base_currency_text : ''),
+                            'total' => ($bs->base_currency_text_position == 'left' ? $bs->base_currency_text.' ' : '').$lastMemb->price.($bs->base_currency_text_position == 'right' ? ' '.$bs->base_currency_text : ''),
                             'expire_date' => Carbon::parse($expire->toFormattedDateString())->format('Y') == '9999' ? 'Lifetime' : $expire->toFormattedDateString(),
                             'membership_invoice' => $file_name,
                             'website_title' => $bs->website_title,
                             'templateType' => 'package_purchase',
-                            'type' => 'registrationWithPremiumPackage'
+                            'type' => 'registrationWithPremiumPackage',
                         ];
                         $mailer->mailFromAdmin($data);
-                        @unlink(public_path('assets/front/invoices/' . $file_name));
+                        @unlink(public_path('assets/front/invoices/'.$file_name));
 
                         session()->flash('success', __('successful_payment'));
                         Session::forget('request');
                         Session::forget('paymentFor');
+
                         return redirect()->route('success.page');
-                    } elseif ($paymentFor == "extend") {
+                    } elseif ($paymentFor == 'extend') {
                         $amount = $requestData['price'];
                         $password = uniqid('qrcode');
-                        $checkout = new VendorCheckoutController();
+                        $checkout = new VendorCheckoutController;
                         $user = $checkout->store($requestData, $transaction_id, $transaction_details, $amount, $bs, $password);
 
                         $lastMemb = $user->memberships()->orderBy('id', 'DESC')->first();
                         $activation = Carbon::parse($lastMemb->start_date);
                         $expire = Carbon::parse($lastMemb->expire_date);
-                        $file_name = $this->makeInvoice($requestData, "extend", $user, $password, $amount, $requestData["payment_method"], $user->phone, $bs->base_currency_symbol_position, $bs->base_currency_symbol, $bs->base_currency_text, $transaction_id, $package->title, $lastMemb);
+                        $file_name = $this->makeInvoice($requestData, 'extend', $user, $password, $amount, $requestData['payment_method'], $user->phone, $bs->base_currency_symbol_position, $bs->base_currency_symbol, $bs->base_currency_text, $transaction_id, $package->title, $lastMemb);
 
-                        $mailer = new MegaMailer();
+                        $mailer = new MegaMailer;
                         $data = [
                             'toMail' => $user->email,
                             'toName' => $user->fname,
                             'username' => $user->username,
                             'package_title' => $package->title,
-                            'package_price' => ($bs->base_currency_text_position == 'left' ? $bs->base_currency_text . ' ' : '') . $package->price . ($bs->base_currency_text_position == 'right' ? ' ' . $bs->base_currency_text : ''),
+                            'package_price' => ($bs->base_currency_text_position == 'left' ? $bs->base_currency_text.' ' : '').$package->price.($bs->base_currency_text_position == 'right' ? ' '.$bs->base_currency_text : ''),
                             'activation_date' => $activation->toFormattedDateString(),
                             'expire_date' => Carbon::parse($expire->toFormattedDateString())->format('Y') == '9999' ? 'Lifetime' : $expire->toFormattedDateString(),
                             'membership_invoice' => $file_name,
                             'website_title' => $bs->website_title,
                             'templateType' => 'package_purchase',
-                            'type' => 'membershipExtend'
+                            'type' => 'membershipExtend',
                         ];
                         $mailer->mailFromAdmin($data);
-                        @unlink(public_path('assets/front/invoices/' . $file_name));
+                        @unlink(public_path('assets/front/invoices/'.$file_name));
 
                         session()->flash('success', 'Your payment has been completed.');
                         Session::forget('request');
                         Session::forget('paymentFor');
+
                         return redirect()->route('success.page');
                     }
                 }
             }
+
             return redirect($cancel_url);
         }
+
         return redirect($cancel_url);
     }
 
@@ -218,7 +222,7 @@ class FlutterWaveController extends Controller
         $requestData = Session::get('request');
         $paymentFor = Session::get('paymentFor');
         session()->flash('warning', __('cancel_payment'));
-        if ($paymentFor == "membership") {
+        if ($paymentFor == 'membership') {
             return redirect()->route('front.register.view', ['status' => $requestData['package_type'], 'id' => $requestData['package_id']])->withInput($requestData);
         } else {
             return redirect()->route('vendor.plan.extend.checkout', ['package_id' => $requestData['package_id']])->withInput($requestData);

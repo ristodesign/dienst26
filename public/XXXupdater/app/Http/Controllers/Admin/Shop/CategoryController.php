@@ -12,117 +12,116 @@ use Illuminate\Validation\Rule;
 
 class CategoryController extends Controller
 {
-  public function index(Request $request)
-  {
-    // first, get the language info from db
-    $language = Language::where('code', $request->language)->firstOrFail();
-    $information['language'] = $language;
+    public function index(Request $request)
+    {
+        // first, get the language info from db
+        $language = Language::where('code', $request->language)->firstOrFail();
+        $information['language'] = $language;
 
-    // then, get the product categories of that language from db
-    $information['categories'] = $language->productCategory()->orderByDesc('id')->get();
+        // then, get the product categories of that language from db
+        $information['categories'] = $language->productCategory()->orderByDesc('id')->get();
 
-    // also, get all the languages from db
-    $information['langs'] = Language::all();
+        // also, get all the languages from db
+        $information['langs'] = Language::all();
 
-    return view('admin.shop.category.index', $information);
-  }
-
-  public function store(Request $request)
-  {
-    $rules = [
-      'language_id' => 'required',
-      'name' => 'required|unique:product_categories|max:255',
-      'status' => 'required|numeric',
-      'serial_number' => 'required|numeric'
-    ];
-
-
-    $validator = Validator::make($request->all(), $rules);
-
-    if ($validator->fails()) {
-      return Response::json([
-        'errors' => $validator->getMessageBag()
-      ], 400);
+        return view('admin.shop.category.index', $information);
     }
 
-    ProductCategory::create($request->except('slug') + [
-      'slug' => createSlug($request->name)
-    ]);
+    public function store(Request $request)
+    {
+        $rules = [
+            'language_id' => 'required',
+            'name' => 'required|unique:product_categories|max:255',
+            'status' => 'required|numeric',
+            'serial_number' => 'required|numeric',
+        ];
 
-    session()->flash('success', __('New product category added successfully!') );
+        $validator = Validator::make($request->all(), $rules);
 
-    return Response::json(['status' => 'success'], 200);
-  }
+        if ($validator->fails()) {
+            return Response::json([
+                'errors' => $validator->getMessageBag(),
+            ], 400);
+        }
 
-  public function update(Request $request)
-  {
-    $rules = [
-      'name' => [
-        'required',
-        'max:255',
-        Rule::unique('product_categories', 'name')->ignore($request->id, 'id')
-      ],
-      'status' => 'required|numeric',
-      'serial_number' => 'required|numeric'
-    ];
+        ProductCategory::create($request->except('slug') + [
+            'slug' => createSlug($request->name),
+        ]);
 
-    $validator = Validator::make($request->all(), $rules);
+        session()->flash('success', __('New product category added successfully!'));
 
-    if ($validator->fails()) {
-      return Response::json([
-        'errors' => $validator->getMessageBag()
-      ], 400);
+        return Response::json(['status' => 'success'], 200);
     }
 
-    $category = ProductCategory::find($request->id);
+    public function update(Request $request)
+    {
+        $rules = [
+            'name' => [
+                'required',
+                'max:255',
+                Rule::unique('product_categories', 'name')->ignore($request->id, 'id'),
+            ],
+            'status' => 'required|numeric',
+            'serial_number' => 'required|numeric',
+        ];
 
-    $category->update($request->except('slug') + [
-      'slug' => createSlug($request->name)
-    ]);
+        $validator = Validator::make($request->all(), $rules);
 
-    session()->flash('success', __('Product category updated successfully!') );
+        if ($validator->fails()) {
+            return Response::json([
+                'errors' => $validator->getMessageBag(),
+            ], 400);
+        }
 
-    return Response::json(['status' => 'success'], 200);
-  }
+        $category = ProductCategory::find($request->id);
 
-  public function destroy($id)
-  {
-    $category = ProductCategory::find($id);
-    $productContents = $category->productContent()->get();
+        $category->update($request->except('slug') + [
+            'slug' => createSlug($request->name),
+        ]);
 
-    if (count($productContents) > 0) {
-      return redirect()->back()->with('warning', __('First delete all the products of this category!') );
-    } else {
-      $category->delete();
+        session()->flash('success', __('Product category updated successfully!'));
 
-      return redirect()->back()->with('success', __('Category deleted successfully!') );
-    }
-  }
-
-  public function bulkDestroy(Request $request)
-  {
-    $ids = $request->ids;
-
-    $errorOccured = false;
-
-    foreach ($ids as $id) {
-      $category = ProductCategory::find($id);
-      $productContents = $category->productContent()->get();
-
-      if (count($productContents) > 0) {
-        $errorOccured = true;
-        break;
-      } else {
-        $category->delete();
-      }
+        return Response::json(['status' => 'success'], 200);
     }
 
-    if ($errorOccured == true) {
-      session()->flash('warning', __('First delete all the product of these categories!') );
-    } else {
-      session()->flash('success', __('Product categories deleted successfully!') );
+    public function destroy($id)
+    {
+        $category = ProductCategory::find($id);
+        $productContents = $category->productContent()->get();
+
+        if (count($productContents) > 0) {
+            return redirect()->back()->with('warning', __('First delete all the products of this category!'));
+        } else {
+            $category->delete();
+
+            return redirect()->back()->with('success', __('Category deleted successfully!'));
+        }
     }
 
-    return Response::json(['status' => 'success'], 200);
-  }
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->ids;
+
+        $errorOccured = false;
+
+        foreach ($ids as $id) {
+            $category = ProductCategory::find($id);
+            $productContents = $category->productContent()->get();
+
+            if (count($productContents) > 0) {
+                $errorOccured = true;
+                break;
+            } else {
+                $category->delete();
+            }
+        }
+
+        if ($errorOccured == true) {
+            session()->flash('warning', __('First delete all the product of these categories!'));
+        } else {
+            session()->flash('success', __('Product categories deleted successfully!'));
+        }
+
+        return Response::json(['status' => 'success'], 200);
+    }
 }

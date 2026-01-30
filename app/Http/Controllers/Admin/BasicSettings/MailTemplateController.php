@@ -10,38 +10,39 @@ use Validator;
 
 class MailTemplateController extends Controller
 {
-  public function index()
-  {
-    $templates = MailTemplate::all();
-    return view('admin.basic-settings.email.templates', compact('templates'));
-  }
+    public function index()
+    {
+        $templates = MailTemplate::all();
 
-  public function edit($id)
-  {
-    $templateInfo = MailTemplate::findOrFail($id);
-
-    return view('admin.basic-settings.email.edit-template', compact('templateInfo'));
-  }
-
-  public function update(Request $request,$id)
-  {
-    $rules = [
-      'mail_subject' => 'required',
-      'mail_body' => 'required'
-    ];
-
-    $validator = Validator::make($request->all(), $rules);
-
-    if ($validator->fails()) {
-      return redirect()->back()->withErrors($validator->errors());
+        return view('admin.basic-settings.email.templates', compact('templates'));
     }
 
-    MailTemplate::findOrFail($id)->update($request->except('mail_type', 'mail_body') + [
-      'mail_body' => Purifier::clean($request->mail_body, 'youtube'),
-    ]);
+    public function edit($id)
+    {
+        $templateInfo = MailTemplate::findOrFail($id);
 
-    session()->flash('success', __('Mail template updated successfully!') );
+        return view('admin.basic-settings.email.edit-template', compact('templateInfo'));
+    }
 
-    return redirect()->back();
-  }
+    public function update(Request $request, $id)
+    {
+        $rules = [
+            'mail_subject' => 'required',
+            'mail_body' => 'required',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator->errors());
+        }
+
+        MailTemplate::findOrFail($id)->update($request->except('mail_type', 'mail_body') + [
+            'mail_body' => Purifier::clean($request->mail_body, 'youtube'),
+        ]);
+
+        session()->flash('success', __('Mail template updated successfully!'));
+
+        return redirect()->back();
+    }
 }

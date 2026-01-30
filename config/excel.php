@@ -3,9 +3,9 @@
 use Maatwebsite\Excel\Excel;
 
 return [
-  'exports' => [
+    'exports' => [
 
-    /*
+        /*
     |--------------------------------------------------------------------------
     | Chunk size
     |--------------------------------------------------------------------------
@@ -14,16 +14,16 @@ return [
     | Here you can specify how big the chunk should be.
     |
     */
-    'chunk_size'             => 1000,
+        'chunk_size' => 1000,
 
-    /*
+        /*
     |--------------------------------------------------------------------------
     | Pre-calculate formulas during export
     |--------------------------------------------------------------------------
     */
-    'pre_calculate_formulas' => false,
+        'pre_calculate_formulas' => false,
 
-    /*
+        /*
     |--------------------------------------------------------------------------
     | Enable strict null comparison
     |--------------------------------------------------------------------------
@@ -31,9 +31,9 @@ return [
     | When enabling strict null comparison empty cells ('') will
     | be added to the sheet.
     */
-    'strict_null_comparison' => false,
+        'strict_null_comparison' => false,
 
-    /*
+        /*
     |--------------------------------------------------------------------------
     | CSV Settings
     |--------------------------------------------------------------------------
@@ -41,17 +41,17 @@ return [
     | Configure e.g. delimiter, enclosure and line ending for CSV exports.
     |
     */
-    'csv'                    => [
-      'delimiter'              => ',',
-      'enclosure'              => '"',
-      'line_ending'            => PHP_EOL,
-      'use_bom'                => false,
-      'include_separator_line' => false,
-      'excel_compatibility'    => false,
-      'output_encoding'        => '',
-    ],
+        'csv' => [
+            'delimiter' => ',',
+            'enclosure' => '"',
+            'line_ending' => PHP_EOL,
+            'use_bom' => false,
+            'include_separator_line' => false,
+            'excel_compatibility' => false,
+            'output_encoding' => '',
+        ],
 
-    /*
+        /*
     |--------------------------------------------------------------------------
     | Worksheet properties
     |--------------------------------------------------------------------------
@@ -59,22 +59,22 @@ return [
     | Configure e.g. default title, creator, subject,...
     |
     */
-    'properties'             => [
-      'creator'        => '',
-      'lastModifiedBy' => '',
-      'title'          => '',
-      'description'    => '',
-      'subject'        => '',
-      'keywords'       => '',
-      'category'       => '',
-      'manager'        => '',
-      'company'        => '',
+        'properties' => [
+            'creator' => '',
+            'lastModifiedBy' => '',
+            'title' => '',
+            'description' => '',
+            'subject' => '',
+            'keywords' => '',
+            'category' => '',
+            'manager' => '',
+            'company' => '',
+        ],
     ],
-  ],
 
-  'imports'            => [
+    'imports' => [
 
-    /*
+        /*
     |--------------------------------------------------------------------------
     | Read Only
     |--------------------------------------------------------------------------
@@ -85,9 +85,9 @@ return [
     | you can enable it by setting read_only to false.
     |
     */
-    'read_only' => true,
+        'read_only' => true,
 
-    /*
+        /*
     |--------------------------------------------------------------------------
     | Ignore Empty
     |--------------------------------------------------------------------------
@@ -98,9 +98,9 @@ return [
     | ignored by enabling the setting ignore_empty to true.
     |
     */
-    'ignore_empty' => false,
+        'ignore_empty' => false,
 
-    /*
+        /*
     |--------------------------------------------------------------------------
     | Heading Row Formatter
     |--------------------------------------------------------------------------
@@ -109,11 +109,11 @@ return [
     | Available options: none|slug|custom
     |
     */
-    'heading_row' => [
-      'formatter' => 'slug',
-    ],
+        'heading_row' => [
+            'formatter' => 'slug',
+        ],
 
-    /*
+        /*
     |--------------------------------------------------------------------------
     | CSV Settings
     |--------------------------------------------------------------------------
@@ -121,15 +121,15 @@ return [
     | Configure e.g. delimiter, enclosure and line ending for CSV imports.
     |
     */
-    'csv'         => [
-      'delimiter'        => null,
-      'enclosure'        => '"',
-      'escape_character' => '\\',
-      'contiguous'       => false,
-      'input_encoding'   => 'UTF-8',
-    ],
+        'csv' => [
+            'delimiter' => null,
+            'enclosure' => '"',
+            'escape_character' => '\\',
+            'contiguous' => false,
+            'input_encoding' => 'UTF-8',
+        ],
 
-    /*
+        /*
     |--------------------------------------------------------------------------
     | Worksheet properties
     |--------------------------------------------------------------------------
@@ -137,21 +137,21 @@ return [
     | Configure e.g. default title, creator, subject,...
     |
     */
-    'properties'  => [
-      'creator'        => '',
-      'lastModifiedBy' => '',
-      'title'          => '',
-      'description'    => '',
-      'subject'        => '',
-      'keywords'       => '',
-      'category'       => '',
-      'manager'        => '',
-      'company'        => '',
+        'properties' => [
+            'creator' => '',
+            'lastModifiedBy' => '',
+            'title' => '',
+            'description' => '',
+            'subject' => '',
+            'keywords' => '',
+            'category' => '',
+            'manager' => '',
+            'company' => '',
+        ],
+
     ],
 
-  ],
-
-  /*
+    /*
   |--------------------------------------------------------------------------
   | Extension detector
   |--------------------------------------------------------------------------
@@ -160,24 +160,24 @@ return [
   | needs to guess the correct type based on the extension alone.
   |
   */
-  'extension_detector' => [
-    'xlsx'     => Excel::XLSX,
-    'xlsm'     => Excel::XLSX,
-    'xltx'     => Excel::XLSX,
-    'xltm'     => Excel::XLSX,
-    'xls'      => Excel::XLS,
-    'xlt'      => Excel::XLS,
-    'ods'      => Excel::ODS,
-    'ots'      => Excel::ODS,
-    'slk'      => Excel::SLK,
-    'xml'      => Excel::XML,
-    'gnumeric' => Excel::GNUMERIC,
-    'htm'      => Excel::HTML,
-    'html'     => Excel::HTML,
-    'csv'      => Excel::CSV,
-    'tsv'      => Excel::TSV,
+    'extension_detector' => [
+        'xlsx' => Excel::XLSX,
+        'xlsm' => Excel::XLSX,
+        'xltx' => Excel::XLSX,
+        'xltm' => Excel::XLSX,
+        'xls' => Excel::XLS,
+        'xlt' => Excel::XLS,
+        'ods' => Excel::ODS,
+        'ots' => Excel::ODS,
+        'slk' => Excel::SLK,
+        'xml' => Excel::XML,
+        'gnumeric' => Excel::GNUMERIC,
+        'htm' => Excel::HTML,
+        'html' => Excel::HTML,
+        'csv' => Excel::CSV,
+        'tsv' => Excel::TSV,
 
-    /*
+        /*
     |--------------------------------------------------------------------------
     | PDF Extension
     |--------------------------------------------------------------------------
@@ -186,10 +186,10 @@ return [
     | Available options: Excel::MPDF | Excel::TCPDF | Excel::DOMPDF
     |
     */
-    'pdf'      => Excel::DOMPDF,
-  ],
+        'pdf' => Excel::DOMPDF,
+    ],
 
-  /*
+    /*
   |--------------------------------------------------------------------------
   | Value Binder
   |--------------------------------------------------------------------------
@@ -206,12 +206,12 @@ return [
   | [x] PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder::class
   |
   */
-  'value_binder' => [
-    'default' => Maatwebsite\Excel\DefaultValueBinder::class,
-  ],
+    'value_binder' => [
+        'default' => Maatwebsite\Excel\DefaultValueBinder::class,
+    ],
 
-  'cache' => [
-    /*
+    'cache' => [
+        /*
     |--------------------------------------------------------------------------
     | Default cell caching driver
     |--------------------------------------------------------------------------
@@ -227,9 +227,9 @@ return [
     | Drivers: memory|illuminate|batch
     |
     */
-    'driver'     => 'memory',
+        'driver' => 'memory',
 
-    /*
+        /*
     |--------------------------------------------------------------------------
     | Batch memory caching
     |--------------------------------------------------------------------------
@@ -239,11 +239,11 @@ return [
     | Here you can tweak the memory limit to your liking.
     |
     */
-    'batch'     => [
-      'memory_limit' => 60000,
-    ],
+        'batch' => [
+            'memory_limit' => 60000,
+        ],
 
-    /*
+        /*
     |--------------------------------------------------------------------------
     | Illuminate cache
     |--------------------------------------------------------------------------
@@ -255,12 +255,12 @@ return [
     | at "null" it will use the default store.
     |
     */
-    'illuminate' => [
-      'store' => null,
+        'illuminate' => [
+            'store' => null,
+        ],
     ],
-  ],
 
-  /*
+    /*
   |--------------------------------------------------------------------------
   | Transaction Handler
   |--------------------------------------------------------------------------
@@ -275,16 +275,16 @@ return [
   | Supported handlers: null|db
   |
   */
-  'transactions' => [
-    'handler' => 'db',
-    'db'      => [
-      'connection' => null,
+    'transactions' => [
+        'handler' => 'db',
+        'db' => [
+            'connection' => null,
+        ],
     ],
-  ],
 
-  'temporary_files' => [
+    'temporary_files' => [
 
-    /*
+        /*
     |--------------------------------------------------------------------------
     | Local Temporary Path
     |--------------------------------------------------------------------------
@@ -293,9 +293,9 @@ return [
     | storing reading or downloading. Here you can customize that path.
     |
     */
-    'local_path'          => storage_path('framework/cache/laravel-excel'),
+        'local_path' => storage_path('framework/cache/laravel-excel'),
 
-    /*
+        /*
     |--------------------------------------------------------------------------
     | Remote Temporary Disk
     |--------------------------------------------------------------------------
@@ -309,10 +309,10 @@ return [
     | in conjunction with queued imports and exports.
     |
     */
-    'remote_disk'         => null,
-    'remote_prefix'       => null,
+        'remote_disk' => null,
+        'remote_prefix' => null,
 
-    /*
+        /*
     |--------------------------------------------------------------------------
     | Force Resync
     |--------------------------------------------------------------------------
@@ -327,6 +327,6 @@ return [
     | processed it.
     |
     */
-    'force_resync_remote' => null,
-  ],
+        'force_resync_remote' => null,
+    ],
 ];

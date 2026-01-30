@@ -2,22 +2,16 @@
 
 namespace App\Http\Controllers\Payment;
 
-use App\Http\Controllers\Admin\AdminCheckoutController;
-use App\Http\Controllers\Front\CheckoutController;
-use App\Http\Controllers\User\UserCheckoutController;
-use App\Http\Helpers\UserPermissionHelper;
-use App\Models\BasicExtended;
-use App\Models\Package;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\VendorCheckoutController;
 use App\Http\Helpers\MegaMailer;
 use App\Http\Helpers\VendorPermissionHelper;
 use App\Models\BasicSettings\Basic;
-use App\Models\Language;
 use App\Models\Membership;
+use App\Models\Package;
 use App\Models\PaymentGateway\OnlineGateway;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
 class PaytmController extends Controller
@@ -35,7 +29,8 @@ class PaytmController extends Controller
         }
         $paramList = $data_for_request['paramList'];
         $checkSum = $data_for_request['checkSum'];
-        Session::put("request", $request->all());
+        Session::put('request', $request->all());
+
         return view('front.paytm', compact('paytm_txn_url', 'paramList', 'checkSum'));
     }
 
@@ -46,76 +41,85 @@ class PaytmController extends Controller
 
         // Load all functions of encdec_paytm.php and config-paytm.php
         $this->getAllEncdecFunc();
-        $checkSum = "";
-        $paramList = array();
+        $checkSum = '';
+        $paramList = [];
         // Create an array having all required parameters for creating checksum.
-        $paramList["MID"] = $paydata['merchant_mid'];
-        $paramList["ORDER_ID"] = $_item_number;
-        $paramList["CUST_ID"] = $_item_number;
-        $paramList["INDUSTRY_TYPE_ID"] = $paydata['industry_type'];
-        $paramList["CHANNEL_ID"] = 'WEB';
-        $paramList["TXN_AMOUNT"] = $amount;
-        $paramList["WEBSITE"] = $paydata['merchant_website'];
-        $paramList["CALLBACK_URL"] = $callback_url;
+        $paramList['MID'] = $paydata['merchant_mid'];
+        $paramList['ORDER_ID'] = $_item_number;
+        $paramList['CUST_ID'] = $_item_number;
+        $paramList['INDUSTRY_TYPE_ID'] = $paydata['industry_type'];
+        $paramList['CHANNEL_ID'] = 'WEB';
+        $paramList['TXN_AMOUNT'] = $amount;
+        $paramList['WEBSITE'] = $paydata['merchant_website'];
+        $paramList['CALLBACK_URL'] = $callback_url;
 
         $paytm_merchant_key = $paydata['merchant_key'];
-        //Here checksum string will return by getChecksumFromArray() function.
+        // Here checksum string will return by getChecksumFromArray() function.
         $checkSum = getChecksumFromArray($paramList, $paytm_merchant_key);
-        return array(
+
+        return [
             'checkSum' => $checkSum,
-            'paramList' => $paramList
-        );
+            'paramList' => $paramList,
+        ];
     }
 
-    function getAllEncdecFunc()
+    public function getAllEncdecFunc()
     {
         function encrypt_e($input, $ky)
         {
             $key = html_entity_decode($ky);
-            $iv = "@@@@&&&&####$$$$";
-            $data = openssl_encrypt($input, "AES-128-CBC", $key, 0, $iv);
+            $iv = '@@@@&&&&####$$$$';
+            $data = openssl_encrypt($input, 'AES-128-CBC', $key, 0, $iv);
+
             return $data;
         }
 
         function decrypt_e($crypt, $ky)
         {
             $key = html_entity_decode($ky);
-            $iv = "@@@@&&&&####$$$$";
-            $data = openssl_decrypt($crypt, "AES-128-CBC", $key, 0, $iv);
+            $iv = '@@@@&&&&####$$$$';
+            $data = openssl_decrypt($crypt, 'AES-128-CBC', $key, 0, $iv);
+
             return $data;
         }
 
         function pkcs5_pad_e($text, $blocksize)
         {
             $pad = $blocksize - (strlen($text) % $blocksize);
-            return $text . str_repeat(chr($pad), $pad);
+
+            return $text.str_repeat(chr($pad), $pad);
         }
 
         function pkcs5_unpad_e($text)
         {
             $pad = ord($text[strlen($text) - 1]);
-            if ($pad > strlen($text))
+            if ($pad > strlen($text)) {
                 return false;
+            }
+
             return substr($text, 0, -1 * $pad);
         }
 
         function generateSalt_e($length)
         {
-            $random = "";
-            srand((float)microtime() * 1000000);
-            $data = "AbcDE123IJKLMN67QRSTUVWXYZ";
-            $data .= "aBCdefghijklmn123opq45rs67tuv89wxyz";
-            $data .= "0FGH45OP89";
+            $random = '';
+            srand((float) microtime() * 1000000);
+            $data = 'AbcDE123IJKLMN67QRSTUVWXYZ';
+            $data .= 'aBCdefghijklmn123opq45rs67tuv89wxyz';
+            $data .= '0FGH45OP89';
             for ($i = 0; $i < $length; $i++) {
                 $random .= substr($data, (rand() % (strlen($data))), 1);
             }
+
             return $random;
         }
 
         function checkString_e($value)
         {
-            if ($value == 'null')
+            if ($value == 'null') {
                 $value = '';
+            }
+
             return $value;
         }
 
@@ -126,20 +130,22 @@ class PaytmController extends Controller
             }
             $str = getArray2Str($arrayList);
             $salt = generateSalt_e(4);
-            $finalString = $str . "|" . $salt;
-            $hash = hash("sha256", $finalString);
-            $hashString = $hash . $salt;
+            $finalString = $str.'|'.$salt;
+            $hash = hash('sha256', $finalString);
+            $hashString = $hash.$salt;
             $checksum = encrypt_e($hashString, $key);
+
             return $checksum;
         }
 
         function getChecksumFromString($str, $key)
         {
             $salt = generateSalt_e(4);
-            $finalString = $str . "|" . $salt;
-            $hash = hash("sha256", $finalString);
-            $hashString = $hash . $salt;
+            $finalString = $str.'|'.$salt;
+            $hash = hash('sha256', $finalString);
+            $hashString = $hash.$salt;
             $checksum = encrypt_e($hashString, $key);
+
             return $checksum;
         }
 
@@ -150,15 +156,16 @@ class PaytmController extends Controller
             $str = getArray2StrForVerify($arrayList);
             $paytm_hash = decrypt_e($checksumvalue, $key);
             $salt = substr($paytm_hash, -4);
-            $finalString = $str . "|" . $salt;
-            $website_hash = hash("sha256", $finalString);
+            $finalString = $str.'|'.$salt;
+            $website_hash = hash('sha256', $finalString);
             $website_hash .= $salt;
-            $validFlag = "FALSE";
+            $validFlag = 'FALSE';
             if ($website_hash == $paytm_hash) {
-                $validFlag = "TRUE";
+                $validFlag = 'TRUE';
             } else {
-                $validFlag = "FALSE";
+                $validFlag = 'FALSE';
             }
+
             return $validFlag;
         }
 
@@ -166,15 +173,16 @@ class PaytmController extends Controller
         {
             $paytm_hash = decrypt_e($checksumvalue, $key);
             $salt = substr($paytm_hash, -4);
-            $finalString = $str . "|" . $salt;
-            $website_hash = hash("sha256", $finalString);
+            $finalString = $str.'|'.$salt;
+            $website_hash = hash('sha256', $finalString);
             $website_hash .= $salt;
-            $validFlag = "FALSE";
+            $validFlag = 'FALSE';
             if ($website_hash == $paytm_hash) {
-                $validFlag = "TRUE";
+                $validFlag = 'TRUE';
             } else {
-                $validFlag = "FALSE";
+                $validFlag = 'FALSE';
             }
+
             return $validFlag;
         }
 
@@ -182,7 +190,7 @@ class PaytmController extends Controller
         {
             $findme = 'REFUND';
             $findmepipe = '|';
-            $paramStr = "";
+            $paramStr = '';
             $flag = 1;
             foreach ($arrayList as $key => $value) {
                 $pos = strpos($value, $findme);
@@ -194,24 +202,26 @@ class PaytmController extends Controller
                     $paramStr .= checkString_e($value);
                     $flag = 0;
                 } else {
-                    $paramStr .= "|" . checkString_e($value);
+                    $paramStr .= '|'.checkString_e($value);
                 }
             }
+
             return $paramStr;
         }
 
         function getArray2StrForVerify($arrayList)
         {
-            $paramStr = "";
+            $paramStr = '';
             $flag = 1;
             foreach ($arrayList as $key => $value) {
                 if ($flag) {
                     $paramStr .= checkString_e($value);
                     $flag = 0;
                 } else {
-                    $paramStr .= "|" . checkString_e($value);
+                    $paramStr .= '|'.checkString_e($value);
                 }
             }
+
             return $paramStr;
         }
 
@@ -223,9 +233,10 @@ class PaytmController extends Controller
 
         function removeCheckSumParam($arrayList)
         {
-            if (isset($arrayList["CHECKSUMHASH"])) {
-                unset($arrayList["CHECKSUMHASH"]);
+            if (isset($arrayList['CHECKSUMHASH'])) {
+                unset($arrayList['CHECKSUMHASH']);
             }
+
             return $arrayList;
         }
 
@@ -242,18 +253,19 @@ class PaytmController extends Controller
         function initiateTxnRefund($requestParamList)
         {
             $CHECKSUM = getRefundChecksumFromArray($requestParamList, PAYTM_MERCHANT_KEY, 0);
-            $requestParamList["CHECKSUM"] = $CHECKSUM;
+            $requestParamList['CHECKSUM'] = $CHECKSUM;
+
             return callAPI(PAYTM_REFUND_URL, $requestParamList);
         }
 
         function callAPI($apiURL, $requestParamList)
         {
-            $jsonResponse = "";
-            $responseParamList = array();
+            $jsonResponse = '';
+            $responseParamList = [];
             $JsonData = json_encode($requestParamList);
-            $postData = 'JsonData=' . urlencode($JsonData);
+            $postData = 'JsonData='.urlencode($JsonData);
             $ch = curl_init($apiURL);
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
             curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
@@ -261,24 +273,25 @@ class PaytmController extends Controller
             curl_setopt(
                 $ch,
                 CURLOPT_HTTPHEADER,
-                array(
+                [
                     'Content-Type: application/json',
-                    'Content-Length: ' . strlen($postData)
-                )
+                    'Content-Length: '.strlen($postData),
+                ]
             );
             $jsonResponse = curl_exec($ch);
             $responseParamList = json_decode($jsonResponse, true);
+
             return $responseParamList;
         }
 
         function callNewAPI($apiURL, $requestParamList)
         {
-            $jsonResponse = "";
-            $responseParamList = array();
+            $jsonResponse = '';
+            $responseParamList = [];
             $JsonData = json_encode($requestParamList);
-            $postData = 'JsonData=' . urlencode($JsonData);
+            $postData = 'JsonData='.urlencode($JsonData);
             $ch = curl_init($apiURL);
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
             curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
@@ -286,13 +299,14 @@ class PaytmController extends Controller
             curl_setopt(
                 $ch,
                 CURLOPT_HTTPHEADER,
-                array(
+                [
                     'Content-Type: application/json',
-                    'Content-Length: ' . strlen($postData)
-                )
+                    'Content-Length: '.strlen($postData),
+                ]
             );
             $jsonResponse = curl_exec($ch);
             $responseParamList = json_decode($jsonResponse, true);
+
             return $responseParamList;
         }
 
@@ -303,17 +317,18 @@ class PaytmController extends Controller
             }
             $str = getRefundArray2Str($arrayList);
             $salt = generateSalt_e(4);
-            $finalString = $str . "|" . $salt;
-            $hash = hash("sha256", $finalString);
-            $hashString = $hash . $salt;
+            $finalString = $str.'|'.$salt;
+            $hash = hash('sha256', $finalString);
+            $hashString = $hash.$salt;
             $checksum = encrypt_e($hashString, $key);
+
             return $checksum;
         }
 
         function getRefundArray2Str($arrayList)
         {
             $findmepipe = '|';
-            $paramStr = "";
+            $paramStr = '';
             $flag = 1;
             foreach ($arrayList as $key => $value) {
                 $pospipe = strpos($value, $findmepipe);
@@ -324,18 +339,19 @@ class PaytmController extends Controller
                     $paramStr .= checkString_e($value);
                     $flag = 0;
                 } else {
-                    $paramStr .= "|" . checkString_e($value);
+                    $paramStr .= '|'.checkString_e($value);
                 }
             }
+
             return $paramStr;
         }
 
         function callRefundAPI($refundApiURL, $requestParamList)
         {
-            $jsonResponse = "";
-            $responseParamList = array();
+            $jsonResponse = '';
+            $responseParamList = [];
             $JsonData = json_encode($requestParamList);
-            $postData = 'JsonData=' . urlencode($JsonData);
+            $postData = 'JsonData='.urlencode($JsonData);
             $ch = curl_init($refundApiURL);
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
@@ -343,10 +359,11 @@ class PaytmController extends Controller
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            $headers = array();
+            $headers = [];
             $headers[] = 'Content-Type: application/json';
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
             $jsonResponse = curl_exec($ch);
+
             return json_decode($jsonResponse, true);
         }
     }
@@ -356,15 +373,15 @@ class PaytmController extends Controller
         $requestData = Session::get('request');
         $bs = Basic::first();
         $paymentFor = Session::get('paymentFor');
-        if ($request["STATUS"] === "TXN_FAILURE") {
+        if ($request['STATUS'] === 'TXN_FAILURE') {
             $paymentFor = Session::get('paymentFor');
             session()->flash('warning', $request['RESPMSG']);
 
             return redirect()->route('vendor.plan.extend.checkout', ['package_id' => $requestData['package_id']])->withInput($requestData);
         } elseif ($request['STATUS'] === 'TXN_SUCCESS') {
-            //transaction create
-            $after_balance = NULL;
-            $pre_balance = NULL;
+            // transaction create
+            $after_balance = null;
+            $pre_balance = null;
             $transactionData = [
                 'vendor_id' => $requestData['vendor_id'],
                 'transaction_type' => 'membership_buy',
@@ -381,10 +398,10 @@ class PaytmController extends Controller
             $package = Package::find($requestData['package_id']);
             $transaction_id = VendorPermissionHelper::uniqidReal(8);
             $transaction_details = json_encode($request);
-            if ($paymentFor == "membership") {
+            if ($paymentFor == 'membership') {
                 $amount = $requestData['price'];
                 $password = $requestData['password'];
-                $checkout = new VendorCheckoutController();
+                $checkout = new VendorCheckoutController;
 
                 $vendor = $checkout->store($requestData, $transaction_id, $transaction_details, $amount, $bs, $password);
 
@@ -392,62 +409,64 @@ class PaytmController extends Controller
 
                 $activation = Carbon::parse($lastMemb->start_date);
                 $expire = Carbon::parse($lastMemb->expire_date);
-                $file_name = $this->makeInvoice($requestData, "membership", $vendor, $password, $amount, "Paypal", $requestData['phone'], $bs->base_currency_symbol_position, $bs->base_currency_symbol, $bs->base_currency_text, $transaction_id, $package->title, $lastMemb);
+                $file_name = $this->makeInvoice($requestData, 'membership', $vendor, $password, $amount, 'Paypal', $requestData['phone'], $bs->base_currency_symbol_position, $bs->base_currency_symbol, $bs->base_currency_text, $transaction_id, $package->title, $lastMemb);
 
-                $mailer = new MegaMailer();
+                $mailer = new MegaMailer;
                 $data = [
                     'toMail' => $vendor->email,
                     'toName' => $vendor->fname,
                     'username' => $vendor->username,
                     'package_title' => $package->title,
-                    'package_price' => ($bs->base_currency_text_position == 'left' ? $bs->base_currency_text . ' ' : '') . $package->price . ($bs->base_currency_text_position == 'right' ? ' ' . $bs->base_currency_text : ''),
-                    'discount' => ($bs->base_currency_text_position == 'left' ? $bs->base_currency_text . ' ' : '') . $lastMemb->discount . ($bs->base_currency_text_position == 'right' ? ' ' . $bs->base_currency_text : ''),
-                    'total' => ($bs->base_currency_text_position == 'left' ? $bs->base_currency_text . ' ' : '') . $lastMemb->price . ($bs->base_currency_text_position == 'right' ? ' ' . $bs->base_currency_text : ''),
+                    'package_price' => ($bs->base_currency_text_position == 'left' ? $bs->base_currency_text.' ' : '').$package->price.($bs->base_currency_text_position == 'right' ? ' '.$bs->base_currency_text : ''),
+                    'discount' => ($bs->base_currency_text_position == 'left' ? $bs->base_currency_text.' ' : '').$lastMemb->discount.($bs->base_currency_text_position == 'right' ? ' '.$bs->base_currency_text : ''),
+                    'total' => ($bs->base_currency_text_position == 'left' ? $bs->base_currency_text.' ' : '').$lastMemb->price.($bs->base_currency_text_position == 'right' ? ' '.$bs->base_currency_text : ''),
                     'activation_date' => $activation->toFormattedDateString(),
                     'expire_date' => Carbon::parse($expire->toFormattedDateString())->format('Y') == '9999' ? 'Lifetime' : $expire->toFormattedDateString(),
                     'membership_invoice' => $file_name,
                     'website_title' => $bs->website_title,
                     'templateType' => 'package_purchase',
-                    'type' => 'registrationWithPremiumPackage'
+                    'type' => 'registrationWithPremiumPackage',
                 ];
                 $mailer->mailFromAdmin($data);
-                @unlink(public_path('assets/front/invoices/' . $file_name));
+                @unlink(public_path('assets/front/invoices/'.$file_name));
 
                 session()->flash('success', 'Your payment has been completed.');
                 Session::forget('request');
                 Session::forget('paymentFor');
+
                 return redirect()->route('success.page');
-            } elseif ($paymentFor == "extend") {
+            } elseif ($paymentFor == 'extend') {
                 $amount = $requestData['price'];
                 $password = uniqid('qrcode');
-                $checkout = new VendorCheckoutController();
+                $checkout = new VendorCheckoutController;
                 $vendor = $checkout->store($requestData, $transaction_id, $transaction_details, $amount, $bs, $password);
 
                 $lastMemb = Membership::where('vendor_id', $vendor->id)->orderBy('id', 'DESC')->first();
                 $activation = Carbon::parse($lastMemb->start_date);
                 $expire = Carbon::parse($lastMemb->expire_date);
 
-                $file_name = $this->makeInvoice($requestData, "extend", $vendor, $password, $amount, $requestData["payment_method"], $vendor->phone, $bs->base_currency_symbol_position, $bs->base_currency_symbol, $bs->base_currency_text, $transaction_id, $package->title, $lastMemb);
+                $file_name = $this->makeInvoice($requestData, 'extend', $vendor, $password, $amount, $requestData['payment_method'], $vendor->phone, $bs->base_currency_symbol_position, $bs->base_currency_symbol, $bs->base_currency_text, $transaction_id, $package->title, $lastMemb);
 
-                $mailer = new MegaMailer();
+                $mailer = new MegaMailer;
                 $data = [
                     'toMail' => $vendor->email,
                     'toName' => $vendor->fname,
                     'username' => $vendor->username,
                     'package_title' => $package->title,
-                    'package_price' => ($bs->base_currency_text_position == 'left' ? $bs->base_currency_text . ' ' : '') . $package->price . ($bs->base_currency_text_position == 'right' ? ' ' . $bs->base_currency_text : ''),
+                    'package_price' => ($bs->base_currency_text_position == 'left' ? $bs->base_currency_text.' ' : '').$package->price.($bs->base_currency_text_position == 'right' ? ' '.$bs->base_currency_text : ''),
                     'activation_date' => $activation->toFormattedDateString(),
                     'expire_date' => Carbon::parse($expire->toFormattedDateString())->format('Y') == '9999' ? 'Lifetime' : $expire->toFormattedDateString(),
                     'membership_invoice' => $file_name,
                     'website_title' => $bs->website_title,
                     'templateType' => 'package_purchase',
-                    'type' => 'membershipExtend'
+                    'type' => 'membershipExtend',
                 ];
                 $mailer->mailFromAdmin($data);
-                @unlink(public_path('assets/front/invoices/' . $file_name));
+                @unlink(public_path('assets/front/invoices/'.$file_name));
 
                 Session::forget('request');
                 Session::forget('paymentFor');
+
                 return redirect()->route('success.page');
             }
         }

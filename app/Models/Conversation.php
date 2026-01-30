@@ -7,12 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Conversation extends Model
 {
-  use HasFactory;
-  protected $fillable = [
-    'user_id',
-    'type',
-    'support_ticket_id',
-    'reply',
-    'file',
-  ];
+    use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'type',
+        'support_ticket_id',
+        'reply',
+        'file',
+    ];
 }

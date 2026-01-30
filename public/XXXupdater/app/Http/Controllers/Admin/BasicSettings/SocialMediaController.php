@@ -10,62 +10,62 @@ use Validator;
 
 class SocialMediaController extends Controller
 {
-  public function index()
-  {
-    $information['medias'] = SocialMedia::orderByDesc('id')->get();
+    public function index()
+    {
+        $information['medias'] = SocialMedia::orderByDesc('id')->get();
 
-    return view('admin.basic-settings.social-media.index', $information);
-  }
-
-  public function store(Request $request)
-  {
-    $rules = [
-      'icon' => 'required',
-      'url' => 'required|url',
-      'serial_number' => 'required|numeric'
-    ];
-
-    $validator = Validator::make($request->all(), $rules);
-
-    if ($validator->fails()) {
-      return Response::json([
-        'errors' => $validator->getMessageBag()
-      ], 400);
+        return view('admin.basic-settings.social-media.index', $information);
     }
 
-    SocialMedia::create($request->all());
+    public function store(Request $request)
+    {
+        $rules = [
+            'icon' => 'required',
+            'url' => 'required|url',
+            'serial_number' => 'required|numeric',
+        ];
 
-    session()->flash('success', __('New social media added successfully!') );
+        $validator = Validator::make($request->all(), $rules);
 
-    return Response::json(['status' => 'success'], 200);
-  }
+        if ($validator->fails()) {
+            return Response::json([
+                'errors' => $validator->getMessageBag(),
+            ], 400);
+        }
 
-  public function update(Request $request)
-  {
-    $rules = [
-      'url' => 'required|url',
-      'serial_number' => 'required|numeric'
-    ];
+        SocialMedia::create($request->all());
 
-    $validator = Validator::make($request->all(), $rules);
+        session()->flash('success', __('New social media added successfully!'));
 
-    if ($validator->fails()) {
-      return Response::json([
-        'errors' => $validator->getMessageBag()
-      ], 400);
+        return Response::json(['status' => 'success'], 200);
     }
 
-    SocialMedia::find($request->id)->update($request->all());
+    public function update(Request $request)
+    {
+        $rules = [
+            'url' => 'required|url',
+            'serial_number' => 'required|numeric',
+        ];
 
-    session()->flash('success', __('Social media updated successfully!') );
+        $validator = Validator::make($request->all(), $rules);
 
-    return Response::json(['status' => 'success'], 200);
-  }
+        if ($validator->fails()) {
+            return Response::json([
+                'errors' => $validator->getMessageBag(),
+            ], 400);
+        }
 
-  public function destroy($id)
-  {
-    SocialMedia::find($id)->delete();
+        SocialMedia::find($request->id)->update($request->all());
 
-    return redirect()->back()->with('success', __('Social media deleted successfully!') );
-  }
+        session()->flash('success', __('Social media updated successfully!'));
+
+        return Response::json(['status' => 'success'], 200);
+    }
+
+    public function destroy($id)
+    {
+        SocialMedia::find($id)->delete();
+
+        return redirect()->back()->with('success', __('Social media deleted successfully!'));
+    }
 }

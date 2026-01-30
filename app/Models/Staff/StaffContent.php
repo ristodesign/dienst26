@@ -8,22 +8,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class StaffContent extends Model
 {
-  use HasFactory;
+    use HasFactory;
 
-  protected $fillable = [
-    'staff_id',
-    'language_id',
-    'name',
-    'information',
-    'location',
-  ];
+    protected $fillable = [
+        'staff_id',
+        'language_id',
+        'name',
+        'information',
+        'location',
+    ];
 
-  public function staff()
-  {
-    return $this->belongsTo(Staff::class, 'id', 'staff_id');
-  }
-  public function language()
-  {
-    return $this->belongsTo(Language::class, 'language_id', 'id');
-  }
+    public function staff()
+    {
+        return $this->belongsTo(Staff::class, 'id', 'staff_id');
+    }
+
+    public function language()
+    {
+        return $this->belongsTo(Language::class, 'language_id', 'id');
+    }
 }

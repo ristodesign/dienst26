@@ -7,28 +7,28 @@ use Illuminate\Database\Eloquent\Model;
 
 class VendorInfo extends Model
 {
-  use HasFactory;
+    use HasFactory;
 
-  protected $fillable = [
-    'vendor_id',
-    'language_id',
-    'name',
-    'shop_name',
-    'country',
-    'city',
-    'state',
-    'zip_code',
-    'address',
-    'details'
-  ];
+    protected $fillable = [
+        'vendor_id',
+        'language_id',
+        'name',
+        'shop_name',
+        'country',
+        'city',
+        'state',
+        'zip_code',
+        'address',
+        'details',
+    ];
 
-  public function vendor()
-  {
-    return $this->belongsTo(Vendor::class);
-  }
+    public function vendor()
+    {
+        return $this->belongsTo(Vendor::class);
+    }
 
-  public function service()
-  {
-    return $this->belongsTo(Service::class,'vendor_id','vendor_id');
-  }
+    public function service()
+    {
+        return $this->belongsTo(Service::class, 'vendor_id', 'vendor_id');
+    }
 }

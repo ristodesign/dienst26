@@ -14,113 +14,112 @@ use Illuminate\Support\Facades\Validator;
 
 class BannerController extends Controller
 {
-  public function index(Request $request)
-  {
-    $language = Language::query()->where('code', '=', $request->language)->first();
-    $information['language'] = $language;
-    $information['langs'] = Language::all();
+    public function index(Request $request)
+    {
+        $language = Language::query()->where('code', '=', $request->language)->first();
+        $information['language'] = $language;
+        $information['langs'] = Language::all();
 
-    $banners = Banner::where('language_id', $language->id)->orderByDesc('id')->get();
+        $banners = Banner::where('language_id', $language->id)->orderByDesc('id')->get();
 
-    $information['banners'] = $banners;
+        $information['banners'] = $banners;
 
-    return view('admin.home-page.banner.index', $information);
-  }
-
-  public function store(Request $request)
-  {
-    $rules = [
-      'image' => [
-        'required',
-        $request->hasFile('image') ? new ImageMimeTypeRule() : ''
-      ],
-      'language_id' => 'required',
-      'url' => 'required|url',
-      'title' => 'required|max:255',
-      'serial_number' => 'required|numeric',
-    ];
-
-    $validator = Validator::make($request->all(), $rules);
-
-    if ($validator->fails()) {
-      return Response::json([
-        'errors' => $validator->getMessageBag()->toArray()
-      ], 400);
+        return view('admin.home-page.banner.index', $information);
     }
 
-    $imageName = UploadFile::store(public_path('assets/img/banners/'), $request->file('image'));
+    public function store(Request $request)
+    {
+        $rules = [
+            'image' => [
+                'required',
+                $request->hasFile('image') ? new ImageMimeTypeRule : '',
+            ],
+            'language_id' => 'required',
+            'url' => 'required|url',
+            'title' => 'required|max:255',
+            'serial_number' => 'required|numeric',
+        ];
 
-    Banner::create($request->except('image') + [
-      'image' => $imageName
-    ]);
+        $validator = Validator::make($request->all(), $rules);
 
-    Session::flash('success', __('New banner added successfully!') );
+        if ($validator->fails()) {
+            return Response::json([
+                'errors' => $validator->getMessageBag()->toArray(),
+            ], 400);
+        }
 
-    return response()->json(['status' => 'success'], 200);
-  }
+        $imageName = UploadFile::store(public_path('assets/img/banners/'), $request->file('image'));
 
-  public function update(Request $request)
-  {
-    $rules = [
-      'image' => $request->hasFile('image') ? new ImageMimeTypeRule() : '',
-      'url' => 'required|url',
-      'title' => 'required|max:255',
-      'serial_number' => 'required|numeric',
-    ];
+        Banner::create($request->except('image') + [
+            'image' => $imageName,
+        ]);
 
-    $validator = Validator::make($request->all(), $rules);
+        Session::flash('success', __('New banner added successfully!'));
 
-    if ($validator->fails()) {
-      return Response::json([
-        'errors' => $validator->getMessageBag()->toArray()
-      ], 400);
+        return response()->json(['status' => 'success'], 200);
     }
 
-    $banner = Banner::where('id', $request->id)
-      ->firstOrFail();
+    public function update(Request $request)
+    {
+        $rules = [
+            'image' => $request->hasFile('image') ? new ImageMimeTypeRule : '',
+            'url' => 'required|url',
+            'title' => 'required|max:255',
+            'serial_number' => 'required|numeric',
+        ];
 
+        $validator = Validator::make($request->all(), $rules);
 
-    if ($request->hasFile('image')) {
-      $newImage = $request->file('image');
-      $oldImage = $banner->image;
-      $imageName = UploadFile::update(public_path('assets/img/banners/'), $newImage, $oldImage);
-      @unlink(public_path('assets/img/banners/') . $banner->image);
+        if ($validator->fails()) {
+            return Response::json([
+                'errors' => $validator->getMessageBag()->toArray(),
+            ], 400);
+        }
+
+        $banner = Banner::where('id', $request->id)
+            ->firstOrFail();
+
+        if ($request->hasFile('image')) {
+            $newImage = $request->file('image');
+            $oldImage = $banner->image;
+            $imageName = UploadFile::update(public_path('assets/img/banners/'), $newImage, $oldImage);
+            @unlink(public_path('assets/img/banners/').$banner->image);
+        }
+
+        $banner->update($request->except('image') + [
+            'image' => $request->hasFile('image') ? $imageName : $banner->image,
+        ]);
+
+        Session::flash('success', __('Banner updated successfully!'));
+
+        return response()->json(['status' => 'success'], 200);
     }
 
-    $banner->update($request->except('image') + [
-      'image' => $request->hasFile('image') ? $imageName : $banner->image
-    ]);
+    public function destroy(Request $request, $id)
+    {
+        $banner = Banner::findOrFail($id);
 
-    Session::flash('success', __('Banner updated successfully!') );
+        @unlink(public_path('assets/img/banners/').$banner->image);
 
-    return response()->json(['status' => 'success'], 200);
-  }
+        $banner->delete();
 
-  public function destroy(Request $request, $id)
-  {
-    $banner = Banner::findOrFail($id);
-
-    @unlink(public_path('assets/img/banners/') . $banner->image);
-
-    $banner->delete();
-
-    return redirect()->back()->with('success', __('Banner deleted successfully!') );
-  }
-
-  public function bulkDestroy(Request $request)
-  {
-    $ids = $request['ids'];
-
-    foreach ($ids as $id) {
-      $banner = Banner::query()->find($id);
-
-      @unlink(public_path('assets/img/banners/') . $banner->image);
-
-      $banner->delete();
+        return redirect()->back()->with('success', __('Banner deleted successfully!'));
     }
 
-    session()->flash('success', __('Banner deleted successfully!') );
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request['ids'];
 
-    return response()->json(['status' => 'success'], 200);
-  }
+        foreach ($ids as $id) {
+            $banner = Banner::query()->find($id);
+
+            @unlink(public_path('assets/img/banners/').$banner->image);
+
+            $banner->delete();
+        }
+
+        session()->flash('success', __('Banner deleted successfully!'));
+
+        return response()->json(['status' => 'success'], 200);
+    }
 }

@@ -7,13 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class WithdrawPaymentMethod extends Model
 {
-  use HasFactory;
-  protected $fillable = [
-    'min_limit',
-    'max_limit',
-    'name',
-    'status',
-    'fixed_charge',
-    'percentage_charge',
-  ];
+    use HasFactory;
+
+    protected $fillable = [
+        'min_limit',
+        'max_limit',
+        'name',
+        'status',
+        'fixed_charge',
+        'percentage_charge',
+    ];
 }

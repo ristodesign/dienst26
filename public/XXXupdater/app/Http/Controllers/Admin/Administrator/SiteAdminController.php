@@ -13,77 +13,77 @@ use Illuminate\Support\Facades\Hash;
 
 class SiteAdminController extends Controller
 {
-  public function index()
-  {
-    $information['roles'] = RolePermission::all();
+    public function index()
+    {
+        $information['roles'] = RolePermission::all();
 
-    $admins = Admin::query()->where('role_id', '!=', NULL)->get();
+        $admins = Admin::query()->where('role_id', '!=', null)->get();
 
-    $admins->map(function ($admin) {
-      $role = $admin->role()->first();
-      $admin['roleName'] = $role->name;
-    });
+        $admins->map(function ($admin) {
+            $role = $admin->role()->first();
+            $admin['roleName'] = $role->name;
+        });
 
-    $information['admins'] = $admins;
+        $information['admins'] = $admins;
 
-    return view('admin.administrator.site-admin.index', $information);
-  }
-
-  public function store(StoreRequest $request)
-  {
-    $imageName = UploadFile::store(public_path('assets/img/admins/'), $request->file('image'));
-
-    Admin::query()->create($request->except('image', 'password') + [
-      'image' => $imageName,
-      'password' => Hash::make($request->password)
-    ]);
-
-    session()->flash('success', __('New admin added successfully!'));
-
-    return response()->json(['status' => 'success'], 200);
-  }
-
-  public function updateStatus(Request $request, $id)
-  {
-    $admin = Admin::query()->find($id);
-
-    if ($request->status == 1) {
-      $admin->update(['status' => 1]);
-    } else {
-      $admin->update(['status' => 0]);
+        return view('admin.administrator.site-admin.index', $information);
     }
 
-    session()->flash('success', __('Status updated successfully!'));
+    public function store(StoreRequest $request)
+    {
+        $imageName = UploadFile::store(public_path('assets/img/admins/'), $request->file('image'));
 
-    return redirect()->back();
-  }
+        Admin::query()->create($request->except('image', 'password') + [
+            'image' => $imageName,
+            'password' => Hash::make($request->password),
+        ]);
 
-  public function update(UpdateRequest $request)
-  {
-    $admin = Admin::query()->find($request->id);
+        session()->flash('success', __('New admin added successfully!'));
 
-    if ($request->hasFile('image')) {
-      $imageName = UploadFile::update(public_path('assets/img/admins/'), $request->file('image'), $admin->image);
+        return response()->json(['status' => 'success'], 200);
     }
 
-    $admin->update($request->except('image') + [
-      'image' => $request->hasFile('image') ? $imageName : $admin->image
-    ]);
+    public function updateStatus(Request $request, $id)
+    {
+        $admin = Admin::query()->find($id);
 
-    session()->flash('success', __('Admin updated successfully!'));
+        if ($request->status == 1) {
+            $admin->update(['status' => 1]);
+        } else {
+            $admin->update(['status' => 0]);
+        }
 
-    return response()->json(['status' => 'success'], 200);
-  }
+        session()->flash('success', __('Status updated successfully!'));
 
-  public function destroy($id)
-  {
-    $admin = Admin::query()->find($id);
+        return redirect()->back();
+    }
 
-    // delete admin profile picture
-    @unlink(public_path('assets/img/admins/') . $admin->image);
+    public function update(UpdateRequest $request)
+    {
+        $admin = Admin::query()->find($request->id);
 
-    $admin->delete();
+        if ($request->hasFile('image')) {
+            $imageName = UploadFile::update(public_path('assets/img/admins/'), $request->file('image'), $admin->image);
+        }
 
-    return redirect()->back()->with('success', __('Admin deleted successfully!'));
-  }
+        $admin->update($request->except('image') + [
+            'image' => $request->hasFile('image') ? $imageName : $admin->image,
+        ]);
+
+        session()->flash('success', __('Admin updated successfully!'));
+
+        return response()->json(['status' => 'success'], 200);
+    }
+
+    public function destroy($id)
+    {
+        $admin = Admin::query()->find($id);
+
+        // delete admin profile picture
+        @unlink(public_path('assets/img/admins/').$admin->image);
+
+        $admin->delete();
+
+        return redirect()->back()->with('success', __('Admin deleted successfully!'));
+    }
 }

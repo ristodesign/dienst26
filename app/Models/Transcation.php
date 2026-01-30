@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Transcation extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'transcation_id',
         'payment_id',
@@ -21,27 +22,28 @@ class Transcation extends Model
         'tax',
         'gateway_type',
         'currency_symbol',
-        'currency_symbol_position'
+        'currency_symbol_position',
     ];
 
-    //order
+    // order
     public function order()
     {
         return $this->belongsTo(ProductOrder::class, 'payment_id', 'id');
     }
 
-    //order
+    // order
     public function memberships()
     {
         return $this->belongsTo(Membership::class, 'payment_id', 'id');
     }
 
-    //vendor_id
+    // vendor_id
     public function vendor()
     {
         return $this->belongsTo(Vendor::class, 'user_id', 'id');
     }
-    //vendor_id
+
+    // vendor_id
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');

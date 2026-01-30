@@ -2,7 +2,9 @@
 // Toyyib may redirect back with ?status_id=1&billcode=...
 $bill = $_GET['billcode'] ?? $_GET['billCode'] ?? '';
 $scheme = 'myapp://toyyibpay-finish';
-if ($bill) $scheme .= '?billCode='.urlencode($bill);
+if ($bill) {
+    $scheme .= '?billCode='.urlencode($bill);
+}
 ?>
 <!doctype html>
 <html>

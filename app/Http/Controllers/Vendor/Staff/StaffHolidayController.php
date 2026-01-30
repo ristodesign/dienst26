@@ -11,90 +11,92 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 
-
 class StaffHolidayController extends Controller
 {
-  public function index($id)
-  {
-    $language = Language::where('is_default', 1)->first();
-    $language_id = $language->id;
+    public function index($id)
+    {
+        $language = Language::where('is_default', 1)->first();
+        $language_id = $language->id;
 
-    $information['staff'] = Staff::with(['StaffContent' => function ($q) use ($language_id) {
-      $q->where('language_id', $language_id);
-    }])
-      ->where('vendor_id', Auth::guard('vendor')->user()->id)
-      ->findOrFail($id);
-    $information['staff_holydays'] = StaffHoliday::where('staff_id', $id)->get();
+        $information['staff'] = Staff::with(['StaffContent' => function ($q) use ($language_id) {
+            $q->where('language_id', $language_id);
+        }])
+            ->where('vendor_id', Auth::guard('vendor')->user()->id)
+            ->findOrFail($id);
+        $information['staff_holydays'] = StaffHoliday::where('staff_id', $id)->get();
 
-    return view('vendors.staff.staff-holiday.index', $information);
-  }
-
-  public function changeStaffSetting(Request $request, $id)
-  {
-    $staffday = Staff::where('vendor_id', Auth::guard('vendor')->user()->id)->find($id);
-    if ($staffday) {
-      $staffday->is_day = $request->is_day;
-      $staffday->save();
+        return view('vendors.staff.staff-holiday.index', $information);
     }
 
-    if ($staffday->is_day == 1) {
-      return redirect()->back()->with('success',  __('Staff schedule entered successfully!'));
-    } else {
-      return redirect()->back()->with('success',  __('Owner schedule entered successfully!'));
-    }
-  }
+    public function changeStaffSetting(Request $request, $id)
+    {
+        $staffday = Staff::where('vendor_id', Auth::guard('vendor')->user()->id)->find($id);
+        if ($staffday) {
+            $staffday->is_day = $request->is_day;
+            $staffday->save();
+        }
 
-  public function store(Request $request)
-  {
-    $rules = ['date' => 'required'];
-
-    $validator = Validator::make($request->all(), $rules);
-    if ($validator->fails()) {
-      return Response::json(
-        [
-          'errors' => $validator->getMessageBag()->toArray()
-        ],
-        400
-      );
+        if ($staffday->is_day == 1) {
+            return redirect()->back()->with('success', __('Staff schedule entered successfully!'));
+        } else {
+            return redirect()->back()->with('success', __('Owner schedule entered successfully!'));
+        }
     }
 
-    $holiday = StaffHoliday::where('staff_id', $request->staff_id)->pluck('date')->toArray();
-    $date = date('Y-m-d', strtotime($request->date));
+    public function store(Request $request)
+    {
+        $rules = ['date' => 'required'];
 
-    if (in_array($date, $holiday)) {
-      session()->flash('warning',  __('The date exists in the holiday list!'));
-      return Response::json(['status' => 'success'], 200);
-    } else {
-      StaffHoliday::create([
-        'date' => $date,
-        'staff_id' => $request->staff_id,
-        'vendor_id' => Auth::guard('vendor')->user()->id
-      ]);
-      session()->flash('success',  __('Holiday added successfully!'));
-      return Response::json(['status' => 'success'], 200);
-    }
-  }
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return Response::json(
+                [
+                    'errors' => $validator->getMessageBag()->toArray(),
+                ],
+                400
+            );
+        }
 
-  public function destroy(Request $request, $id)
-  {
+        $holiday = StaffHoliday::where('staff_id', $request->staff_id)->pluck('date')->toArray();
+        $date = date('Y-m-d', strtotime($request->date));
 
-    $UserStaffHoliday = StaffHoliday::where('staff_id', $request->staff_id)->find($id);
+        if (in_array($date, $holiday)) {
+            session()->flash('warning', __('The date exists in the holiday list!'));
 
-    $UserStaffHoliday->delete();
+            return Response::json(['status' => 'success'], 200);
+        } else {
+            StaffHoliday::create([
+                'date' => $date,
+                'staff_id' => $request->staff_id,
+                'vendor_id' => Auth::guard('vendor')->user()->id,
+            ]);
+            session()->flash('success', __('Holiday added successfully!'));
 
-    return redirect()->back()->with('success',  __('Holiday delete successfully!'));
-  }
-
-  public function blukDestroy(Request $request)
-  {
-    $ids = $request->ids;
-
-    foreach ($ids as $id) {
-      $UserStaffHoliday = StaffHoliday::find($id);
-      $UserStaffHoliday->delete();
+            return Response::json(['status' => 'success'], 200);
+        }
     }
 
-    session()->flash('success',  __('Holiday delete successfully!'));
-    return Response::json(['status' => 'success'], 200);
-  }
+    public function destroy(Request $request, $id)
+    {
+
+        $UserStaffHoliday = StaffHoliday::where('staff_id', $request->staff_id)->find($id);
+
+        $UserStaffHoliday->delete();
+
+        return redirect()->back()->with('success', __('Holiday delete successfully!'));
+    }
+
+    public function blukDestroy(Request $request)
+    {
+        $ids = $request->ids;
+
+        foreach ($ids as $id) {
+            $UserStaffHoliday = StaffHoliday::find($id);
+            $UserStaffHoliday->delete();
+        }
+
+        session()->flash('success', __('Holiday delete successfully!'));
+
+        return Response::json(['status' => 'success'], 200);
+    }
 }

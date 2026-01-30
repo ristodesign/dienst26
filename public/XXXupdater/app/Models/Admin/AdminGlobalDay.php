@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class AdminGlobalDay extends Model
 {
-  use HasFactory;
-  protected $guarded = [];
+    use HasFactory;
 
-  public function day()
-  {
-    return $this->belongsTo(AdminGlobalDay::class, 'global_day_id', 'id');
-  }
+    protected $guarded = [];
+
+    public function day()
+    {
+        return $this->belongsTo(AdminGlobalDay::class, 'global_day_id', 'id');
+    }
 }

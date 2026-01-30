@@ -8,23 +8,23 @@ use Illuminate\Http\Request;
 
 class StaffLangMiddleware
 {
-  /**
-   * Handle an incoming request.
-   *
-   * @param  \Illuminate\Http\Request  $request
-   * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-   * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
-   */
-  public function handle(Request $request, Closure $next)
-  {
-    if (session()->has('staff_lang')) {
-      app()->setLocale(session()->get('staff_lang'));
-    } else {
-      $defaultLang = Language::where('is_default', 1)->first();
-      if (!empty($defaultLang)) {
-        app()->setLocale($defaultLang->code);
-      }
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     */
+    public function handle(Request $request, Closure $next)
+    {
+        if (session()->has('staff_lang')) {
+            app()->setLocale(session()->get('staff_lang'));
+        } else {
+            $defaultLang = Language::where('is_default', 1)->first();
+            if (! empty($defaultLang)) {
+                app()->setLocale($defaultLang->code);
+            }
+        }
+
+        return $next($request);
     }
-    return $next($request);
-  }
 }

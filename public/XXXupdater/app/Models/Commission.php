@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Commission extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'equipment_commission',
-        'product_commission'
+        'product_commission',
     ];
 }

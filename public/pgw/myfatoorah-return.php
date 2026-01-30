@@ -2,12 +2,18 @@
 // This is the success/error callback page.
 // Bounce back to the app (WebView close) using your custom scheme.
 $invoiceId = $_GET['invoiceId'] ?? $_GET['invoice_id'] ?? '';
-$error     = isset($_GET['error']) ? '1' : '';
+$error = isset($_GET['error']) ? '1' : '';
 $schemeUrl = 'myapp://myfatoorah-finish';
 $qs = [];
-if ($invoiceId) $qs['invoice_id'] = $invoiceId;
-if ($error)     $qs['error'] = $error;
-if (!empty($qs)) $schemeUrl .= '?' . http_build_query($qs);
+if ($invoiceId) {
+    $qs['invoice_id'] = $invoiceId;
+}
+if ($error) {
+    $qs['error'] = $error;
+}
+if (! empty($qs)) {
+    $schemeUrl .= '?'.http_build_query($qs);
+}
 ?>
 <!doctype html>
 <html>

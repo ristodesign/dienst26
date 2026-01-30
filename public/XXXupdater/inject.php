@@ -74,18 +74,18 @@
 
 <body>
     <?php
-    $base = __DIR__ . '/../';
+    $base = __DIR__.'/../';
 
     // replace web.php
-    unlink($base . './../routes/web.php');
-    copy("web.php", $base . './../routes/web.php');
+    unlink($base.'./../routes/web.php');
+    copy('web.php', $base.'./../routes/web.php');
 
     // place UpdaterController.php
-    if (file_exists($base . './../app/Http/Controllers/UpdateController.php')) {
+    if (file_exists($base.'./../app/Http/Controllers/UpdateController.php')) {
 
-        unlink($base . './../app/Http/Controllers/UpdateController.php');
+        unlink($base.'./../app/Http/Controllers/UpdateController.php');
     }
-    copy("UpdateController.php",  $base . '../app/Http/Controllers/UpdateController.php');
+    copy('UpdateController.php', $base.'../app/Http/Controllers/UpdateController.php');
     ?>
     <div class="update-box">
 

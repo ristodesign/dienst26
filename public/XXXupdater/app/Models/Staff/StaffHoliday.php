@@ -7,15 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class StaffHoliday extends Model
 {
-  use HasFactory;
-  protected $fillable = [
-    'staff_id',
-    'vendor_id',
-    'date'
-  ];
+    use HasFactory;
 
-  public function staff()
-  {
-    return $this->belongsTo(StaffContent::class, 'staff_id', 'staff_id');
-  }
+    protected $fillable = [
+        'staff_id',
+        'vendor_id',
+        'date',
+    ];
+
+    public function staff()
+    {
+        return $this->belongsTo(StaffContent::class, 'staff_id', 'staff_id');
+    }
 }

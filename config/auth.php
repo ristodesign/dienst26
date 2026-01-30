@@ -2,7 +2,7 @@
 
 return [
 
-  /*
+    /*
   |--------------------------------------------------------------------------
   | Authentication Defaults
   |--------------------------------------------------------------------------
@@ -13,12 +13,12 @@ return [
   |
   */
 
-  'defaults' => [
-    'guard' => 'web',
-    'passwords' => 'users',
-  ],
+    'defaults' => [
+        'guard' => 'web',
+        'passwords' => 'users',
+    ],
 
-  /*
+    /*
   |--------------------------------------------------------------------------
   | Authentication Guards
   |--------------------------------------------------------------------------
@@ -35,38 +35,38 @@ return [
   |
   */
 
-  'guards' => [
-    'web' => [
-      'driver' => 'session',
-      'provider' => 'users',
+    'guards' => [
+        'web' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+
+        'sanctum' => [
+            'driver' => 'sanctum',
+            'provider' => 'users',
+            'hash' => false,
+        ],
+        'sanctum_vendor' => [
+            'driver' => 'sanctum',
+            'provider' => 'vendors',
+            'hash' => false,
+        ],
+
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admins',
+        ],
+        'vendor' => [
+            'driver' => 'session',
+            'provider' => 'vendors',
+        ],
+        'staff' => [
+            'driver' => 'session',
+            'provider' => 'staffs',
+        ],
     ],
 
-    'sanctum' => [
-      'driver' => 'sanctum',
-      'provider' => 'users',
-      'hash' => false,
-    ],
-    'sanctum_vendor' => [
-      'driver' => 'sanctum',
-      'provider' => 'vendors',
-      'hash' => false,
-    ],
-
-    'admin' => [
-      'driver' => 'session',
-      'provider' => 'admins'
-    ],
-    'vendor' => [
-      'driver' => 'session',
-      'provider' => 'vendors'
-    ],
-    'staff' => [
-      'driver' => 'session',
-      'provider' => 'staffs'
-    ]
-  ],
-
-  /*
+    /*
   |--------------------------------------------------------------------------
   | User Providers
   |--------------------------------------------------------------------------
@@ -83,27 +83,27 @@ return [
   |
   */
 
-  'providers' => [
-    'users' => [
-      'driver' => 'eloquent',
-      'model' => App\Models\User::class,
+    'providers' => [
+        'users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
+        ],
+
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
+        ],
+        'vendors' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Vendor::class,
+        ],
+        'staffs' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Staff\Staff::class,
+        ],
     ],
 
-    'admins' => [
-      'driver' => 'eloquent',
-      'model' => App\Models\Admin::class
-    ],
-    'vendors' => [
-      'driver' => 'eloquent',
-      'model' => App\Models\Vendor::class
-    ],
-    'staffs' => [
-      'driver' => 'eloquent',
-      'model' => App\Models\Staff\Staff::class
-    ]
-  ],
-
-  /*
+    /*
   |--------------------------------------------------------------------------
   | Resetting Passwords
   |--------------------------------------------------------------------------
@@ -118,23 +118,23 @@ return [
   |
   */
 
-  'passwords' => [
-    'users' => [
-      'provider' => 'users',
-      'table' => 'password_resets',
-      'expire' => 60,
-      'throttle' => 60,
+    'passwords' => [
+        'users' => [
+            'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'admins' => [
+            'provider' => 'admins',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
     ],
 
-    'admins' => [
-      'provider' => 'admins',
-      'table' => 'password_resets',
-      'expire' => 60,
-      'throttle' => 60
-    ]
-  ],
-
-  /*
+    /*
   |--------------------------------------------------------------------------
   | Password Confirmation Timeout
   |--------------------------------------------------------------------------
@@ -145,6 +145,6 @@ return [
   |
   */
 
-  'password_timeout' => 10800,
+    'password_timeout' => 10800,
 
 ];

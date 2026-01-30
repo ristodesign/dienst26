@@ -7,14 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class SocialMedia extends Model
 {
-  use HasFactory;
+    use HasFactory;
 
-  protected $table = 'social_medias';
+    protected $table = 'social_medias';
 
-  /**
-   * The attributes that are mass assignable.
-   *
-   * @var array
-   */
-  protected $fillable = ['icon', 'url', 'serial_number'];
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['icon', 'url', 'serial_number'];
 }

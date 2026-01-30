@@ -2,7 +2,9 @@
 // MP appends various params, e.g. collection_status/ payment_id / external_reference / preference_id
 $extRef = $_GET['external_reference'] ?? '';
 $scheme = 'myapp://mp-finish';
-if ($extRef) $scheme .= '?external_reference='.urlencode($extRef);
+if ($extRef) {
+    $scheme .= '?external_reference='.urlencode($extRef);
+}
 ?>
 <!doctype html>
 <html>

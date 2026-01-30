@@ -7,19 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class OfflineGateway extends Model
 {
-  use HasFactory;
+    use HasFactory;
 
-  /**
-   * The attributes that are mass assignable.
-   *
-   * @var array
-   */
-  protected $fillable = [
-    'name',
-    'short_description',
-    'instructions',
-    'status',
-    'has_attachment',
-    'serial_number'
-  ];
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+        'short_description',
+        'instructions',
+        'status',
+        'has_attachment',
+        'serial_number',
+    ];
 }

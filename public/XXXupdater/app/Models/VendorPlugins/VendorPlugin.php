@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class VendorPlugin extends Model
 {
-  use HasFactory;
-  protected $table = 'vendor_plugins';
+    use HasFactory;
+
+    protected $table = 'vendor_plugins';
 }

@@ -12,124 +12,128 @@ use Response;
 
 class StaffGlobalHourController extends Controller
 {
+    public function serviceHour(Request $request)
+    {
+        if (request()->vendor_id == 'admin') {
+            $information['currentDay'] = AdminGlobalDay::where('id', $request->day_id)->select('day')->first();
+        } else {
+            $information['currentDay'] = StaffGlobalDay::where('id', $request->day_id)->select('day')->first();
+        }
 
-  public function serviceHour(Request $request)
-  {
-    if (request()->vendor_id == 'admin') {
-      $information['currentDay'] = AdminGlobalDay::where('id', $request->day_id)->select('day')->first();
-    } else {
-      $information['currentDay'] = StaffGlobalDay::where('id', $request->day_id)->select('day')->first();
+        if (request()->vendor_id == 'admin') {
+            $vendor_id = 0;
+        } else {
+            $vendor_id = request()->vendor_id;
+        }
+
+        $information['service_hours'] = StaffGlobalHour::where('vendor_id', $vendor_id)
+            ->where('global_day_id', $request->day_id)
+            ->get();
+
+        return view('admin.staff.global-hour.index', $information);
     }
 
-    if (request()->vendor_id == 'admin') {
-      $vendor_id = 0;
-    } else {
-      $vendor_id = request()->vendor_id;
-    }
+    public function store(Request $request)
+    {
+        if ($request->vendor_id == 'admin') {
+            $vendor_id = 0;
+        } else {
+            $vendor_id = $request->vendor_id;
+        }
 
-    $information['service_hours'] = StaffGlobalHour::where('vendor_id', $vendor_id)
-      ->where('global_day_id', $request->day_id)
-      ->get();
+        if ($vendor_id != 0) {
+            $current_package = \App\Http\Helpers\VendorPermissionHelper::packagePermission($vendor_id);
+            if ($current_package == '[]') {
+                session()->flash('warning', __('Please buy a plan to add hour!'));
 
-    return view('admin.staff.global-hour.index', $information);
-  }
+                return Response::json(['status' => 'success'], 200);
+            }
+        }
 
-  public function store(Request $request)
-  {
-    if ($request->vendor_id == 'admin') {
-      $vendor_id = 0;
-    } else {
-      $vendor_id = $request->vendor_id;
-    }
+        $rules = [
+            'start_time' => 'required',
+            'end_time' => 'required',
+        ];
 
-    if ($vendor_id != 0) {
-      $current_package = \App\Http\Helpers\VendorPermissionHelper::packagePermission($vendor_id);
-      if ($current_package == '[]') {
-        session()->flash('warning', __('Please buy a plan to add hour!') );
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return Response::json(
+                [
+                    'errors' => $validator->getMessageBag()->toArray(),
+                ],
+                400
+            );
+        }
+        $servicehour = new StaffGlobalHour;
+        $servicehour->global_day_id = $request->global_day_id;
+        $servicehour->start_time = $request->start_time;
+        $servicehour->end_time = $request->end_time;
+        $servicehour->max_booking = $request->max_booking;
+        $servicehour->vendor_id = $vendor_id;
+        $servicehour->save();
+
+        session()->flash('success', __('Time slot added successfully!'));
+
         return Response::json(['status' => 'success'], 200);
-      }
     }
 
-    $rules = [
-      'start_time' => 'required',
-      'end_time' => 'required',
-    ];
+    public function update(Request $request)
+    {
+        if ($request->vendor_id == 'admin') {
+            $vendor_id = 0;
+        } else {
+            $vendor_id = $request->vendor_id;
+        }
 
-    $validator = Validator::make($request->all(), $rules);
+        $rules = [
+            'start_time' => 'required',
+            'end_time' => 'required',
+        ];
 
-    if ($validator->fails()) {
-      return Response::json(
-        [
-          'errors' => $validator->getMessageBag()->toArray()
-        ],
-        400
-      );
-    }
-    $servicehour = new StaffGlobalHour();
-    $servicehour->global_day_id = $request->global_day_id;
-    $servicehour->start_time = $request->start_time;
-    $servicehour->end_time =  $request->end_time;
-    $servicehour->max_booking =  $request->max_booking;
-    $servicehour->vendor_id = $vendor_id;
-    $servicehour->save();
+        $validator = Validator::make($request->all(), $rules);
 
-    session()->flash('success', __('Time slot added successfully!') );
-    return Response::json(['status' => 'success'], 200);
-  }
+        if ($validator->fails()) {
+            return Response::json(
+                [
+                    'errors' => $validator->getMessageBag()->toArray(),
+                ],
+                400
+            );
+        }
 
-  public function update(Request $request)
-  {
-    if ($request->vendor_id == 'admin') {
-      $vendor_id = 0;
-    } else {
-      $vendor_id = $request->vendor_id;
-    }
+        $servicehour = StaffGlobalHour::find($request->id);
+        $servicehour->global_day_id = $request->global_day_id;
+        $servicehour->start_time = $request->start_time;
+        $servicehour->max_booking = $request->max_booking;
+        $servicehour->end_time = $request->end_time;
+        $servicehour->vendor_id = $vendor_id;
+        $servicehour->save();
 
-    $rules = [
-      'start_time' => 'required',
-      'end_time' => 'required',
-    ];
+        session()->flash('success', __('Time slot updated successfully!'));
 
-    $validator = Validator::make($request->all(), $rules);
-
-    if ($validator->fails()) {
-      return Response::json(
-        [
-          'errors' => $validator->getMessageBag()->toArray()
-        ],
-        400
-      );
+        return Response::json(['status' => 'success'], 200);
     }
 
-    $servicehour = StaffGlobalHour::find($request->id);
-    $servicehour->global_day_id = $request->global_day_id;
-    $servicehour->start_time = $request->start_time;
-    $servicehour->max_booking =  $request->max_booking;
-    $servicehour->end_time =  $request->end_time;
-    $servicehour->vendor_id = $vendor_id;
-    $servicehour->save();
+    public function destroy($id)
+    {
+        $service_hour = StaffGlobalHour::query()->find($id);
+        $service_hour->delete();
 
-    session()->flash('success', __('Time slot updated successfully!') );
-    return Response::json(['status' => 'success'], 200);
-  }
-
-  public function destroy($id)
-  {
-    $service_hour = StaffGlobalHour::query()->find($id);
-    $service_hour->delete();
-    return redirect()->back()->with('success', __('Time slot delete successfully!') );
-  }
-
-  public function bulkDestroy(Request $request)
-  {
-    $ids = $request->ids;
-
-    foreach ($ids as $id) {
-      $service_hours = StaffGlobalHour::find($id);
-      $service_hours->delete();
+        return redirect()->back()->with('success', __('Time slot delete successfully!'));
     }
 
-    session()->flash('success', __('Time slots delete successfully!') );
-    return Response::json(['status' => 'success'], 200);
-  }
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->ids;
+
+        foreach ($ids as $id) {
+            $service_hours = StaffGlobalHour::find($id);
+            $service_hours->delete();
+        }
+
+        session()->flash('success', __('Time slots delete successfully!'));
+
+        return Response::json(['status' => 'success'], 200);
+    }
 }

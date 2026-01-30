@@ -8,16 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class StaffGlobalHour extends Model
 {
-  use HasFactory;
-  protected $guarded = [];
+    use HasFactory;
 
-  public function day()
-  {
-    return $this->belongsTo(StaffGlobalDay::class, 'global_day_id', 'id');
-  }
+    protected $guarded = [];
 
-  public function adminDay()
-  {
-    return $this->belongsTo(AdminGlobalDay::class, 'global_day_id', 'id');
-  }
+    public function day()
+    {
+        return $this->belongsTo(StaffGlobalDay::class, 'global_day_id', 'id');
+    }
+
+    public function adminDay()
+    {
+        return $this->belongsTo(AdminGlobalDay::class, 'global_day_id', 'id');
+    }
 }

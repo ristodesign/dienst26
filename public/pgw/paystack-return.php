@@ -1,9 +1,11 @@
 <?php
 // Paystack redirects to ?reference=ref_... (or to callback_url you set)
 // We deep-link back to the app to close WebView.
-$ref    = $_GET['reference'] ?? '';
+$ref = $_GET['reference'] ?? '';
 $scheme = 'myapp://paystack-finish';
-if ($ref) $scheme .= '?reference='.urlencode($ref);
+if ($ref) {
+    $scheme .= '?reference='.urlencode($ref);
+}
 ?>
 <!doctype html>
 <html>

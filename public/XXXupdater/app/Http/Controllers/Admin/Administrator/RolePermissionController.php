@@ -10,83 +10,83 @@ use Illuminate\Support\Facades\Validator;
 
 class RolePermissionController extends Controller
 {
-  public function index()
-  {
-    $roles = RolePermission::query()->orderByDesc('id')->get();
+    public function index()
+    {
+        $roles = RolePermission::query()->orderByDesc('id')->get();
 
-    return view('admin.administrator.role-permission.index', compact('roles'));
-  }
-
-  public function store(Request $request)
-  {
-    $rule = ['name' => 'required'];
-
-    $validator = Validator::make($request->all(), $rule);
-
-    if ($validator->fails()) {
-      return Response::json([
-        'errors' => $validator->getMessageBag()->toArray()
-      ], 400);
+        return view('admin.administrator.role-permission.index', compact('roles'));
     }
 
-    RolePermission::query()->create($request->all());
+    public function store(Request $request)
+    {
+        $rule = ['name' => 'required'];
 
-    session()->flash('success', __('New role added successfully!'));
+        $validator = Validator::make($request->all(), $rule);
 
-    return Response::json(['status' => 'success'], 200);
-  }
+        if ($validator->fails()) {
+            return Response::json([
+                'errors' => $validator->getMessageBag()->toArray(),
+            ], 400);
+        }
 
-  public function permissions($id)
-  {
-    $role = RolePermission::query()->findOrFail($id);
+        RolePermission::query()->create($request->all());
 
-    return view('admin.administrator.role-permission.permissions', compact('role'));
-  }
+        session()->flash('success', __('New role added successfully!'));
 
-  public function updatePermissions(Request $request, $id)
-  {
-    $role = RolePermission::query()->find($id);
-
-    $role->update([
-      'permissions' => json_encode($request->permissions)
-    ]);
-
-    session()->flash('success', __('Permissions updated successfully!'));
-
-    return redirect()->back();
-  }
-
-  public function update(Request $request)
-  {
-    $rule = ['name' => 'required'];
-
-    $validator = Validator::make($request->all(), $rule);
-
-    if ($validator->fails()) {
-      return Response::json([
-        'errors' => $validator->getMessageBag()->toArray()
-      ], 400);
+        return Response::json(['status' => 'success'], 200);
     }
 
-    $role = RolePermission::query()->find($request->id);
+    public function permissions($id)
+    {
+        $role = RolePermission::query()->findOrFail($id);
 
-    $role->update($request->all());
-
-    session()->flash('success', __('Role updated successfully!'));
-
-    return Response::json(['status' => 'success'], 200);
-  }
-
-  public function destroy($id)
-  {
-    $role = RolePermission::query()->find($id);
-
-    if ($role->adminInfo()->count() > 0) {
-      return redirect()->back()->with('warning', __('First delete all the admins of this role!') );
-    } else {
-      $role->delete();
-
-      return redirect()->back()->with('success', __('Role deleted successfully!') );
+        return view('admin.administrator.role-permission.permissions', compact('role'));
     }
-  }
+
+    public function updatePermissions(Request $request, $id)
+    {
+        $role = RolePermission::query()->find($id);
+
+        $role->update([
+            'permissions' => json_encode($request->permissions),
+        ]);
+
+        session()->flash('success', __('Permissions updated successfully!'));
+
+        return redirect()->back();
+    }
+
+    public function update(Request $request)
+    {
+        $rule = ['name' => 'required'];
+
+        $validator = Validator::make($request->all(), $rule);
+
+        if ($validator->fails()) {
+            return Response::json([
+                'errors' => $validator->getMessageBag()->toArray(),
+            ], 400);
+        }
+
+        $role = RolePermission::query()->find($request->id);
+
+        $role->update($request->all());
+
+        session()->flash('success', __('Role updated successfully!'));
+
+        return Response::json(['status' => 'success'], 200);
+    }
+
+    public function destroy($id)
+    {
+        $role = RolePermission::query()->find($id);
+
+        if ($role->adminInfo()->count() > 0) {
+            return redirect()->back()->with('warning', __('First delete all the admins of this role!'));
+        } else {
+            $role->delete();
+
+            return redirect()->back()->with('success', __('Role deleted successfully!'));
+        }
+    }
 }

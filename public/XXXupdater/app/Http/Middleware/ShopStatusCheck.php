@@ -11,7 +11,6 @@ class ShopStatusCheck
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
@@ -21,6 +20,7 @@ class ShopStatusCheck
         if ($info->shop_status != 1) {
             return redirect()->route('index');
         }
+
         return $next($request);
     }
 }

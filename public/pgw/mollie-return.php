@@ -1,7 +1,7 @@
 <?php
 // Redirect target after checkout; returns user to your app
 $paymentId = $_GET['id'] ?? '';
-$appUrl    = 'myapp://mollie-finish' . ($paymentId ? ('?payment_id=' . urlencode($paymentId)) : '');
+$appUrl = 'myapp://mollie-finish'.($paymentId ? ('?payment_id='.urlencode($paymentId)) : '');
 ?><!doctype html>
 <html>
   <head><meta charset="utf-8"><title>Returning…</title></head>

@@ -12,58 +12,58 @@ use Purifier;
 
 class CookieAlertController extends Controller
 {
-  public function cookieAlert(Request $request)
-  {
-    // first, get the language info from db
-    $language = Language::query()->where('code', '=', $request->language)->firstOrFail();
-    $information['language'] = $language;
+    public function cookieAlert(Request $request)
+    {
+        // first, get the language info from db
+        $language = Language::query()->where('code', '=', $request->language)->firstOrFail();
+        $information['language'] = $language;
 
-    // then, get the cookie alert info of that language from db
-    $information['data'] = $language->cookieAlertInfo()->first();
+        // then, get the cookie alert info of that language from db
+        $information['data'] = $language->cookieAlertInfo()->first();
 
-    // get all the languages from db
-    $information['langs'] = Language::all();
+        // get all the languages from db
+        $information['langs'] = Language::all();
 
-    return view('admin.basic-settings.cookie-alert', $information);
-  }
-
-  public function updateCookieAlert(Request $request)
-  {
-    $rules = [
-      'cookie_alert_status' => 'required',
-      'cookie_alert_btn_text' => 'required',
-      'cookie_alert_text' => 'required'
-    ];
-
-    $message = [
-      'cookie_alert_btn_text.required' => __('The cookie alert button text field is required.')
-    ];
-
-    $validator = Validator::make($request->all(), $rules, $message);
-
-    if ($validator->fails()) {
-      return Response::json([
-        'errors' => $validator->getMessageBag()->toArray()
-      ], 400);
+        return view('admin.basic-settings.cookie-alert', $information);
     }
 
-    // first, get the language info from db
-    $language = Language::query()->where('code', '=', $request->language)->first();
+    public function updateCookieAlert(Request $request)
+    {
+        $rules = [
+            'cookie_alert_status' => 'required',
+            'cookie_alert_btn_text' => 'required',
+            'cookie_alert_text' => 'required',
+        ];
 
-    // then, get the cookie alert info of that language from db
-    $data = $language->cookieAlertInfo()->first();
+        $message = [
+            'cookie_alert_btn_text.required' => __('The cookie alert button text field is required.'),
+        ];
 
-    if (empty($data)) {
-      CookieAlert::query()->create($request->except(['language_id', 'cookie_alert_text']) + [
-        'language_id' => $language->id,
-        'cookie_alert_text' => Purifier::clean($request->cookie_alert_text)
-      ]);
-    } else {
-      $data->update($request->all());
+        $validator = Validator::make($request->all(), $rules, $message);
+
+        if ($validator->fails()) {
+            return Response::json([
+                'errors' => $validator->getMessageBag()->toArray(),
+            ], 400);
+        }
+
+        // first, get the language info from db
+        $language = Language::query()->where('code', '=', $request->language)->first();
+
+        // then, get the cookie alert info of that language from db
+        $data = $language->cookieAlertInfo()->first();
+
+        if (empty($data)) {
+            CookieAlert::query()->create($request->except(['language_id', 'cookie_alert_text']) + [
+                'language_id' => $language->id,
+                'cookie_alert_text' => Purifier::clean($request->cookie_alert_text),
+            ]);
+        } else {
+            $data->update($request->all());
+        }
+
+        session()->flash('success', __('Cookie alert info updated successfully!'));
+
+        return Response::json(['status' => 'success'], 200);
     }
-
-    session()->flash('success', __('Cookie alert info updated successfully!') );
-
-    return Response::json(['status' => 'success'], 200);
-  }
 }

@@ -6,134 +6,134 @@ use App\Http\Controllers\Controller;
 use App\Http\Helpers\UploadFile;
 use App\Models\BasicSettings\Basic;
 use App\Models\HomePage\Methodology\WorkProcess;
+use App\Models\Language;
 use App\Rules\ImageMimeTypeRule;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Request;
-use App\Models\Language;
 use Purifier;
 
 class WorkProcessController extends Controller
 {
-  public function sectionInfo(Request $request)
-  {
-    $language = Language::query()->where('code', '=', $request->language)->firstOrFail();
-    $information['language'] = $language;
+    public function sectionInfo(Request $request)
+    {
+        $language = Language::query()->where('code', '=', $request->language)->firstOrFail();
+        $information['language'] = $language;
 
-    $information['processes'] = $language->workProcess()->orderByDesc('id')->get();
+        $information['processes'] = $language->workProcess()->orderByDesc('id')->get();
 
-    $information['langs'] = Language::all();
+        $information['langs'] = Language::all();
 
-    return view('admin.home-page.work-process-section.index', $information);
-  }
-
-  public function storeWorkProcess(Request $request)
-  {
-    $themeVersion = Basic::query()->value('theme_version');
-
-    $rules = [
-      'language_id' => 'required',
-      'title' => 'required|max:255',
-      'serial_number' => 'required|numeric',
-    ];
-
-    if ($themeVersion == 2) {
-      $rules['image'] = ['required', new ImageMimeTypeRule()];
-    } else {
-      $rules = array_merge($rules, [
-        'icon' => 'required',
-        'text' => 'required',
-        'background_color' => 'required'
-      ]);
+        return view('admin.home-page.work-process-section.index', $information);
     }
 
-    $validator = Validator::make($request->all(), $rules);
+    public function storeWorkProcess(Request $request)
+    {
+        $themeVersion = Basic::query()->value('theme_version');
 
-    if ($validator->fails()) {
-      return Response::json(['errors' => $validator->errors()], 400);
+        $rules = [
+            'language_id' => 'required',
+            'title' => 'required|max:255',
+            'serial_number' => 'required|numeric',
+        ];
+
+        if ($themeVersion == 2) {
+            $rules['image'] = ['required', new ImageMimeTypeRule];
+        } else {
+            $rules = array_merge($rules, [
+                'icon' => 'required',
+                'text' => 'required',
+                'background_color' => 'required',
+            ]);
+        }
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return Response::json(['errors' => $validator->errors()], 400);
+        }
+
+        // Handle image upload if theme version is 2
+        $data = $request->except('language', 'image');
+        $data['text'] = Purifier::clean($request->text);
+        if ($themeVersion == 2 && $request->hasFile('image')) {
+            $data['image'] = UploadFile::store(public_path('assets/img/workprocess/'), $request->file('image'));
+        }
+        WorkProcess::create($data);
+
+        session()->flash('success', __('New work process added successfully!'));
+
+        return Response::json(['status' => 'success'], 200);
     }
 
-    // Handle image upload if theme version is 2
-    $data = $request->except('language', 'image');
-    $data['text'] = Purifier::clean($request->text);
-    if ($themeVersion == 2 && $request->hasFile('image')) {
-      $data['image'] = UploadFile::store(public_path('assets/img/workprocess/'), $request->file('image'));
-    }
-    WorkProcess::create($data);
+    public function updateWorkProcess(Request $request)
+    {
+        $themeVersion = Basic::query()->pluck('theme_version')->first();
+        if ($themeVersion != 2) {
+            $rules = [
+                'title' => 'required|max:255',
+                'text' => 'required',
+                'serial_number' => 'required|numeric',
+                'icon' => 'required',
+                'background_color' => 'required',
+            ];
+        } else {
+            $rules = [
+                'title' => 'required|max:255',
+                'serial_number' => 'required|numeric',
+            ];
+        }
 
-    session()->flash('success', __('New work process added successfully!'));
-    return Response::json(['status' => 'success'], 200);
-  }
+        if ($request->hasFile('image')) {
+            $rules['image'] = new ImageMimeTypeRule;
+        }
 
+        $validator = Validator::make($request->all(), $rules);
 
-  public function updateWorkProcess(Request $request)
-  {
-    $themeVersion = Basic::query()->pluck('theme_version')->first();
-    if ($themeVersion != 2) {
-      $rules = [
-        'title' => 'required|max:255',
-        'text' => 'required',
-        'serial_number' => 'required|numeric',
-        'icon' => 'required',
-        'background_color' => 'required'
-      ];
-    } else {
-      $rules = [
-        'title' => 'required|max:255',
-        'serial_number' => 'required|numeric'
-      ];
-    }
+        if ($validator->fails()) {
+            return Response::json([
+                'errors' => $validator->getMessageBag(),
+            ], 400);
+        }
+        $workProcess = WorkProcess::query()->find($request->id);
+        if ($request->hasFile('image')) {
+            $newImage = $request->file('image');
+            $oldImage = $workProcess->image;
+            $imgName = UploadFile::update(public_path('assets/img/workprocess/'), $newImage, $oldImage);
+        }
 
-    if ($request->hasFile('image')) {
-      $rules['image'] =  new ImageMimeTypeRule();
-    }
+        $workProcess->update($request->except('language', 'image') +
+          [
+              'image' => $request->hasFile('image') ? $imgName : $workProcess->image,
+              'text' => Purifier::clean($request->text),
+          ]);
 
-    $validator = Validator::make($request->all(), $rules);
+        session()->flash('success', __('Work process updated successfully!'));
 
-    if ($validator->fails()) {
-      return Response::json([
-        'errors' => $validator->getMessageBag()
-      ], 400);
-    }
-    $workProcess = WorkProcess::query()->find($request->id);
-    if ($request->hasFile('image')) {
-      $newImage = $request->file('image');
-      $oldImage = $workProcess->image;
-      $imgName = UploadFile::update(public_path('assets/img/workprocess/'), $newImage, $oldImage);
+        return Response::json(['status' => 'success'], 200);
     }
 
-    $workProcess->update($request->except('language', 'image') +
-      [
-        'image' => $request->hasFile('image') ? $imgName : $workProcess->image,
-        'text' => Purifier::clean($request->text)
-      ]);
+    public function destroyWorkProcess($id)
+    {
+        $workProcess = WorkProcess::query()->find($id);
+        @unlink(public_path('assets/img/workprocess/').$workProcess->image);
+        $workProcess->delete();
 
-    session()->flash('success', __('Work process updated successfully!'));
-
-    return Response::json(['status' => 'success'], 200);
-  }
-
-  public function destroyWorkProcess($id)
-  {
-    $workProcess = WorkProcess::query()->find($id);
-    @unlink(public_path('assets/img/workprocess/') . $workProcess->image);
-    $workProcess->delete();
-
-    return redirect()->back()->with('success', __('Work process deleted successfully!'));
-  }
-
-  public function bulkDestroyWorkProcess(Request $request)
-  {
-    $ids = $request['ids'];
-
-    foreach ($ids as $id) {
-      $workProcess = WorkProcess::query()->find($id);
-      @unlink(public_path('assets/img/workprocess/') . $workProcess->image);
-      $workProcess->delete();
+        return redirect()->back()->with('success', __('Work process deleted successfully!'));
     }
 
-    session()->flash('success', __('Work processes deleted successfully!'));
+    public function bulkDestroyWorkProcess(Request $request)
+    {
+        $ids = $request['ids'];
 
-    return Response::json(['status' => 'success'], 200);
-  }
+        foreach ($ids as $id) {
+            $workProcess = WorkProcess::query()->find($id);
+            @unlink(public_path('assets/img/workprocess/').$workProcess->image);
+            $workProcess->delete();
+        }
+
+        session()->flash('success', __('Work processes deleted successfully!'));
+
+        return Response::json(['status' => 'success'], 200);
+    }
 }

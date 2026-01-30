@@ -14,80 +14,82 @@ use Session;
 
 class RecivedEmailController extends Controller
 {
-  public function mailToAdmin()
-  {
-    $data = DB::table('vendors')->where('id', Auth::guard('vendor')->user()->id)->select('recived_email')->first();
-    return view('vendors.email.mail-to-vendor', compact('data'));
-  }
+    public function mailToAdmin()
+    {
+        $data = DB::table('vendors')->where('id', Auth::guard('vendor')->user()->id)->select('recived_email')->first();
 
-  public function updateMailToAdmin(Request $request)
-  {
-    $rule = [
-      'to_mail' => 'required'
-    ];
-
-    $message = [
-      'to_mail.required' => __('The mail address field is required.')
-    ];
-
-    $validator = Validator::make($request->all(), $rule, $message);
-
-
-    if ($validator->fails()) {
-      return Response::json(
-        [
-          'errors' => $validator->getMessageBag()->toArray()
-        ],
-        400
-      );
+        return view('vendors.email.mail-to-vendor', compact('data'));
     }
 
-    DB::table('vendors')->updateOrInsert(
-      ['id' => Auth::guard('vendor')->user()->id],
-      ['recived_email' => $request->to_mail]
-    );
+    public function updateMailToAdmin(Request $request)
+    {
+        $rule = [
+            'to_mail' => 'required',
+        ];
 
-    Session::flash('success',  __('Mail info updated successfully!'));
+        $message = [
+            'to_mail.required' => __('The mail address field is required.'),
+        ];
 
-    return redirect()->back();
-  }
+        $validator = Validator::make($request->all(), $rule, $message);
 
-  public function message()
-  {
-    $language = Language::where('code', request()->language)->firstOrFail();
-    $language_id = $language->id;
-    $information['langs'] = Language::all();
+        if ($validator->fails()) {
+            return Response::json(
+                [
+                    'errors' => $validator->getMessageBag()->toArray(),
+                ],
+                400
+            );
+        }
 
-    $information['messages'] = InqueryMessage::with(['serviceContent' => function ($q) use ($language_id) {
-      $q->where('language_id', $language_id);
-    }])
-      ->where('vendor_id', Auth::guard('vendor')->user()->id)
-      ->orderBy('id', 'DESC')
-      ->get();
-    return view('vendors.email.message', $information);
-  }
+        DB::table('vendors')->updateOrInsert(
+            ['id' => Auth::guard('vendor')->user()->id],
+            ['recived_email' => $request->to_mail]
+        );
 
-  public function messageDestroy($id)
-  {
-    $message = InqueryMessage::find($id);
-    $message->delete();
+        Session::flash('success', __('Mail info updated successfully!'));
 
-    return redirect()->back()->with('success',  __('Message delete successfully!'));
-  }
+        return redirect()->back();
+    }
 
-  public function bulkDelete(Request $request)
-  {
-    $ids = $request->ids;
+    public function message()
+    {
+        $language = Language::where('code', request()->language)->firstOrFail();
+        $language_id = $language->id;
+        $information['langs'] = Language::all();
 
-    foreach ($ids as $id) {
-      $message = InqueryMessage::where('vendor_id', Auth::guard('vendor')->user()->id)->find($id);
+        $information['messages'] = InqueryMessage::with(['serviceContent' => function ($q) use ($language_id) {
+            $q->where('language_id', $language_id);
+        }])
+            ->where('vendor_id', Auth::guard('vendor')->user()->id)
+            ->orderBy('id', 'DESC')
+            ->get();
 
-      if ($message) {
+        return view('vendors.email.message', $information);
+    }
+
+    public function messageDestroy($id)
+    {
+        $message = InqueryMessage::find($id);
         $message->delete();
-      }
+
+        return redirect()->back()->with('success', __('Message delete successfully!'));
     }
 
-    session()->flash('success',  __('Message deleted successfully!'));
-    return response()->json(['status' => 'success'], 200);
-  }
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->ids;
+
+        foreach ($ids as $id) {
+            $message = InqueryMessage::where('vendor_id', Auth::guard('vendor')->user()->id)->find($id);
+
+            if ($message) {
+                $message->delete();
+            }
+        }
+
+        session()->flash('success', __('Message deleted successfully!'));
+
+        return response()->json(['status' => 'success'], 200);
+    }
 }
