@@ -65,7 +65,7 @@ class PayPalController extends Controller
 
         $item_1 = new Item;
         $item_1->setName($title)
-          /** item name **/
+            /** item name **/
             ->setCurrency('USD')
             ->setQuantity(1)
             ->setPrice($paypalTotal);
@@ -84,7 +84,7 @@ class PayPalController extends Controller
 
         $redirect_urls = new RedirectUrls;
         $redirect_urls->setReturnUrl($notifyURL)
-          /** Specify return URL **/
+            /** Specify return URL **/
             ->setCancelUrl($cancelURL);
 
         $payment = new Payment;

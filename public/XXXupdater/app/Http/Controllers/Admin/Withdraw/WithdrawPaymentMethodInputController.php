@@ -132,7 +132,7 @@ class WithdrawPaymentMethodInputController extends Controller
                         }
                     }
                 },
-        ],
+            ],
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);

@@ -66,7 +66,7 @@ class PaypalController extends Controller
         $payer->setPaymentMethod('paypal');
         $item_1 = new Item;
         $item_1->setName($title)
-          /** item name **/
+            /** item name **/
             ->setCurrency('USD')
             ->setQuantity(1)
             ->setPrice($price);
@@ -82,7 +82,7 @@ class PaypalController extends Controller
             ->setDescription($title.' Via Paypal');
         $redirect_urls = new RedirectUrls;
         $redirect_urls->setReturnUrl($success_url)
-          /** Specify return URL **/
+            /** Specify return URL **/
             ->setCancelUrl($cancel_url);
         $payment = new Payment;
         $payment->setIntent('Sale')
