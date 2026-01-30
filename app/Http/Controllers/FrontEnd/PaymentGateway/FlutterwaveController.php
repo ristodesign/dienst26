@@ -35,7 +35,7 @@ class FlutterwaveController extends Controller
     // send payment to flutterwave for processing
     $curl = curl_init();
 
-    curl_setopt_array($curl, array(
+    curl_setopt_array($curl, [
       CURLOPT_URL => 'https://api.flutterwave.com/v3/payments',
       CURLOPT_RETURNTRANSFER => true,
       CURLOPT_ENCODING => '',
@@ -60,11 +60,11 @@ class FlutterwaveController extends Controller
           'description' => $title . ' via Flutterwave.'
         ]
       ]),
-      CURLOPT_HTTPHEADER => array(
+      CURLOPT_HTTPHEADER => [
         'authorization: Bearer ' . $this->secret_key,
         'content-type: application/json'
-      )
-    ));
+      ]
+    ]);
 
     $response = curl_exec($curl);
 
@@ -99,7 +99,7 @@ class FlutterwaveController extends Controller
 
       $curl = curl_init();
 
-      curl_setopt_array($curl, array(
+      curl_setopt_array($curl, [
         CURLOPT_URL => "https://api.flutterwave.com/v3/transactions/{$txId}/verify",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => '',
@@ -108,11 +108,11 @@ class FlutterwaveController extends Controller
         CURLOPT_FOLLOWLOCATION => true,
         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
         CURLOPT_CUSTOMREQUEST => 'GET',
-        CURLOPT_HTTPHEADER => array(
+        CURLOPT_HTTPHEADER => [
           'authorization: Bearer ' . $this->secret_key,
           'content-type: application/json'
-        )
-      ));
+        ]
+      ]);
 
       $response = curl_exec($curl);
 

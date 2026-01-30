@@ -67,7 +67,7 @@ class OfflineController extends Controller
 
     $currencyInfo = $this->getCurrencyInfo();
 
-    $arrData = array(
+    $arrData = [
       'billing_name' => $request['billing_name'],
       'billing_email' => $request['billing_email'],
       'billing_phone' => $request['billing_phone'],
@@ -105,7 +105,7 @@ class OfflineController extends Controller
       'paymentStatus' => 'pending',
       'orderStatus' => 'pending',
       'attachment' => $attachmentName
-    );
+    ];
 
     // store product order information in database
     $purchaseProcess->storeData($productList, $arrData);

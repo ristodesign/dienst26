@@ -50,7 +50,7 @@ class RazorpayController extends Controller
       return redirect()->back()->with('error', 'Invalid currency for razorpay payment.')->withInput();
     }
 
-    $arrData = array(
+    $arrData = [
       'billing_name' => $request['billing_name'],
       'billing_email' => $request['billing_email'],
       'billing_phone' => $request['billing_phone'],
@@ -87,7 +87,7 @@ class RazorpayController extends Controller
       'gatewayType' => 'online',
       'paymentStatus' => 'completed',
       'orderStatus' => 'pending'
-    );
+    ];
 
     $title = 'Purchase Product';
     $notifyURL = route('shop.purchase_product.razorpay.notify');

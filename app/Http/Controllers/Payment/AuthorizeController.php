@@ -32,7 +32,7 @@ class AuthorizeController extends Controller
   public function paymentProcess(Request $request, $_amount, $_success_url, $_cancel_url, $_title, $bs)
   {
     try {
-      $allowedCurrencies = array('USD', 'CAD', 'CHF', 'DKK', 'EUR', 'GBP', 'NOK', 'PLN', 'SEK', 'AUD', 'NZD');
+      $allowedCurrencies = ['USD', 'CAD', 'CHF', 'DKK', 'EUR', 'GBP', 'NOK', 'PLN', 'SEK', 'AUD', 'NZD'];
       $currencyInfo = $this->getCurrencyInfo();
       // checking whether the base currency is allowed or not
       if (!in_array($currencyInfo->base_currency_text, $allowedCurrencies)) {

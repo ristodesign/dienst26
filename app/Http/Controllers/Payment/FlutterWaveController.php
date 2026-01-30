@@ -44,7 +44,7 @@ class FlutterWaveController extends Controller
         $payment_plan = ""; // this is only required for recurring payments.
 
 
-        curl_setopt_array($curl, array(
+        curl_setopt_array($curl, [
             CURLOPT_URL => "https://api.ravepay.co/flwv3-pug/getpaidx/api/v2/hosted/pay",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CUSTOMREQUEST => "POST",
@@ -61,7 +61,7 @@ class FlutterWaveController extends Controller
                 "content-type: application/json",
                 "cache-control: no-cache"
             ],
-        ));
+        ]);
 
         $response = curl_exec($curl);
         $err = curl_error($curl);
@@ -97,17 +97,17 @@ class FlutterWaveController extends Controller
         $payment_id = Session::get('payment_id');
         if (isset($request['txref'])) {
             $ref = $payment_id;
-            $query = array(
+            $query = [
                 "SECKEY" => $this->secret_key,
                 "txref" => $ref
-            );
+            ];
             $data_string = json_encode($query);
             $ch = curl_init('https://api.ravepay.co/flwv3-pug/getpaidx/api/v2/verify');
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
             curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+            curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
             $response = curl_exec($ch);
             curl_close($ch);
             $resp = json_decode($response, true);

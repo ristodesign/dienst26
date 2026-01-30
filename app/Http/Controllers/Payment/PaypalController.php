@@ -73,7 +73,7 @@ class PaypalController extends Controller
       ->setPrice($price);
     /** unit price **/
     $item_list = new ItemList();
-    $item_list->setItems(array($item_1));
+    $item_list->setItems([$item_1]);
     $amount = new Amount();
     $amount->setCurrency("USD")
       ->setTotal($price);
@@ -89,7 +89,7 @@ class PaypalController extends Controller
     $payment->setIntent('Sale')
       ->setPayer($payer)
       ->setRedirectUrls($redirect_urls)
-      ->setTransactions(array($transaction));
+      ->setTransactions([$transaction]);
 
     try {
       $payment->create($this->_api_context);

@@ -35,7 +35,7 @@ class PaytmController extends Controller
       return redirect()->back()->with('error', 'Invalid currency for paytm payment.')->withInput();
     }
 
-    $arrData = array(
+    $arrData = [
       'billing_name' => $request['billing_name'],
       'billing_email' => $request['billing_email'],
       'billing_phone' => $request['billing_phone'],
@@ -66,7 +66,7 @@ class PaytmController extends Controller
       'gatewayType' => 'online',
       'paymentStatus' => 'completed',
       'orderStatus' => 'pending'
-    );
+    ];
 
     $notifyURL = route('shop.purchase_product.paytm.notify');
 

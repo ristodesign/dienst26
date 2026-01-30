@@ -53,7 +53,7 @@ class StripeController extends Controller
 
     $stripeTotal = $currencyInfo->base_currency_text === 'USD' ? $calculatedData['grandTotal'] : $convertedTotal;
 
-    $arrData = array(
+    $arrData = [
       'billing_name' => $request['billing_name'],
       'billing_email' => $request['billing_email'],
       'billing_phone' => $request['billing_phone'],
@@ -84,7 +84,7 @@ class StripeController extends Controller
       'gatewayType' => 'online',
       'paymentStatus' => 'completed',
       'orderStatus' => 'pending'
-    );
+    ];
 
     try {
       // initialize stripe

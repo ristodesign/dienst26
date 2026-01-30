@@ -34,13 +34,13 @@ class InstamojoController extends Controller
 
         try {
 
-            $response = $api->paymentRequestCreate(array(
+            $response = $api->paymentRequestCreate([
                 "purpose" => $_title,
                 "amount" => $_amount,
                 "send_email" => false,
                 "email" => null,
                 "redirect_url" => $notify_url
-            ));
+            ]);
 
             $redirect_url = $response['longurl'];
 

@@ -83,7 +83,7 @@ class ServiceController extends Controller
   public function imagesstore(Request $request)
   {
     $img = $request->file('file');
-    $allowedExts = array('jpg', 'png', 'jpeg', 'svg', 'webp');
+    $allowedExts = ['jpg', 'png', 'jpeg', 'svg', 'webp'];
     $rules = [
       'file' => [
         function ($attribute, $value, $fail) use ($img, $allowedExts) {

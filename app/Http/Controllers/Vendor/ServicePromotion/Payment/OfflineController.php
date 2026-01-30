@@ -58,7 +58,7 @@ class OfflineController extends Controller
     $amount = intval($chargeId->amount);
     $day = intval($chargeId->day);
 
-    $arrData = array(
+    $arrData = [
       'amount' => $amount,
       'day' => $day,
       'service_id' => $request['service_id'],
@@ -73,7 +73,7 @@ class OfflineController extends Controller
       'paymentStatus' => 'pending',
       'orderStatus' => 'pending',
       'attachment' => $attachmentName
-    );
+    ];
 
     // store service booking information in database
     $paymentProcess->storeData($arrData);

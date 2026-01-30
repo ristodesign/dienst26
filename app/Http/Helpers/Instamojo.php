@@ -38,7 +38,7 @@ class Instamojo
    */
   private function build_curl_headers()
   {
-    $headers = array("X-Api-key: $this->api_key");
+    $headers = ["X-Api-key: $this->api_key"];
     if ($this->auth_token) {
       $headers[] = "X-Auth-Token: $this->auth_token";
     }
@@ -59,7 +59,7 @@ class Instamojo
 
   private function getParamsArray($limit, $page)
   {
-    $params = array();
+    $params = [];
     if (!is_null($limit)) {
       $params['limit'] = $limit;
     }
@@ -87,7 +87,7 @@ class Instamojo
     $headers = $this->build_curl_headers();
     $request_url = $this->build_api_call_url($path);
 
-    $options = array();
+    $options = [];
     $options[CURLOPT_HTTPHEADER] = $headers;
     $options[CURLOPT_RETURNTRANSFER] = true;
 
@@ -141,7 +141,7 @@ class Instamojo
    */
   public function getUploadUrl()
   {
-    $result = $this->api_call('GET', 'links/get_file_upload_url', array());
+    $result = $this->api_call('GET', 'links/get_file_upload_url', []);
     return $result['upload_url'];
   }
 
@@ -155,7 +155,7 @@ class Instamojo
     $file_path = realpath($file_path);
     $file_name = basename($file_path);
     $ch = curl_init();
-    $data = array('fileUpload' => $this->getCurlValue($file_path, $file_name));
+    $data = ['fileUpload' => $this->getCurlValue($file_path, $file_name)];
     curl_setopt($ch, CURLOPT_URL, $upload_url);
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
@@ -229,7 +229,7 @@ class Instamojo
    */
   public function linkDetail($slug)
   {
-    $response = $this->api_call('GET', 'links/' . $slug, array());
+    $response = $this->api_call('GET', 'links/' . $slug, []);
     return $response['link'];
   }
 
@@ -261,7 +261,7 @@ class Instamojo
    */
   public function linkDelete($slug)
   {
-    $response = $this->api_call('DELETE', 'links/' . $slug, array());
+    $response = $this->api_call('DELETE', 'links/' . $slug, []);
     return $response;
   }
 
@@ -280,7 +280,7 @@ class Instamojo
    */
   public function paymentDetail($payment_id)
   {
-    $response = $this->api_call('GET', 'payments/' . $payment_id, array());
+    $response = $this->api_call('GET', 'payments/' . $payment_id, []);
     return $response['payment'];
   }
 
@@ -303,7 +303,7 @@ class Instamojo
    */
   public function paymentRequestStatus($id)
   {
-    $response = $this->api_call('GET', 'payment-requests/' . $id, array());
+    $response = $this->api_call('GET', 'payment-requests/' . $id, []);
     return $response['payment_request'];
   }
 
@@ -314,7 +314,7 @@ class Instamojo
    */
   public function paymentRequestPaymentStatus($id, $payment_id)
   {
-    $response = $this->api_call('GET', 'payment-requests/' . $id . '/' . $payment_id, array());
+    $response = $this->api_call('GET', 'payment-requests/' . $id . '/' . $payment_id, []);
     return $response['payment_request'];
   }
 
@@ -330,7 +330,7 @@ class Instamojo
   {
     $endpoint = 'payment-requests';
 
-    $params = array();
+    $params = [];
     if (!is_null($max_created_at)) {
       $params['max_created_at'] = $max_created_at;
     }
@@ -370,7 +370,7 @@ class Instamojo
    */
   public function refundDetail($id)
   {
-    $response = $this->api_call('GET', 'refunds/' . $id, array());
+    $response = $this->api_call('GET', 'refunds/' . $id, []);
     return $response['refund'];
   }
 

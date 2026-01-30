@@ -396,7 +396,7 @@ class AppointmentController extends Controller
         'refund' => 'refunded'
       ]);
 
-      $arrData = array(
+      $arrData = [
         'type' => 'refund',
         'customer_paid' => $appointment->customer_paid,
         'paymentMethod' => $appointment->payment_method,
@@ -405,7 +405,7 @@ class AppointmentController extends Controller
         'paymentStatus' => $appointment->payment_status,
         'vendor_id' => $appointment->vendor_id,
         'refund_amount' => $appointment->customer_paid,
-      );
+      ];
 
       //create transaction for this payment
       $transaction = new TransactionController();

@@ -595,7 +595,7 @@ class UserController extends Controller
       $check = Wishlist::where('service_id', $id)->where('user_id', $user_id)->first();
 
       if (!empty($check)) {
-        $notification = array('message' => __('You already added this event into your wishlist!'), 'alert-type' => 'error');
+        $notification = ['message' => __('You already added this event into your wishlist!'), 'alert-type' => 'error'];
         return back()->with($notification);
       } else {
         $service =  Services::where('id', $id)->select('vendor_id')->firstOrFail();
@@ -604,7 +604,7 @@ class UserController extends Controller
         $add->user_id = $user_id;
         $add->vendor_id = $service->vendor_id;
         $add->save();
-        $notification = array('message' => __('Added to your wishlist successfully'), 'alert-type' => 'success');
+        $notification = ['message' => __('Added to your wishlist successfully'), 'alert-type' => 'success'];
         return back()->with($notification);
       }
     } else {
@@ -619,9 +619,9 @@ class UserController extends Controller
       $remove = Wishlist::where('service_id', $id)->first();
       if ($remove) {
         $remove->delete();
-        $notification = array('message' => __('Removed From wishlist successfully'), 'alert-type' => 'info');
+        $notification = ['message' => __('Removed From wishlist successfully'), 'alert-type' => 'info'];
       } else {
-        $notification = array('message' => __('Something went wrong!'), 'alert-type' => 'danger');
+        $notification = ['message' => __('Something went wrong!'), 'alert-type' => 'danger'];
       }
       return back()->with($notification);
     } else {
