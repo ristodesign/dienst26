@@ -38,10 +38,10 @@
               <form id="#authForm" action="{{ route('user.login_submit') }}" method="POST">
                 @csrf
                 <div class="form-group mb-20">
-                  <label for="userName" class="form-label color-dark">{{ __('Username') }}<span
+                  <label for="userName" class="form-label color-dark">{{ __('Username or Email') }}<span
                       class="color-red">*</span></label>
                   <input type="text" name="username" value="{{ old('username') }}" id="userName" class="form-control"
-                    placeholder="{{ __('Username') }}" required>
+                    placeholder="{{ __('Username or Email') }}" required>
                   @error('username')
                     <p class="text-danger mt-2">{{ $message }}</p>
                   @enderror

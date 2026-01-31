@@ -295,20 +295,24 @@ class VendorController extends Controller
             ], 422);
         }
 
-        // Try to find vendor by username
-        $vendor = Vendor::where('username', $request->username)->first();
+        // Try to find vendor by username OR email
+        $login = $request->input('username');
+        $vendor = Vendor::query()
+            ->where('username', $login)
+            ->orWhere('email', $login)
+            ->first();
 
         if (! $vendor || ! Hash::check($request->password, $vendor->password)) {
             return response()->json([
                 'success' => false,
-                'message' => __('Incorrect username or password'),
+                'message' => __('Incorrect username/email or password'),
             ], 422);
         }
 
         // Check email verification and status
         $setting = DB::table('basic_settings')->where('uniqid', 12345)->select('vendor_email_verification', 'vendor_admin_approval')->first();
 
-        if ($setting->vendor_email_verification == 1 && ! $vendor->email_verified_at && $vendor->status == 0) {
+        if ($setting->vendor_email_verification == 1 && ! $vendor->email_verified_at) {
             return response()->json([
                 'success' => false,
                 'message' => __('Please verify your email address'),

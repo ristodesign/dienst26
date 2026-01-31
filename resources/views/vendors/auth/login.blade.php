@@ -42,10 +42,10 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="form-group mb-20">
-                                            <label for="userName" class="form-label color-dark">{{ __('Username') }}<span
+                                            <label for="userName" class="form-label color-dark">{{ __('Username or Email') }}<span
                                                     class="color-red">*</span></label>
                                             <input type="text" name="username" id="userName" class="form-control"
-                                                placeholder="{{ __('Username') }}" value="{{ old('username') }}">
+                                                placeholder="{{ __('Username or Email') }}" value="{{ old('username') }}">
                                             @error('username')
                                                 <p class="text-danger mt-2">{{ $message }}</p>
                                             @enderror

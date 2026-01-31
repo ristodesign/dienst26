@@ -1046,11 +1046,15 @@ class ServiceController extends Controller
             ], 400);
         }
 
-        // get the email and password which has provided by the user
-        $credentials = $request->only('username', 'password');
+        // allow login by username OR email
+        $login = $request->input('username');
+        $password = $request->input('password');
 
         // login attempt
-        if (Auth::guard('web')->attempt($credentials)) {
+        $loggedIn = Auth::guard('web')->attempt(['username' => $login, 'password' => $password])
+            || Auth::guard('web')->attempt(['email' => $login, 'password' => $password]);
+
+        if ($loggedIn) {
             $authUser = Auth::guard('web')->user();
 
             if ($authUser->email_verified_at == null) {
@@ -1074,7 +1078,7 @@ class ServiceController extends Controller
                 'billingData' => $billingData,
             ]);
         } else {
-            return response()->json(['error' => __('Incorrect username or password')]);
+            return response()->json(['error' => __('Incorrect username/email or password')]);
         }
     }
 

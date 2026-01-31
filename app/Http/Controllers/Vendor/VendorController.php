@@ -272,10 +272,14 @@ class VendorController extends Controller
             return redirect()->back()->withErrors($validator->errors());
         }
 
-        if (Auth::guard('vendor')->attempt([
-            'username' => $request->username,
-            'password' => $request->password,
-        ])) {
+        $login = $request->input('username');
+        $password = $request->input('password');
+
+        $loggedIn = Auth::guard('vendor')->attempt(['username' => $login, 'password' => $password])
+            || Auth::guard('vendor')->attempt(['email' => $login, 'password' => $password]);
+
+        if ($loggedIn) {
+            $request->session()->regenerate();
             $authVendor = Auth::guard('vendor')->user();
 
             $setting = DB::table('basic_settings')->where('uniqid', 12345)->select('vendor_email_verification', 'vendor_admin_approval')->first();
@@ -313,7 +317,7 @@ class VendorController extends Controller
                 }
             }
         } else {
-            Session::flash('error', __('Incorrect username or password'));
+            Session::flash('error', __('Incorrect username/email or password'));
 
             return redirect()->back()->withInput();
         }

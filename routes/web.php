@@ -143,7 +143,6 @@ Route::middleware('change.lang')->group(function () {
         Route::get('/', [FrontEnd\VendorController::class, 'index'])->name('frontend.vendors');
         Route::post('contact/message', [FrontEnd\VendorController::class, 'contact'])->name('vendor.contact.message');
     });
-    Route::get('vendor/{username}', [FrontEnd\VendorController::class, 'details'])->name('frontend.vendor.details');
 
     Route::prefix('/blog')->group(function () {
         Route::get('', [FrontEnd\BlogController::class, 'index'])->name('blog');
@@ -269,6 +268,12 @@ Route::prefix('/admin')->middleware('guest:admin')->group(function () {
 require __DIR__.'/admin.php';
 require __DIR__.'/vendor.php';
 require __DIR__.'/staff.php';
+
+// IMPORTANT: keep this wildcard route AFTER vendor panel routes,
+// otherwise it will swallow /vendor/login, /vendor/signup, /vendor/dashboard, etc.
+Route::get('vendor/{username}', [FrontEnd\VendorController::class, 'details'])
+    ->name('frontend.vendor.details')
+    ->middleware('change.lang');
 
 /*
 |--------------------------------------------------------------------------

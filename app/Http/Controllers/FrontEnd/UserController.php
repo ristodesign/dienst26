@@ -183,11 +183,16 @@ class UserController extends Controller
             return redirect()->route('user.login')->withErrors($validator->errors())->withInput();
         }
 
-        // get the email and password which has provided by the user
-        $credentials = $request->only('username', 'password');
+        // allow login by username OR email
+        $login = $request->input('username');
+        $password = $request->input('password');
 
         // login attempt
-        if (Auth::guard('web')->attempt($credentials)) {
+        $loggedIn = Auth::guard('web')->attempt(['username' => $login, 'password' => $password])
+            || Auth::guard('web')->attempt(['email' => $login, 'password' => $password]);
+
+        if ($loggedIn) {
+            $request->session()->regenerate();
             $authUser = Auth::guard('web')->user();
             // second, check whether the user's account is active or not
             if ($authUser->email_verified_at == null) {
@@ -195,6 +200,8 @@ class UserController extends Controller
 
                 // logout auth user as condition not satisfied
                 Auth::guard('web')->logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
 
                 return redirect()->back();
             }
@@ -203,6 +210,8 @@ class UserController extends Controller
 
                 // logout auth user as condition not satisfied
                 Auth::guard('web')->logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
 
                 return redirect()->back();
             }
@@ -217,7 +226,7 @@ class UserController extends Controller
                 return redirect($redirectURL);
             }
         } else {
-            Session::flash('error', __('Incorrect username or password'));
+            Session::flash('error', __('Incorrect username/email or password'));
 
             return redirect()->back()->withInput();
         }
