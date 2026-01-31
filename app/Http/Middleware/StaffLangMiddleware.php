@@ -21,7 +21,11 @@ class StaffLangMiddleware
         } else {
             $defaultLang = Language::where('is_default', 1)->first();
             if (! empty($defaultLang)) {
-                app()->setLocale($defaultLang->code);
+                // Staff language values are stored like "admin_{code}" (see StaffController::languageChange),
+                // so the default should follow the same format.
+                $languageCode = 'admin_'.$defaultLang->code;
+                app()->setLocale($languageCode);
+                session()->put('staff_lang', $languageCode);
             }
         }
 
