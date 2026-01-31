@@ -26,6 +26,24 @@ use Illuminate\View\View;
 
 class LanguageController extends Controller
 {
+    private function ensureLangFilesExist(): void
+    {
+        $langDir = resource_path('lang');
+        if (! File::isDirectory($langDir)) {
+            File::makeDirectory($langDir, 0755, true);
+        }
+
+        $default = $langDir.DIRECTORY_SEPARATOR.'default.json';
+        $adminDefault = $langDir.DIRECTORY_SEPARATOR.'admin_default.json';
+
+        if (! File::exists($default)) {
+            File::put($default, "{}\n");
+        }
+
+        if (! File::exists($adminDefault)) {
+            File::put($adminDefault, "{}\n");
+        }
+    }
     /**
      * Display a listing of the resource.
      */
@@ -41,9 +59,11 @@ class LanguageController extends Controller
      */
     public function store(StoreRequest $request): JsonResponse
     {
+        $this->ensureLangFilesExist();
+
         // get all the keywords from the default file of language
-        $data = file_get_contents(resource_path('lang/').'default.json');
-        $adminData = file_get_contents(resource_path('lang/').'admin_default.json');
+        $data = File::get(resource_path('lang/default.json'));
+        $adminData = File::get(resource_path('lang/admin_default.json'));
 
         // make a new json file for the new language
         $fileName = strtolower($request->code).'.json';
@@ -384,8 +404,16 @@ class LanguageController extends Controller
     {
         $language = Language::query()->findOrFail($id);
 
+        $this->ensureLangFilesExist();
+
+        // ensure language JSON exists so the editor never crashes
+        $fileLocated = resource_path('lang/'.$language->code.'.json');
+        if (! File::exists($fileLocated)) {
+            File::put($fileLocated, File::get(resource_path('lang/default.json')));
+        }
+
         // get all the keywords of the selected language
-        $jsonData = file_get_contents(resource_path('lang/').$language->code.'.json');
+        $jsonData = File::get($fileLocated);
 
         // convert json encoded string into a php associative array
         $keywords = json_decode($jsonData);
@@ -400,8 +428,16 @@ class LanguageController extends Controller
     {
         $language = Language::query()->findOrFail($id);
 
+        $this->ensureLangFilesExist();
+
+        // ensure admin language JSON exists so the editor never crashes
+        $fileLocated = resource_path('lang/admin_'.$language->code.'.json');
+        if (! File::exists($fileLocated)) {
+            File::put($fileLocated, File::get(resource_path('lang/admin_default.json')));
+        }
+
         // get all the keywords of the selected language
-        $jsonData = file_get_contents(resource_path('lang/').'admin_'.$language->code.'.json');
+        $jsonData = File::get($fileLocated);
 
         // convert json encoded string into a php associative array
         $keywords = json_decode($jsonData);
