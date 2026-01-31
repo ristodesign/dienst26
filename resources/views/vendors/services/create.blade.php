@@ -350,7 +350,7 @@
                                 <div class="language-form {{ $language->direction == 1 ? 'rtl text-right' : '' }}">
 
                                     <div class="row">
-                                        <div class="col-lg-4">
+                                        <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label>{{ __('Title') }}*</label>
                                                 <input type="text" class="form-control"
@@ -360,44 +360,68 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-lg-4">
+                                        <div class="col-lg-6">
                                             @php
                                                 $categories = App\Models\Services\ServiceCategory::where('language_id', $language->id)
                                                     ->where('status', 1)
                                                     ->get();
-                                            @endphp
-                                            <div class="form-group">
-                                                <label>{{ __('Category') }}*</label>
-                                                <select name="{{ $language->code }}_category_id"
-                                                    class="form-control select2 service-category"
-                                                    data-lang_code="{{ $language->code }}">
-                                                    <option selected disabled>{{ __('Select a category') }}</option>
-                                                    @foreach ($categories as $category)
-                                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                                <p id="err_service_id" class="mt-1 mb-0 text-danger em"></p>
-                                            </div>
-                                        </div>
 
-                                        <div class="col-lg-4">
-                                            @php
                                                 $subcategories = App\Models\Services\ServiceSubCategory::where('language_id', $language->id)
                                                     ->where('status', 1)
                                                     ->get();
+
+                                                $categoryNameById = $categories->pluck('name', 'id');
+                                                $subcategoryNameById = $subcategories->pluck('name', 'id');
+
+                                                $oldCategoryId = old($language->code . '_category_id');
+                                                $oldSubcategoryId = old($language->code . '_subcategory_id');
+                                                // Enforce selecting a subcategory (category-only not allowed)
+                                                if (empty($oldSubcategoryId)) {
+                                                    $oldCategoryId = null;
+                                                    $oldSubcategoryId = null;
+                                                }
+                                                $oldCategoryName = !empty($oldCategoryId) ? ($categoryNameById[$oldCategoryId] ?? null) : null;
+                                                $oldSubcategoryName = !empty($oldSubcategoryId) ? ($subcategoryNameById[$oldSubcategoryId] ?? null) : null;
+                                                $categorySearchValue = $oldSubcategoryName && $oldCategoryName
+                                                    ? ($oldCategoryName . ' › ' . $oldSubcategoryName)
+                                                    : '';
+
+                                                // Build search dataset for autocomplete (subcategory combos only)
+                                                $categorySearchItems = [];
+                                                foreach ($subcategories as $subcategory) {
+                                                    $catName = $categoryNameById[$subcategory->category_id] ?? null;
+                                                    if (empty($catName)) {
+                                                        continue;
+                                                    }
+                                                    $categorySearchItems[] = [
+                                                        'label' => $catName . ' › ' . $subcategory->name,
+                                                        'categoryId' => $subcategory->category_id,
+                                                        'subcategoryId' => $subcategory->id,
+                                                    ];
+                                                }
                                             @endphp
-                                            <div class="form-group">
-                                                <label>{{ __('Subcategory') }}</label>
-                                                <select name="{{ $language->code }}_subcategory_id"
-                                                    class="form-control select2" disabled>
-                                                    <option selected disabled>{{ __('Select a subcategory') }}</option>
-                                                    @foreach ($subcategories as $subcategory)
-                                                        <option value="{{ $subcategory->id }}">{{ $subcategory->name }}</option>
-                                                    @endforeach
-                                                </select>
+
+                                            <div class="form-group position-relative service-cat-search-group">
+                                                <label>{{ __('Category / Subcategory') }}*</label>
+                                                <input type="text" class="form-control service-cat-search"
+                                                    data-lang_code="{{ $language->code }}"
+                                                    value="{{ $categorySearchValue }}"
+                                                    placeholder="{{ __('Type to search...') }}" autocomplete="off">
+                                                <input type="hidden" name="{{ $language->code }}_category_id"
+                                                    value="{{ $oldCategoryId }}">
+                                                <input type="hidden" name="{{ $language->code }}_subcategory_id"
+                                                    value="{{ $oldSubcategoryId }}">
+                                                <div class="list-group service-cat-search-results d-none"
+                                                    data-lang_code="{{ $language->code }}" role="listbox" aria-label="{{ __('Search results') }}"></div>
+                                                <script type="application/json"
+                                                    id="service-cat-search-data-{{ $language->code }}">{!! json_encode($categorySearchItems, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
+                                                <small class="text-muted service-cat-search-help">{{ __('Select a subcategory (Category › Subcategory)') }}</small>
+                                                <p id="err_{{ $language->code }}_category_id" class="mt-1 mb-0 text-danger em"></p>
                                             </div>
                                         </div>
+                                    </div>
 
+                                    <div class="row">
                                         <div class="col-lg-4">
                                             <div class="form-group">
                                                 <label>{{ __('Address') }}</label>
@@ -533,6 +557,57 @@
       async defer></script>
     <script src="{{ asset('assets/js/map-init.js') }}"></script>
   @endif
+  <style>
+    .service-cat-search-results {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      z-index: 1050;
+      max-height: 260px;
+      overflow: auto;
+      margin-top: 2px;
+      border-radius: 10px;
+      padding: 6px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      background: #fff;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
+    }
+
+    .service-cat-search-group.is-open .service-cat-search-help {
+      display: none; /* remove the gap between input and dropdown */
+    }
+
+    .service-cat-search-results .list-group-item {
+      border: 0;
+      border-radius: 8px;
+      padding: 10px 12px;
+      background: transparent;
+      color: inherit;
+      text-align: left;
+    }
+
+    .service-cat-search-results .list-group-item:hover,
+    .service-cat-search-results .list-group-item.is-active {
+      background: rgba(0, 0, 0, 0.06);
+    }
+
+    [dir="rtl"] .service-cat-search-results .list-group-item {
+      text-align: right;
+    }
+
+    body[data-background-color="dark"] .service-cat-search-results {
+      background: #0b1220;
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.55);
+      color: rgba(255, 255, 255, 0.92);
+    }
+
+    body[data-background-color="dark"] .service-cat-search-results .list-group-item:hover,
+    body[data-background-color="dark"] .service-cat-search-results .list-group-item.is-active {
+      background: rgba(255, 255, 255, 0.08);
+    }
+  </style>
   <script>
     'use strict';
     var storeUrl = "{{ route('vendor.service.imagesstore') }}";
@@ -543,4 +618,220 @@
   </script>
   <script src="{{ asset('assets/js/vendor-dropzone.js') }}"></script>
   <script src="{{ asset('assets/js/services.js') }}"></script>
+  <script>
+    (function() {
+      'use strict';
+      const defaultLangCode = "{{ $defaultLang->code }}";
+      const requiredSubcategoryText = "{{ __('Please select a subcategory from the list.') }}";
+
+      function normalize(str) {
+        return (str || '').toString().toLowerCase().trim();
+      }
+
+      function setError(langCode, message) {
+        const $input = $(`.service-cat-search[data-lang_code="${langCode}"]`);
+        const $err = $(`#err_${langCode}_category_id`);
+        $input.addClass('is-invalid');
+        $err.text(message || requiredSubcategoryText);
+      }
+
+      function clearError(langCode) {
+        const $input = $(`.service-cat-search[data-lang_code="${langCode}"]`);
+        const $err = $(`#err_${langCode}_category_id`);
+        $input.removeClass('is-invalid');
+        $err.text('');
+      }
+
+      function getSearchItems(langCode) {
+        const el = document.getElementById(`service-cat-search-data-${langCode}`);
+        if (!el) return [];
+        try {
+          return JSON.parse(el.textContent || '[]') || [];
+        } catch (_e) {
+          return [];
+        }
+      }
+
+      function hideResults($results) {
+        $results.closest('.service-cat-search-group').removeClass('is-open');
+        $results.addClass('d-none').empty();
+      }
+
+      function showResults($results) {
+        $results.closest('.service-cat-search-group').addClass('is-open');
+        $results.removeClass('d-none');
+      }
+
+      function setHiddenCategory(langCode, categoryId, subcategoryId) {
+        $(`input[name="${langCode}_category_id"]`).val(categoryId ? String(categoryId) : '');
+        $(`input[name="${langCode}_subcategory_id"]`).val(subcategoryId ? String(subcategoryId) : '');
+      }
+
+      function clearHiddenCategory(langCode) {
+        setHiddenCategory(langCode, '', '');
+      }
+
+      function setActive($results, nextIndex) {
+        const $items = $results.find('.service-cat-search-item');
+        if (!$items.length) return;
+
+        const max = $items.length - 1;
+        let idx = Math.max(0, Math.min(max, nextIndex));
+        $results.data('activeIndex', idx);
+
+        $items.removeClass('is-active').attr('aria-selected', 'false');
+        const $active = $items.eq(idx);
+        $active.addClass('is-active').attr('aria-selected', 'true');
+
+        // ensure visible
+        const el = $active.get(0);
+        if (el && typeof el.scrollIntoView === 'function') {
+          el.scrollIntoView({ block: 'nearest' });
+        }
+      }
+
+      function selectItem($results, $item) {
+        const langCode = $results.data('lang_code');
+        const catId = $item.data('cat-id');
+        const subId = $item.data('sub-id') || null;
+        const label = $item.text();
+
+        const $input = $(`.service-cat-search[data-lang_code="${langCode}"]`);
+        $input.val(label);
+        hideResults($results);
+        setHiddenCategory(langCode, catId, subId);
+        clearError(langCode);
+      }
+
+      $(document).on('input', '.service-cat-search', function() {
+        const $input = $(this);
+        const langCode = $input.data('lang_code');
+        const term = normalize($input.val());
+        const $results = $(`.service-cat-search-results[data-lang_code="${langCode}"]`);
+
+        clearHiddenCategory(langCode);
+        clearError(langCode);
+
+        if (!term || term.length < 2) {
+          hideResults($results);
+          return;
+        }
+
+        const items = getSearchItems(langCode);
+        const matches = items
+          .filter((item) => normalize(item.label).includes(term))
+          .slice(0, 10);
+
+        if (!matches.length) {
+          hideResults($results);
+          return;
+        }
+
+        const markup = matches
+          .map((item, idx) => {
+            const catId = item.categoryId;
+            const subId = item.subcategoryId;
+            const label = item.label;
+            const safeLabel = $('<div>').text(label).html();
+            return `<button type="button" role="option" aria-selected="false"
+                class="list-group-item list-group-item-action service-cat-search-item"
+                data-index="${idx}" data-cat-id="${catId}" data-sub-id="${subId || ''}">${safeLabel}</button>`;
+          })
+          .join('');
+
+        $results.html(markup);
+        showResults($results);
+        setActive($results, 0);
+      });
+
+      $(document).on('mouseenter', '.service-cat-search-results .service-cat-search-item', function() {
+        const $item = $(this);
+        const $results = $item.closest('.service-cat-search-results');
+        const idx = parseInt($item.data('index'), 10);
+        if (!Number.isNaN(idx)) setActive($results, idx);
+      });
+
+      $(document).on('click', '.service-cat-search-results .service-cat-search-item', function() {
+        const $item = $(this);
+        const $results = $item.closest('.service-cat-search-results');
+        selectItem($results, $item);
+      });
+
+      $(document).on('keydown', '.service-cat-search', function(e) {
+        const $input = $(this);
+        const langCode = $input.data('lang_code');
+        const $results = $(`.service-cat-search-results[data-lang_code="${langCode}"]`);
+
+        // only handle when dropdown is open / has items
+        const $items = $results.find('.service-cat-search-item');
+        const isOpen = !$results.hasClass('d-none') && $items.length > 0;
+
+        if (e.key === 'Escape') {
+          hideResults($results);
+          return;
+        }
+
+        if (!isOpen) return;
+
+        if (e.key === 'ArrowDown' || e.key === 'Down') {
+          e.preventDefault();
+          const current = parseInt($results.data('activeIndex') || 0, 10);
+          setActive($results, current + 1);
+          return;
+        }
+
+        if (e.key === 'ArrowUp' || e.key === 'Up') {
+          e.preventDefault();
+          const current = parseInt($results.data('activeIndex') || 0, 10);
+          setActive($results, current - 1);
+          return;
+        }
+
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const current = parseInt($results.data('activeIndex') || 0, 10);
+          const $active = $items.eq(current);
+          if ($active.length) selectItem($results, $active);
+          return;
+        }
+      });
+
+      function validateRequiredSelection() {
+        const catId = $(`input[name="${defaultLangCode}_category_id"]`).val();
+        const subId = $(`input[name="${defaultLangCode}_subcategory_id"]`).val();
+        if (!catId || !subId) {
+          setError(defaultLangCode);
+          return false;
+        }
+        return true;
+      }
+
+      // Run validation BEFORE services.js click handler (capture phase)
+      document.addEventListener('DOMContentLoaded', function() {
+        const btn = document.getElementById('ServiceSubmit');
+        if (!btn) return;
+        btn.addEventListener('click', function(e) {
+          if (validateRequiredSelection()) return;
+          e.preventDefault();
+          e.stopPropagation();
+          e.stopImmediatePropagation();
+        }, true);
+      });
+
+      // Close dropdown on outside click / ESC
+      $(document).on('click', function(e) {
+        if ($(e.target).closest('.service-cat-search, .service-cat-search-results').length) return;
+        $('.service-cat-search-results').each(function() {
+          hideResults($(this));
+        });
+      });
+
+      $(document).on('keydown', function(e) {
+        if (e.key !== 'Escape') return;
+        $('.service-cat-search-results').each(function() {
+          hideResults($(this));
+        });
+      });
+    })();
+  </script>
 @endsection
