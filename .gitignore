@@ -4,6 +4,8 @@
 /.env
 .env.*
 .env.backup
+!.env.example
+!.env.production.example
 phpunit.xml
 composer.lock   # optional: ignore if you prefer fresh composer install on deploy
 

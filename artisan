@@ -5,6 +5,22 @@ use Symfony\Component\Console\Input\ArgvInput;
 
 define('LARAVEL_START', microtime(true));
 
+/*
+|--------------------------------------------------------------------------
+| Environment File Auto-Selection (Production)
+|--------------------------------------------------------------------------
+|
+| Same behavior as public/index.php for CLI usage:
+| If ".env" is missing but ".env.production" exists, default to APP_ENV=production
+| so Laravel loads ".env.production".
+|
+*/
+if (! is_file(__DIR__.'/.env') && is_file(__DIR__.'/.env.production')) {
+    $_ENV['APP_ENV'] = $_ENV['APP_ENV'] ?? 'production';
+    $_SERVER['APP_ENV'] = $_SERVER['APP_ENV'] ?? 'production';
+    putenv('APP_ENV='.($_ENV['APP_ENV']));
+}
+
 // Register the Composer autoloader...
 require __DIR__.'/vendor/autoload.php';
 
