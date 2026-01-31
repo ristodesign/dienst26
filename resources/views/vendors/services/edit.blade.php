@@ -63,45 +63,38 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <div class="row">
-            <div class="col-md-6">
-              <div class="card-title d-inline-block">{{ __('Edit Service') }}</div>
-            </div>
-            <div class="col-md-6 mt-2 mt-md-0">
-              <div class="btn-groups justify-content-md-end gap-10">
-                <a class="btn btn-info btn-sm float-right d-inline-block"
-                  href="{{ route('vendor.service_managment', ['language' => $defaultLang->code]) }}">
-                  <span class="btn-label">
-                    @php
-                      $fontSize = '12px';
-                    @endphp
-                    <i class="fas fa-backward" style="font-size: {{ $fontSize }}"></i>
-                  </span>
-                  {{ __('Back') }}
-                </a>
-                @php
-                  $dContent = App\Models\Services\ServiceContent::where('service_id', $service->id)
-                      ->where('language_id', $defaultLang->id)
-                      ->first();
-                  $slug = !empty($dContent) ? $dContent->slug : '';
-                @endphp
-                @if ($dContent)
-                  <a class="btn btn-success btn-sm d-inline-block"
-                    href="{{ route('frontend.service.details', ['slug' => $slug, 'id' => $service->id]) }}"
-                    target="_blank">
-                    <span class="btn-label">
-                      <i class="fas fa-eye"></i>
-                    </span>
-                    {{ __('Preview') }}
-                  </a>
-                @endif
-              </div>
-            </div>
-          </div>
+          <div class="card-title d-inline-block">{{ __('Edit Service') }}</div>
+
+          <a class="btn btn-info btn-sm float-right d-inline-block"
+            href="{{ route('vendor.service_managment', ['language' => $defaultLang->code]) }}">
+            <span class="btn-label">
+              @php
+                $fontSize = '12px';
+              @endphp
+              <i class="fas fa-backward" style="font-size: {{ $fontSize }}"></i>
+            </span>
+            {{ __('Back') }}
+          </a>
+
+          @php
+            $dContent = App\Models\Services\ServiceContent::where('service_id', $service->id)
+                ->where('language_id', $defaultLang->id)
+                ->first();
+            $slug = !empty($dContent) ? $dContent->slug : '';
+          @endphp
+          @if ($dContent)
+            <a class="btn btn-success btn-sm float-right d-inline-block mr-2"
+              href="{{ route('frontend.service.details', ['slug' => $slug, 'id' => $service->id]) }}" target="_blank">
+              <span class="btn-label">
+                <i class="fas fa-eye"></i>
+              </span>
+              {{ __('Preview') }}
+            </a>
+          @endif
         </div>
 
-        <div class="col-lg-10 mx-auto">
-          <div class="card-body pt-5 pb-5">
+        <div class="col-lg-12 mx-auto">
+          <div class="card-body pt-4 pb-4">
 
             <div class="alert alert-danger pb-1 dis-none" id="service_erros">
               <button type="button" class="close" data-dismiss="alert">×</button>
@@ -137,8 +130,20 @@
                 </div>
               </form>
               <p class="text-warning mt-2 mb-0">
-                <small>{{ __('Please note that you can upload a maximum of') }} {{ $sliderImage }}
-                  {{ __('images') }}.</small>
+                @if ($sliderImage === 999999)
+                  <small>
+                    {{ __('You can upload') }} {{ $sliderImage === 999999 ? __('unlimited') : $sliderImage }}
+                    {{ __('images') }}.</small>
+                @else
+                  <small>
+                    {{ __('Please note that you can upload a maximum of') }} {{ $sliderImage }}
+                    @if ($sliderImage > 1)
+                      {{ __('images') }}.
+                    @else
+                      {{ __('image') }}
+                    @endif
+                  </small>
+                @endif
               </p>
               <p class="em text-danger mb-0" id="errslider_images"></p>
             </div>
@@ -153,7 +158,7 @@
                   <div class="version border-0">
                     <div class="version-body">
                       <div class="row">
-                        <div class="col-lg-6">
+                        <div class="col-lg-3">
                           <div class="form-group">
                             <label for="">{{ __('Featured Image') . '*' }}</label>
                             <br>
@@ -171,9 +176,9 @@
                           </div>
 
                         </div>
-                      </div>
-                      @php $currencyText = $currencyInfo->base_currency_text; @endphp
-                      <div class="row">
+                        <div class="col-lg-9">
+                          @php $currencyText = $currencyInfo->base_currency_text; @endphp
+                          <div class="row">
                         <div class="col-lg-4">
                           <div class="form-group">
                             <label>{{ __('Price') . '* (' . $currencyText . ')' }}</label>
@@ -228,6 +233,28 @@
                             <input type="number" class="form-control personInput" name="person"
                               placeholder="{{ __('Enter person number') }}"
                               value="{{ $service->max_person > 1 ? $service->max_person : '' }}">
+                          </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label>Particulier / enkel zakelijk</label>
+                            @php
+                              $adType = old('ad_type', $service->ad_type ?? 0);
+                            @endphp
+                            <div class="selectgroup w-100">
+                              <label class="selectgroup-item">
+                                <input type="radio" name="ad_type" value="0" class="selectgroup-input"
+                                  {{ (int) $adType === 0 ? 'checked' : '' }}>
+                                <span class="selectgroup-button">ALLE</span>
+                              </label>
+
+                              <label class="selectgroup-item">
+                                <input type="radio" name="ad_type" value="1" class="selectgroup-input"
+                                  {{ (int) $adType === 1 ? 'checked' : '' }}>
+                                <span class="selectgroup-button">B2B</span>
+                              </label>
+                            </div>
                           </div>
                         </div>
                         @if ($current_package != '[]')
@@ -291,6 +318,8 @@
                             </div>
                           @endif
                         @endif
+                      </div>
+                        </div>
                       </div>
                     </div>
                     <div id="accordion" class="mt-5">

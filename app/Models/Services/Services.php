@@ -22,6 +22,7 @@ class Services extends Model
         'service_image',
         'zoom_meeting',
         'max_person',
+        'ad_type',
         'calendar_status',
         'average_rating',
         'staff_id',

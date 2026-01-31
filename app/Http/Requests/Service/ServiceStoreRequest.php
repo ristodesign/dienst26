@@ -60,6 +60,9 @@ class ServiceStoreRequest extends FormRequest
             $ruleArray['person'] = 'required';
         }
 
+        // ALLE=0, B2B=1 (nullable for backward compatibility with forms that don't send it)
+        $ruleArray['ad_type'] = 'nullable|in:0,1';
+
         $defaultLanguage = Language::where('is_default', 1)->first();
         // Default language fields should always be required
         $ruleArray[$defaultLanguage->code.'_name'] = 'required|max:255';

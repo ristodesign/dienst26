@@ -225,15 +225,19 @@
                                 <div class="col-lg-4">
                                   <div class="form-group">
                                     <label>Particulier / enkel zakelijk</label>
+                                    @php
+                                      $adType = old('ad_type', 0);
+                                    @endphp
                                     <div class="selectgroup w-100">
                                       <label class="selectgroup-item">
-                                        <input type="radio" name="ad_type" value="1" class="selectgroup-input"
-                                          checked="">
+                                        <input type="radio" name="ad_type" value="0" class="selectgroup-input"
+                                          {{ (int) $adType === 0 ? 'checked' : '' }}>
                                         <span class="selectgroup-button">ALLE</span>
                                       </label>
 
                                       <label class="selectgroup-item">
-                                        <input type="radio" name="ad_type" value="0" class="selectgroup-input">
+                                        <input type="radio" name="ad_type" value="1" class="selectgroup-input"
+                                          {{ (int) $adType === 1 ? 'checked' : '' }}>
                                         <span class="selectgroup-button">B2B</span>
                                       </label>
                                     </div>

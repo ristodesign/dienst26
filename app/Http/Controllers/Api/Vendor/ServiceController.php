@@ -111,6 +111,7 @@ class ServiceController extends Controller
                 'status' => $request->status,
                 'prev_price' => $request->prev_price,
                 'max_person' => $request->person,
+                'ad_type' => (int) ($request->input('ad_type', 0)),
                 'latitude' => $request->latitude,
                 'longitude' => $request->longitude,
             ]);
@@ -229,6 +230,7 @@ class ServiceController extends Controller
             'status' => $request->status,
             'prev_price' => $request->prev_price,
             'max_person' => $request->person,
+            'ad_type' => (int) ($request->input('ad_type', 0)),
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
         ]);
