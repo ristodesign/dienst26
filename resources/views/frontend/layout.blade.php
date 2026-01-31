@@ -1,17 +1,47 @@
 <!DOCTYPE html>
-<html lang="xxx" dir="{{ $currentLanguageInfo->direction == 1 ? 'rtl' : '' }}">
-
+<html lang="{{ $currentLanguageInfo->code}}" dir="{{ $currentLanguageInfo->direction == 1 ? 'rtl' : '' }}">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="author" content="KreativDev">
+  <meta name="author" content="ICT Pro & KreativDev">
 
-  <meta name="keywords" content="@yield('metaKeywords')">
+  @php
+    $metaKeywordsRaw = trim(preg_replace('/\s+/', ' ', strip_tags($__env->yieldContent('metaKeywords'))));
+  @endphp
+  <meta name="keywords" content="{{ $metaKeywordsRaw }}">
   <meta name="description" content="@yield('metaDescription')">
   <meta name="csrf-token" content="{{ csrf_token() }}" />
+  @php
+    $pageTitleRaw = trim(preg_replace('/\s+/', ' ', strip_tags($__env->yieldContent('pageHeading'))));
+    $siteTitleRaw = trim(preg_replace('/\s+/', ' ', strip_tags($websiteInfo->website_title ?? config('app.name'))));
+    $metaDescriptionRaw = trim(preg_replace('/\s+/', ' ', strip_tags($__env->yieldContent('metaDescription'))));
+    $metaImageRaw = trim(preg_replace('/\s+/', ' ', strip_tags($__env->yieldContent('metaImage'))));
+
+    $fullTitle = $pageTitleRaw !== '' ? ($pageTitleRaw.' | '.$siteTitleRaw) : $siteTitleRaw;
+    $canonicalUrl = url()->current();
+    $ogType = request()->routeIs('index') ? 'website' : 'article';
+    $ogImage = $metaImageRaw !== '' ? $metaImageRaw : asset('assets/img/' . ($websiteInfo->logo ?? $websiteInfo->favicon));
+  @endphp
   <!-- Title -->
-  <title>@yield('pageHeading') {{ '| ' . $websiteInfo->website_title }}</title>
+  <title>{{ $fullTitle }}</title>
+
+  <link rel="canonical" href="{{ $canonicalUrl }}">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="{{ $ogType }}">
+  <meta property="og:site_name" content="{{ $siteTitleRaw }}">
+  <meta property="og:title" content="{{ $fullTitle }}">
+  <meta property="og:description" content="{{ $metaDescriptionRaw }}">
+  <meta property="og:url" content="{{ $canonicalUrl }}">
+  <meta property="og:image" content="{{ $ogImage }}">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ $fullTitle }}">
+  <meta name="twitter:description" content="{{ $metaDescriptionRaw }}">
+  <meta name="twitter:image" content="{{ $ogImage }}">
+  <meta name="twitter:url" content="{{ $canonicalUrl }}">
   <!-- Favicon -->
   <link rel="shortcut icon" href="{{ asset('assets/img/' . $websiteInfo->favicon) }}" type="image/x-icon">
   <link rel="apple-touch-icon" href="{{ asset('assets/img/' . $websiteInfo->favicon) }}">

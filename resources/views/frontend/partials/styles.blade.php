@@ -10,6 +10,8 @@
 <link rel="stylesheet" href="{{ asset('assets/frontend/css/vendors/daterangepicker.css') }}">
 {{-- whatsapp css --}}
 <link rel="stylesheet" href="{{ asset('assets/css/floating-whatsapp.css') }}">
+{{-- floating share css --}}
+<link rel="stylesheet" href="{{ asset('assets/css/floating-share.css') }}">
 <!-- Magnific Popup CSS -->
 <link rel="stylesheet" href="{{ asset('assets/frontend/css/vendors/magnific-popup.min.css') }}">
 <!-- Swiper Slider -->

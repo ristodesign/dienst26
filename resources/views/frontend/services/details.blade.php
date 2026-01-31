@@ -20,9 +20,23 @@
 
 @section('metaDescription')
   @if ($service)
-    {{ $service->meta_description }}
+    {{ \Illuminate\Support\Str::of(strip_tags($service->description ?? ''))->squish()->limit(170) }}
   @endif
 @endsection
+
+@section('metaImage')
+  @php
+    $metaImg = null;
+    if (!empty($details->sliderImage) && count($details->sliderImage) > 0) {
+        $metaImg = asset('assets/img/services/service-gallery/' . $details->sliderImage->first()->image);
+    } elseif (!empty($details->service_image)) {
+        $metaImg = asset('assets/img/services/' . $details->service_image);
+    }
+  @endphp
+  {{ $metaImg }}
+@endsection
+
+
 @section('content')
   <!-- Page title start-->
   <div class="page-title-area bg-img bg-cover header-next"
@@ -199,7 +213,7 @@
               </div>
             @endif
 
-            <!-- Book now button -->
+            {{-- <!-- Book now button -->
             <div class="booking-form mt-40" data-aos="fade-up">
               <div class="form-wrapper border bg-white px-3 pt-3 radius-md">
                 <div class="row align-items-center">
@@ -217,7 +231,9 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> --}}
+
+
             @if (count($related_services) > 0)
               <!-- Booking slider -->
               <div class="service-area pt-60">
@@ -533,11 +549,13 @@
                   : 'http://';
               $current_url = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
-
-              echo $current_url;
-
-              $message = 'Beste '.$details->vendorInfo->name.', ik heb een vraag over deze advertentie.';
-              $whatsapp_url = 'https://wa.me/' . $phone . '?text=' . urlencode($message);
+              if(!$phone) {
+                $message = 'Op Dienst staat een advertentie die misschien wat voor jou is, klik op de volgende link: '.$current_url;
+                $whatsapp_url = 'https://wa.me/?text=' . urlencode($message);
+              } else {
+                $message = 'Beste '.$details->vendorInfo->name.', ik heb een vraag over deze advertentie: '.$current_url;
+                $whatsapp_url = 'https://wa.me/' . $phone . '?text=' . urlencode($message);
+              }
 
             @endphp
 
@@ -545,6 +563,50 @@
             <a href="<?= $whatsapp_url ?>" target="_blank" class="whatsapp-float">
                 <img src="/assets/img/whatsapp.svg" alt="WhatsApp" width="60">
             </a>
+
+            @php
+              $shareTitle = trim((string) ($title ?? ''));
+              $shareText = $service
+                  ? \Illuminate\Support\Str::of(strip_tags($service->description ?? ''))->squish()->limit(120)->toString()
+                  : '';
+            @endphp
+            <!-- Floating Share button -->
+            <div
+              class="share-float"
+              data-share-float
+              data-share-url="{{ url()->current() }}"
+              data-share-title="{{ $shareTitle }}"
+              data-share-text="{{ $shareText }}"
+            >
+              <div class="share-float__menu" data-share-menu aria-hidden="true">
+                <a class="share-float__item share-float__item--email" data-share="email" href="#" target="_blank" rel="noopener" aria-label="{{ __('Share via email') }}">
+                  <i class="fal fa-envelope"></i>
+                </a>
+                <a class="share-float__item share-float__item--whatsapp" data-share="whatsapp" href="#" target="_blank" rel="noopener" aria-label="{{ __('Share via WhatsApp') }}">
+                  <i class="fab fa-whatsapp"></i>
+                </a>
+                <a class="share-float__item share-float__item--facebook" data-share="facebook" href="#" target="_blank" rel="noopener" aria-label="{{ __('Share on Facebook') }}">
+                  <i class="fab fa-facebook-f"></i>
+                </a>
+                <a class="share-float__item share-float__item--x" data-share="x" href="#" target="_blank" rel="noopener" aria-label="{{ __('Share on X') }}">
+                  <svg class="share-float__x-icon" xmlns="http://www.w3.org/2000/svg" viewBox="-480 -466.815 2160 2160" aria-hidden="true" focusable="false">
+                    <path fill="currentColor" d="M306.615 79.694H144.011L892.476 1150.3h162.604ZM0 0h357.328l309.814 450.883L1055.03 0h105.86L714.15 519.295 1200 1226.37H842.672L515.493 750.215 105.866 1226.37H0l468.485-544.568Z"/>
+                  </svg>
+                </a>
+                <button type="button" class="share-float__item share-float__item--instagram" data-share="instagram" aria-label="{{ __('Copy link for Instagram') }}">
+                  <i class="fab fa-instagram"></i>
+                </button>
+                <button type="button" class="share-float__item share-float__item--copy" data-share="copy" aria-label="{{ __('Copy link') }}">
+                  <i class="fal fa-link"></i>
+                </button>
+                <button type="button" class="share-float__item share-float__item--more" data-share="more" aria-label="{{ __('More share options') }}">
+                  <i class="fal fa-ellipsis-h"></i>
+                </button>
+              </div>
+              <button type="button" class="share-float__btn" data-share-toggle aria-expanded="false" aria-label="{{ __('Share') }}">
+                <i class="fal fa-share-alt"></i>
+              </button>
+            </div>
 
             <style>
             .whatsapp-float {

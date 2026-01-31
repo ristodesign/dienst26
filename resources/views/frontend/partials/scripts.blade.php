@@ -67,6 +67,8 @@
 <script src="{{ asset('assets/frontend/js/script.js') }}"></script>
 {{-- whatsapp js --}}
 <script src="{{ asset('assets/js/floating-whatsapp.js') }}"></script>
+{{-- floating share js --}}
+<script src="{{ asset('assets/js/floating-share.js') }}"></script>
 <script src="{{ asset('assets/frontend/js/svg-loader.min.js') }}"></script>
 
 
